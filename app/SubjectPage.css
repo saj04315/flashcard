@@ -1,0 +1,110 @@
+.SubjectPage {
+    padding: 120px 40px 40px;
+    /* Space for fixed Navbar */
+    max-width: 1400px;
+    margin: 0 auto;
+    color: #1a2e4a;
+    /* Text color for the light main area */
+    background-color: #F8FAFC;
+    /* Light gray page background */
+    min-height: 100vh;
+}
+
+.SubjectPage__header {
+    margin-bottom: 40px;
+}
+
+.SubjectPage__title {
+    font-family: 'DynaPuff', cursive;
+    font-size: 36px;
+    color: #1a2e4a;
+    margin-bottom: 8px;
+}
+
+.SubjectPage__subtitle {
+    color: #7a8a9a;
+    font-size: 16px;
+}
+
+.SubjectGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 32px;
+    margin-bottom: 64px;
+}
+
+.DailyGoal {
+    background-color: #1a2e4a;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.DailyGoal::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background-color: #F2A359;
+    /* Orange accent border */
+}
+
+.DailyGoal__icon {
+    width: 64px;
+    height: 64px;
+    background-color: #F2A359;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.DailyGoal__info {
+    flex: 1;
+}
+
+.DailyGoal__title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.DailyGoal__subtitle {
+    font-size: 14px;
+    opacity: 0.8;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.DailyGoal__progress {
+    flex: 1.5;
+}
+
+.DailyGoal .ProgressBar {
+    max-width: none;
+    margin: 0;
+}
+
+.DailyGoal .ProgressBar__fill {
+    background-color: #6BA898;
+}
+
+.DailyGoal .ProgressBar__track {
+    background-color: rgba(255, 255, 255, 0.1);
+    height: 16px;
+}
+
+.DailyGoal .ProgressBar__top,
+.DailyGoal .ProgressBar__bottom {
+    display: none;
+    /* Hide standard labels inside goal section */
+}

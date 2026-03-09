@@ -1,26 +1,769 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* *****************************************************************
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ***************************************************************** */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --background: #508DF7;
+  --highlight: #F2A359;
+  --text-white: #FFFFFF;
+  --text-gray: #D1D1D1;
+  --text-black: #000000;
+
+  /* FlashcardDeck Colors */
+  --card-accent: #6BA898;
+  --card-accent-dark: #4D7A6E;
+  --card-bg: #ffffff;
+  --card-text-title: #1a2e4a;
+  --card-text-meta: #7a8a9a;
+
+  /* Spacing */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 64px;
+  --space-xl: 96px;
+
+  /* Font Sizes */
+  --font-size-h1: 48px;
+  --font-size-p: 16px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* *****************************************************************
+   GLOBAL RESET & BASE STYLES
+   ***************************************************************** */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  color: var(--text-white);
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* *****************************************************************
+   TYPOGRAPHY
+   ***************************************************************** */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'DynaPuff', cursive;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+p {
+  font-size: var(--font-size-p);
+  color: var(--text-white);
+}
+
+/* *****************************************************************
+   HELPER / UTILITY CLASSES
+   ***************************************************************** */
+
+/* Color helpers */
+.highlight {
+  color: var(--highlight);
+}
+
+.text-gray {
+  color: var(--text-gray);
+}
+
+.text-black {
+  color: var(--text-black);
+}
+
+/* Spacing Helpers (Margin) */
+.m-xs {
+  margin: var(--space-xs);
+}
+
+.m-sm {
+  margin: var(--space-sm);
+}
+
+.m-md {
+  margin: var(--space-md);
+}
+
+.m-lg {
+  margin: var(--space-lg);
+}
+
+.m-xl {
+  margin: var(--space-xl);
+}
+
+/* Spacing Helpers (Padding) */
+.p-xs {
+  padding: var(--space-xs);
+}
+
+.p-sm {
+  padding: var(--space-sm);
+}
+
+.p-md {
+  padding: var(--space-md);
+}
+
+.p-lg {
+  padding: var(--space-lg);
+}
+
+.p-xl {
+  padding: var(--space-xl);
+}
+
+/* *****************************************************************
+   BUTTON STYLES
+   ***************************************************************** */
+
+.btn-3d {
+  background-color: #669D8E;
+  color: white;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 12px 32px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  box-shadow: 0 6px 0 #4D7A6E;
+  transition: all 0.1s ease;
+  user-select: none;
+}
+
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #4D7A6E;
+}
+
+.btn-3d:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 1px 0 #bcf3e4;
+}
+
+.btn-3d--orange {
+  background-color: #F2A359;
+  box-shadow: 0 6px 0 #D18E4E;
+}
+
+.btn-3d--orange:active {
+  box-shadow: 0 2px 0 #D18E4E;
+}
+
+/* *****************************************************************
+   FLASHCARD COMPONENT
+   ***************************************************************** */
+
+.Flashcard-wrapper {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.Flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  transform-style: preserve-3d;
+}
+
+.Flashcard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #e4f3ff;
+  /* Dark blue from screenshot */
+  border-radius: 24px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.Flashcard--back {
+  transform: rotateY(180deg);
+}
+
+.Flashcard__shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.Flashcard__shape {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Specific shapes to match look */
+.Flashcard__shape--1 {
+  width: 120px;
+  height: 120px;
+  border-bottom-right-radius: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.Flashcard__shape--2 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  top: 60px;
+  right: 80px;
+  background: transparent;
+}
+
+.Flashcard__shape--3 {
+  width: 100px;
+  height: 80px;
+  background-color: rgba(0, 0, 0, 0.15);
+  bottom: -20px;
+  right: -10px;
+  transform: rotate(-15deg);
+}
+
+.Flashcard__shape--4 {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.03);
+  bottom: 80px;
+  left: 40px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.Flashcard__badge {
+  position: relative;
+  z-index: 2;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #f2a359;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.Flashcard__text {
+  position: relative;
+  z-index: 2;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 1.2;
+  color: white;
+  margin-bottom: 40px;
+  max-width: 90%;
+}
+
+.Flashcard__footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* *****************************************************************
+   PROGRESS BAR COMPONENT
+   ***************************************************************** */
+
+.ProgressBar {
+  width: 100%;
+  max-width: 800px;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ProgressBar__top,
+.ProgressBar__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ProgressBar__title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e4f3ff;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.ProgressBar__count,
+.ProgressBar__percent,
+.ProgressBar__remaining {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #e4f3ff;
+}
+
+.ProgressBar__percent,
+.ProgressBar__remaining {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--card-text-meta);
+}
+
+.ProgressBar__track {
+  width: 100%;
+  height: 12px;
+  background-color: #E9EEF2;
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ProgressBar__fill {
+  height: 100%;
+  background-color: #6BA898;
+  border-radius: 999px;
+}
+
+/* *****************************************************************
+   PATH (BREADCRUMB) COMPONENT
+   ***************************************************************** */
+
+.Path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.Path__item {
+  color: #e4f3ff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.Path__separator {
+  color: #e4f3ff;
+  display: flex;
+  align-items: center;
+}
+
+.Path__current {
+  color: #e4f3ff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* *****************************************************************
+   KEYBOARD GUIDE COMPONENT
+   ***************************************************************** */
+
+.KeyboardGuide {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background-color: white;
+  border: 1px solid #E9EEF2;
+  border-radius: 999px;
+  padding: 8px 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 16px 0;
+}
+
+.KeyboardGuide__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.KeyboardGuide__key {
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 6px 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #e4f3ff;
+  min-width: 40px;
+  text-align: center;
+}
+
+.KeyboardGuide__label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #5D6B82;
+}
+
+.KeyboardGuide__separator {
+  width: 1px;
+  height: 24px;
+  background-color: #E2E8F0;
+  margin: 0 4px;
+}
+
+/* *****************************************************************
+   FOOTER COMPONENT
+   ***************************************************************** */
+
+.Footer {
+  width: 100%;
+  padding: 32px 0;
+  margin-top: 64px;
+  border-top: 1px solid #E9EEF2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Footer__text {
+  color: #e4f3ff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.Footer__link {
+  color: #e4f3ff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.Footer__link:hover {
+  color: #6BA898;
+}
+
+/* *****************************************************************
+   LOGIN PAGE
+   ***************************************************************** */
+
+.LoginPage {
+  min-height: calc(100vh - 80px);
+  /* Subtract footer height approx */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  /* Deep dark blue background */
+  padding: 48px 0;
+}
+
+.LoginHeader {
+  text-align: center;
+  margin-bottom: 48px;
+  z-index: 1;
+}
+
+.LoginHeader__title {
+  color: white;
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+.LoginHeader__subtitle {
+  color: #e4f3ff;
+  font-size: 18px;
+  font-weight: 400;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.LoginCard {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.LoginCard__header {
+  height: 200px;
+  background-color: #6ba898;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.LoginCard__header-icon {
+  color: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.LoginCard__shape {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.LoginCard__shape--1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  top: 20px;
+  left: 20px;
+  transform: rotate(15deg);
+}
+
+.LoginCard__shape--2 {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  bottom: 20px;
+  right: 40px;
+}
+
+.LoginCard__body {
+  padding: 48px;
+  min-height: 240px;
+  /* Blank form area */
+}
+
+.LoginFooter-meta {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  color: #eeeeee;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 1;
+}
+
+.LoginFooter-meta__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.UnitCard {
+  width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  background-color: var(--card-bg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.UnitCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.UnitCard__header {
+  position: relative;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.UnitCard__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(102, 157, 142, 0.7);
+  /* Teal overlay */
+  z-index: 1;
+}
+
+.UnitCard__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: #1a2e4a;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: 'DynaPuff', cursive;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 2;
+  text-transform: uppercase;
+}
+
+.UnitCard__icon-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.UnitCard__content {
+  padding: 20px;
+}
+
+.UnitCard__title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--card-text-title);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.UnitCard__stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  color: var(--card-text-meta);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.UnitCard__stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.SubjectCard {
+  width: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  background-color: var(--card-bg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.SubjectCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* Top colored area */
+.SubjectCard__top {
+  position: relative;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-accent);
+}
+
+/* Decorative corner squares */
+.SubjectCard__corner-dots {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  grid-template-columns: 14px 14px;
+  grid-template-rows: 14px 14px;
+  gap: 4px;
+}
+
+.SubjectCard__corner-dots span {
+  display: block;
+  border-radius: 2px;
+  background-color: var(--card-accent-dark);
+}
+
+.SubjectCard__corner-dots span:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.SubjectCard__corner-dots span:last-child {
+  grid-column: 2;
+  grid-row: 2;
+  opacity: 0.5;
+}
+
+/* Icon circle */
+.SubjectCard__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border: 2.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Bottom info section */
+.SubjectCard__bottom {
+  padding: 16px 18px 18px;
+  background-color: var(--card-bg);
+  border-top: 1px solid #f0f0f0;
+}
+
+.SubjectCard__subject {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--card-text-title);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.SubjectCard__meta {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--card-text-meta);
+  letter-spacing: 0.2px;
 }

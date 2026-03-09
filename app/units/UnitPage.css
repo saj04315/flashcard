@@ -1,0 +1,122 @@
+.UnitPage {
+    padding: 120px 40px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: #F8FAFC;
+}
+
+.UnitPage__header {
+    margin-bottom: 48px;
+}
+
+.UnitPage__title {
+    font-family: 'DynaPuff', cursive;
+    font-size: 36px;
+    color: #1a2e4a;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.UnitPage__subtitle {
+    color: #7a8a9a;
+    font-size: 16px;
+    max-width: 800px;
+}
+
+.UnitGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    margin-bottom: 64px;
+}
+
+/* Locked UnitCard Styles */
+.UnitCard--locked {
+    opacity: 0.8;
+}
+
+.UnitCard__unlock-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #94A3B8;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+/* Button Variations */
+.btn-3d--teal {
+    background-color: #6BA898;
+    box-shadow: 0 4px 0 #4D7A6E;
+}
+
+.btn-3d--teal:active {
+    box-shadow: 0 1px 0 #4D7A6E;
+}
+
+.btn-3d--locked {
+    background-color: #E2E8F0;
+    color: #94A3B8;
+    box-shadow: 0 4px 0 #CBD5E1;
+    cursor: not-allowed;
+}
+
+.btn-3d--locked:active {
+    transform: none;
+    box-shadow: 0 4px 0 #CBD5E1;
+}
+
+/* Challenge Banner */
+.ChallengeBanner {
+    background-color: #EFF6FF;
+    border-radius: 12px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #DBEAFE;
+}
+
+.ChallengeBanner__left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.ChallengeBanner__icon {
+    width: 48px;
+    height: 48px;
+    background-color: #DBEAFE;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3B82F6;
+}
+
+.ChallengeBanner__info h4 {
+    font-size: 16px;
+    color: #1E3A8A;
+    margin-bottom: 4px;
+}
+
+.ChallengeBanner__info p {
+    font-size: 14px;
+    color: #60A5FA;
+    margin: 0;
+}
+
+.ChallengeBanner__link {
+    color: #3B82F6;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.ChallengeBanner__link:hover {
+    text-decoration: underline;
+}
