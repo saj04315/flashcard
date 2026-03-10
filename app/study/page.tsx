@@ -31,7 +31,11 @@ export default async function StudyPage({
     return (
         <div className="StudyPage">
             <header className="StudyPage__header">
-                <Path items={[subjectName, unitTitle]} />
+                <Path items={[
+                    { label: "Dashboard", href: "/" },
+                    { label: subjectName, href: `/units?subjectId=${unit?.subject_id}` },
+                    { label: unitTitle }
+                ]} />
             </header>
 
             <StudyInterface

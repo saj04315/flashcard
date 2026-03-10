@@ -241,7 +241,6 @@
     margin-top: 16px;
     border: 2px dashed #E2E8F0;
     border-radius: 999px;
-    /* Pill shape like image */
     padding: 16px;
     display: flex;
     align-items: center;
@@ -249,10 +248,19 @@
     gap: 12px;
     cursor: pointer;
     transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    min-height: 56px;
 }
 
 .FlashcardForm__upload-box:hover {
-    border-color: #6BA898;
+    border-color: #508DF7;
+    background-color: #F8FAFC;
+}
+
+.FlashcardForm__upload-box--active {
+    border-style: solid;
+    border-color: #10B981;
     background-color: #F0FDF4;
 }
 
@@ -262,8 +270,35 @@
     color: #64748B;
 }
 
+.FlashcardForm__upload-box--active span {
+    color: #16A34A;
+}
+
 .FlashcardForm__upload-box svg {
     color: #94A3B8;
+}
+
+.FlashcardForm__img-preview {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #E2E8F0;
+}
+
+.FlashcardForm__remove-img {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94A3B8;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.FlashcardForm__remove-img:hover {
+    color: #EF4444;
 }
 
 .FlashcardForm__footer {

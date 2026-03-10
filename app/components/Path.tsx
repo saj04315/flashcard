@@ -3,8 +3,13 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 
+interface PathItem {
+    label: string;
+    href?: string;
+}
+
 interface PathProps {
-    items: string[];
+    items: PathItem[];
 }
 
 const Path: React.FC<PathProps> = ({ items }) => {
@@ -18,9 +23,15 @@ const Path: React.FC<PathProps> = ({ items }) => {
                 return (
                     <React.Fragment key={index}>
                         {isLast ? (
-                            <span className="Path__current">{item}</span>
+                            <span className="Path__current">{item.label}</span>
                         ) : (
-                            <span className="Path__item">{item}</span>
+                            item.href ? (
+                                <a href={item.href} className="Path__item Path__link">
+                                    {item.label}
+                                </a>
+                            ) : (
+                                <span className="Path__item">{item.label}</span>
+                            )
                         )}
                         {!isLast && (
                             <span className="Path__separator" aria-hidden="true">

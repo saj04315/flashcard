@@ -30,13 +30,7 @@ export default function AdminSidebar({ currentTab, onTabChange }: AdminSidebarPr
     return (
         <aside className="AdminSidebar">
             <div className="AdminSidebar__logo">
-                <div className="AdminSidebar__logo-icon">
-                    <SchoolIcon size={32} color="white" />
-                </div>
-                <div className="AdminSidebar__logo-text">
-                    <h2>Flashcard Edu</h2>
-                    <p>Control Center</p>
-                </div>
+               
             </div>
 
             <nav className="AdminSidebar__nav">

@@ -38,12 +38,12 @@ const icons = [
 ];
 
 const colors = [
-    '#EF4444', // Red
-    '#10B981', // Green
-    '#508DF7', // Blue (Current Primary)
-    '#F2A359', // Orange
-    '#A855F7', // Purple
-    '#64748B', // Gray
+    '#FCA5A5', // Pastel Red
+    '#A7F3D0', // Pastel Green
+    '#BFDBFE', // Pastel Blue
+    '#FCD9B6', // Pastel Orange
+    '#E9D5FF', // Pastel Purple
+    '#CBD5E1', // Pastel Gray
 ];
 
 export default function SubjectManager() {
@@ -172,7 +172,11 @@ export default function SubjectManager() {
                                 onChange={handleFormChange}
                                 className="SubjectManager__input"
                                 placeholder="Brief description..."
+                                maxLength={100}
                             />
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '10px', color: '#64748B', marginTop: '4px' }}>
+                                <span>{formData.description.length}/100 max charaters</span>
+                            </div>
                         </div>
                         <div className="SubjectManager__field" style={{ marginTop: '24px' }}>
                             <label className="SubjectManager__field-label">Theme Color</label>

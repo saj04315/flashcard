@@ -3,7 +3,10 @@
     max-width: 100%;
     margin: 0 auto;
     min-height: 100vh;
-    background-color: #F8FAFC;
+    background: linear-gradient(rgba(248, 250, 252, 0.948), rgba(248, 250, 252, 0.959)), url('/flashcard.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;

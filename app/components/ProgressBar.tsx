@@ -20,12 +20,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 
     return (
         <div className="ProgressBar">
-            <div className="ProgressBar__top">
+            <div className="ProgressBar__top text-black">
                 <div className="ProgressBar__title-group">
-                    <BookOpen size={20} />
-                    <span>{title}</span>
+                    <BookOpen size={20} className="text-black" />
+                    <span className="text-black">{title}</span>
                 </div>
-                <div className="ProgressBar__count">
+                <div className="ProgressBar__count text-black">
                     {current} of {total} cards
                 </div>
             </div>

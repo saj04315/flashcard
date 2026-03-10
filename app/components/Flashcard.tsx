@@ -49,7 +49,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
                     <div className="Flashcard__text-content">
                         {questionImg && (
                             <div className="Flashcard__image">
-                                <img src={questionImg} alt="Question" />
+                                <img src={questionImg} alt="Question" width={100} height={100} />
                             </div>
                         )}
                         <div className="Flashcard__text">{question}</div>
@@ -80,7 +80,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
                     <div className="Flashcard__text-content">
                         {answerImg && (
                             <div className="Flashcard__image">
-                                <img src={answerImg} alt="Answer" />
+                                <img src={answerImg} alt="Answer" width={100} height={100} />
                             </div>
                         )}
                         <div className="Flashcard__text">{answer}</div>

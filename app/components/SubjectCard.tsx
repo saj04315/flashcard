@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlaskConical } from 'lucide-react';
-
+import Button from './Button';
 
 // *****************************************************************
 // SubjectCard Component
@@ -12,8 +12,8 @@ export default function SubjectCard({
     cardCount = 30,
     masteryPercent = 85,
     Icon = FlaskConical,
-    accentColor = '#e1eeeaff',
-    accentDark = '#91a5a0ff',
+    accentColor = '#6BA898', // Default to teal like UnitCard
+    bgImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=320",
     href = '#',
 }: {
     subject?: string;
@@ -21,35 +21,34 @@ export default function SubjectCard({
     masteryPercent?: number;
     Icon?: any;
     accentColor?: string;
-    accentDark?: string;
+    bgImage?: string;
     href?: string;
 }) {
     return (
-        <a href={href} className="SubjectCard" style={{ textDecoration: 'none' }}>
-            {/* Top colored section with icon */}
+        <div className="SubjectCard">
             <div
-                className="SubjectCard__top"
-                style={{ backgroundColor: accentColor }}
+                className="SubjectCard__header"
+                style={{ backgroundImage: `url(${bgImage})` }}
             >
-                {/* Decorative corner squares */}
-                <div className="SubjectCard__corner-dots">
-                    <span></span>
-                    <span></span>
-                </div>
-
-                {/* Lucide icon */}
-                <div className="SubjectCard__icon">
-                    <Icon size={36} color="white" strokeWidth={1.5} />
+                <div className="SubjectCard__overlay" style={{ backgroundColor: `${accentColor}B3` }}></div>
+                <div className="SubjectCard__badge">SUBJECT</div>
+                <div className="SubjectCard__icon-wrapper">
+                    <Icon size={48} color="white" />
                 </div>
             </div>
 
-            {/* Bottom white info section */}
-            <div className="SubjectCard__bottom">
-                <p className="SubjectCard__subject">{subject.toUpperCase()}</p>
-                <p className="SubjectCard__meta">
-                    {cardCount} CARDS&nbsp;•&nbsp;{masteryPercent}% MASTERED
-                </p>
+            <div className="SubjectCard__content">
+                <h3 className="SubjectCard__title">{subject}</h3>
+
+                <a href={href} style={{ textDecoration: 'none', display: 'block' }}>
+                    <Button
+                        className="btn-3d--teal"
+                        style={{ width: "100%", gap: "8px" }}
+                    >
+                        CHOOSE UNIT
+                    </Button>
+                </a>
             </div>
-        </a>
+        </div>
     );
 }

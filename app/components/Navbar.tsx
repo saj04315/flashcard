@@ -4,26 +4,54 @@ import React from "react";
 import "./Navbar.css";
 import { BookOpen, Search, LogOut } from "lucide-react";
 import { UserButton, SignOutButton, Show, SignInButton, SignUpButton } from "@clerk/nextjs";
-import { usePathname } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const Navbar: React.FC = () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const pathname = usePathname();
+    const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+
+    useEffect(() => {
+        setSearchQuery(searchParams.get("search") || "");
+    }, [searchParams]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+
+        const params = new URLSearchParams(searchParams.toString());
+        if (query) {
+            params.set("search", query);
+        } else {
+            params.delete("search");
+        }
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
     if (pathname === "/login") return null;
 
     return (
         <nav className="Navbar">
             <div className="Navbar__left">
                 <div className="Navbar__logo">
-                    <BookOpen size={24} color="#6BA898" />
-                    <span>FlashCardEdu</span>
+                    <a href="/" className="Navbar__link">
+                        <span>FlashCardEdu</span>
+                    </a>
                 </div>
-                <a href="/" className="Navbar__link">Dashboard</a>
+
             </div>
 
             <div className="Navbar__center">
                 <div className="Navbar__search">
                     <Search size={18} color="#94A3B8" />
-                    <input type="text" placeholder="Search subjects..." />
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={handleSearch}
+                    />
                 </div>
             </div>
 

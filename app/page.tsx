@@ -23,10 +23,17 @@ const iconMap: Record<string, LucideIcon> = {
   "economics_icon_url": LineChart,
 };
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string }>;
+}) {
+  const { search } = await searchParams;
   const client = await clientPromise;
   const db = client.db();
-  const subjects = await db.collection("subjects").find({}).toArray();
+
+  const query = search ? { name: { $regex: search, $options: "i" } } : {};
+  const subjects = await db.collection("subjects").find(query).toArray();
 
   return (
     <div className="SubjectPage">
@@ -46,7 +53,7 @@ export default async function Home() {
             masteryPercent={Math.floor(Math.random() * 100)} // Placeholder for now
             Icon={iconMap[sub.icon] || BookOpen}
             accentColor={sub.color}
-            accentDark={sub.color} // You might want to generate a darker shade
+            bgImage={`https://images.unsplash.com/featured/?${encodeURIComponent(sub.name)}`}
             href={`/units?subjectId=${sub._id}`}
           />
         ))}

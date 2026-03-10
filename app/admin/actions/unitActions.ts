@@ -58,6 +58,43 @@ export async function getUnits(search: string = ""): Promise<Unit[]> {
     }
 }
 
+export async function getUnitsBySubject(subjectId: string): Promise<Unit[]> {
+    console.log("EXEC_CHECK: getUnitsBySubject called with:", subjectId);
+    try {
+        const client = await clientPromise;
+        const db = client.db();
+        const unitsCollection = db.collection("units");
+
+        let query: any = { subject_id: subjectId };
+
+        if (subjectId && ObjectId.isValid(subjectId)) {
+            try {
+                query = {
+                    $or: [
+                        { subject_id: subjectId },
+                        { subject_id: new ObjectId(subjectId) }
+                    ]
+                };
+            } catch (e) {
+                console.warn("ObjectId conversion failed for subjectId:", subjectId, "Value type:", typeof subjectId);
+                // Fallback to searching by string only
+                query = { subject_id: subjectId };
+            }
+        }
+
+        const units = await unitsCollection.find(query).sort({ order: 1 }).toArray();
+
+        return units.map(u => ({
+            ...u,
+            id: u._id.toString(),
+            _id: u._id.toString(),
+        })) as unknown as Unit[];
+    } catch (error) {
+        console.error("Error fetching units by subject:", error);
+        return [];
+    }
+}
+
 export async function createUnit(data: { subject_id: string; title: string; order?: number }) {
     try {
         const client = await clientPromise;
