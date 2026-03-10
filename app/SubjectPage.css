@@ -1,7 +1,7 @@
 .SubjectPage {
     padding: 120px 40px 40px;
     /* Space for fixed Navbar */
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
     color: #1a2e4a;
     /* Text color for the light main area */
@@ -28,8 +28,8 @@
 
 .SubjectGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+    gap: 5px;
     margin-bottom: 64px;
 }
 

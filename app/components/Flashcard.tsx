@@ -8,12 +8,16 @@ import Button from "./Button";
 interface FlashcardProps {
     question?: string;
     answer?: string;
+    questionImg?: string;
+    answerImg?: string;
     onFlip?: () => void;
 }
 
 const Flashcard: React.FC<FlashcardProps> = ({
     question = "What is the largest planet in our solar system?",
     answer = "Jupiter",
+    questionImg,
+    answerImg,
     onFlip,
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -42,7 +46,14 @@ const Flashcard: React.FC<FlashcardProps> = ({
 
                     <div className="Flashcard__badge">QUESTION</div>
 
-                    <div className="Flashcard__text">{question}</div>
+                    <div className="Flashcard__text-content">
+                        {questionImg && (
+                            <div className="Flashcard__image">
+                                <img src={questionImg} alt="Question" />
+                            </div>
+                        )}
+                        <div className="Flashcard__text">{question}</div>
+                    </div>
 
                     <div className="Flashcard__footer">
                         <Button
@@ -66,7 +77,14 @@ const Flashcard: React.FC<FlashcardProps> = ({
 
                     <div className="Flashcard__badge">ANSWER</div>
 
-                    <div className="Flashcard__text">{answer}</div>
+                    <div className="Flashcard__text-content">
+                        {answerImg && (
+                            <div className="Flashcard__image">
+                                <img src={answerImg} alt="Answer" />
+                            </div>
+                        )}
+                        <div className="Flashcard__text">{answer}</div>
+                    </div>
 
                     <div className="Flashcard__footer">
                         <Button

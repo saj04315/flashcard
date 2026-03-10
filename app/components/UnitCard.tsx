@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Globe, BookOpen, Clock, Lock, Play } from "lucide-react";
 import Button from "./Button";
@@ -13,6 +11,7 @@ interface UnitCardProps {
     Icon?: any;
     isLocked?: boolean;
     unlockText?: string;
+    href?: string;
 }
 
 const UnitCard: React.FC<UnitCardProps> = ({
@@ -24,6 +23,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
     Icon = Globe,
     isLocked = false,
     unlockText = "",
+    href = "#",
 }) => {
     return (
         <div className={`UnitCard ${isLocked ? "UnitCard--locked" : ""}`}>
@@ -63,14 +63,16 @@ const UnitCard: React.FC<UnitCardProps> = ({
                     </div>
                 )}
 
-                <Button
-                    className={isLocked ? "btn-3d--locked" : "btn-3d--teal"}
-                    style={{ width: "100%", gap: "8px" }}
-                    disabled={isLocked}
-                >
-                    {!isLocked && <Play size={18} fill="currentColor" />}
-                    {isLocked ? "LOCKED" : "START LEARNING"}
-                </Button>
+                <a href={isLocked ? undefined : href} style={{ textDecoration: 'none', display: 'block' }}>
+                    <Button
+                        className={isLocked ? "btn-3d--locked" : "btn-3d--teal"}
+                        style={{ width: "100%", gap: "8px" }}
+                        disabled={isLocked}
+                    >
+                        {!isLocked && <Play size={18} fill="currentColor" />}
+                        {isLocked ? "LOCKED" : "START LEARNING"}
+                    </Button>
+                </a>
             </div>
         </div>
     );

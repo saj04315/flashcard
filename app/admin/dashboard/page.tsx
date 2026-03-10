@@ -1,0 +1,61 @@
+"use client";
+
+import React, { useState } from "react";
+import "./../Admin.css";
+import { Search, Bell } from "lucide-react";
+import AdminSidebar from "../components/AdminSidebar";
+import FlashcardForm from "../components/FlashcardForm";
+import SubjectManager from "../components/SubjectManager";
+import UnitManager from "../components/UnitManager";
+import StudentManager from "../components/StudentManager";
+
+export default function AdminDashboardPage() {
+    const [currentTab, setCurrentTab] = useState('students');
+
+    const renderContent = () => {
+        switch (currentTab) {
+            case 'flashcards':
+                return <FlashcardForm />;
+            case 'subjects':
+                return <SubjectManager />;
+            case 'units':
+                return <UnitManager />;
+            case 'students':
+                return <StudentManager />;
+            default:
+                return (
+                    <div style={{ padding: '40px', textAlign: 'center' }}>
+                        <h2 style={{ color: '#1a2e4a' }}>{currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} Section</h2>
+                        <p style={{ color: '#64748B' }}>This section is currently under development.</p>
+                    </div>
+                );
+        }
+    };
+
+    return (
+        <div className="AdminLayout">
+            <AdminSidebar currentTab={currentTab} onTabChange={setCurrentTab} />
+
+            <main className="AdminMain">
+                <header className="AdminHeader">
+                    <div className="AdminHeader__title">
+                        <h1>Teacher Management Control Center</h1>
+                    </div>
+                    <div className="AdminHeader__right">
+                        <div className="AdminHeader__search">
+                            <Search size={18} color="#64748B" />
+                            <input type="text" placeholder="Search resources..." />
+                        </div>
+                        <div className="AdminHeader__notification AdminHeader__notification--badge">
+                            <Bell size={20} />
+                        </div>
+                    </div>
+                </header>
+
+                <div className="AdminContent">
+                    {renderContent()}
+                </div>
+            </main>
+        </div>
+    );
+}

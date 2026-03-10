@@ -2,7 +2,12 @@
 
 import React from "react";
 
+import { usePathname } from "next/navigation";
+
 const Footer: React.FC = () => {
+    const pathname = usePathname();
+    if (pathname === "/login") return null;
+
     return (
         <footer className="Footer">
             <div className="Footer__left">

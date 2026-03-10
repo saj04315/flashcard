@@ -4,8 +4,12 @@ import React from "react";
 import "./Navbar.css";
 import { BookOpen, Search, LogOut } from "lucide-react";
 import { UserButton, SignOutButton, Show, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
 const Navbar: React.FC = () => {
+    const pathname = usePathname();
+    if (pathname === "/login") return null;
+
     return (
         <nav className="Navbar">
             <div className="Navbar__left">
@@ -30,7 +34,7 @@ const Navbar: React.FC = () => {
                             <span className="Navbar__user-name">Alex Johnson</span>
                             <span className="Navbar__user-grade">Grade 11 Student</span>
                         </div>
-                        <UserButton afterSignOutUrl="/login" />
+                        <UserButton />
                     </div>
                     <div className="Navbar__logout">
                         <SignOutButton>
