@@ -20,14 +20,16 @@ export default async function RootLayout({
   const headersList = await headers();
   const currentPath = headersList.get("x-pathname") || "";
 
-  const { authenticated, status } = await checkUserStatus();
+  const { authenticated, status, role } = await checkUserStatus();
 
-  // If user is authenticated but not active/approved, redirect to login unless already there
+  // 1. Basic Auth & Status Check
   if (authenticated && status !== "Active" && status !== "Approved" && currentPath !== "/login") {
-    // We only redirect if we are NOT on the login page
-    // Using a meta refresh or client redirect if headers doesn't work perfectly in all dev environments
-    // But direct redirect is usually fine in App Router layouts.
     redirect("/login");
+  }
+
+  // 2. Role-Based Access Control for Admin Routes
+  if (currentPath.startsWith("/admin") && role !== "admin") {
+    redirect("/"); // Or to a "Not Authorized" page
   }
 
   return (
