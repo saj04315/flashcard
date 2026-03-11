@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from 'react-simple-wysiwyg';
 import { Camera, Loader2, X, CheckCircle, Image as ImageIcon } from "lucide-react";
+import { toast } from "sonner";
 import { createFlashcard } from "../actions/flashcardActions";
 import { uploadImage } from "@/lib/appwrite";
 import { getSubjects, type Subject } from "../actions/subjectActions";
@@ -83,8 +84,9 @@ export default function FlashcardForm() {
 
             if (type === 'question') setQuestionImage(url);
             else setAnswerImage(url);
+            toast.success("Image uploaded successfully!");
         } catch (error) {
-            alert("Upload failed. Make sure Appwrite is configured correctly.");
+            toast.error("Upload failed. Make sure Appwrite is configured correctly.");
         } finally {
             setUploadingQuestion(false);
             setUploadingAnswer(false);
@@ -100,33 +102,35 @@ export default function FlashcardForm() {
 
     const handleSubmit = async () => {
         if (!selectedUnitId) {
-            alert("Please select a unit.");
+            toast.error("Please select a unit.");
             return;
         }
         if (!questionHtml || !answerHtml) {
-            alert("Question and Answer content cannot be empty.");
+            toast.error("Question and Answer content cannot be empty.");
             return;
         }
 
         setSubmitting(true);
-        const res = await createFlashcard({
-            unit_id: selectedUnitId,
-            question: questionHtml,
-            answer: answerHtml,
-            questionImage: questionImage || undefined,
-            answerImage: answerImage || undefined,
-        });
+        try {
+            const res = await createFlashcard({
+                unit_id: selectedUnitId,
+                question: questionHtml,
+                answer: answerHtml,
+                questionImage: questionImage || undefined,
+                answerImage: answerImage || undefined,
+            });
 
-        if (res.success) {
-            setSuccess(true);
-            setTimeout(() => {
-                setSuccess(false);
+            if (res.success) {
+                toast.success("Flashcard saved successfully!");
                 clearForm();
-            }, 3000);
-        } else {
-            alert("Failed to save flashcard: " + res.error);
+            } else {
+                toast.error("Failed to save flashcard: " + res.error);
+            }
+        } catch (error) {
+            toast.error("An unexpected error occurred.");
+        } finally {
+            setSubmitting(false);
         }
-        setSubmitting(false);
     };
 
     const clearForm = () => {
@@ -134,7 +138,6 @@ export default function FlashcardForm() {
         setAnswerHtml('');
         setQuestionImage(null);
         setAnswerImage(null);
-        setSuccess(false);
     };
 
     return (
@@ -145,12 +148,6 @@ export default function FlashcardForm() {
                         <h2>Create New Flashcard</h2>
                         <p>Design a new learning asset with rich content for your students.</p>
                     </div>
-                    {success && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', background: '#DCFCE7', padding: '8px 16px', borderRadius: '8px' }}>
-                            <CheckCircle size={20} />
-                            <span style={{ fontWeight: 500 }}>Card Saved Successfully!</span>
-                        </div>
-                    )}
                 </div>
             </div>
 

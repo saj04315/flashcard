@@ -107,7 +107,7 @@ export async function approveStudent(studentId: string) {
         return { success: true };
     } catch (error) {
         console.error("Approve error:", error);
-        return { success: false };
+        return { success: false, error: (error as Error).message };
     }
 }
 
@@ -127,6 +127,6 @@ export async function deleteStudent(studentId: string) {
         return { success: true };
     } catch (error) {
         console.error("Delete error:", error);
-        return { success: false };
+        return { success: false, error: (error as Error).message };
     }
 }

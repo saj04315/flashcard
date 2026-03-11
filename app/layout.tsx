@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "A beautiful flashcard application",
 };
 
+import { Toaster } from "sonner";
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -36,6 +38,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="antialiased">
+          <Toaster richColors position="top-center" />
           <Navbar />
           <div className="container" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
             <main style={{ flex: 1 }}>

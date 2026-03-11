@@ -21,6 +21,7 @@ import {
     Loader2
 } from "lucide-react";
 import Button from "../../components/Button";
+import { toast } from "sonner";
 import { getSubjects, createSubject, updateSubject, deleteSubject, type Subject } from "../actions/subjectActions";
 
 const icons = [
@@ -38,12 +39,12 @@ const icons = [
 ];
 
 const colors = [
-    '#FCA5A5', // Pastel Red
-    '#A7F3D0', // Pastel Green
-    '#BFDBFE', // Pastel Blue
-    '#FCD9B6', // Pastel Orange
-    '#E9D5FF', // Pastel Purple
-    '#CBD5E1', // Pastel Gray
+    '#4285F4', // Doodle Blue
+    '#EA4335', // Doodle Red
+    '#FBBC05', // Doodle Yellow
+    '#34A853', // Doodle Green
+    '#A142F4', // Doodle Purple
+    '#F2A359', // Doodle Orange
 ];
 
 export default function SubjectManager() {
@@ -85,33 +86,51 @@ export default function SubjectManager() {
 
     const handleSave = async () => {
         if (!formData.name) {
-            alert("Please enter a subject name.");
+            toast.error("Please enter a subject name.");
             return;
         }
 
         setSubmitting(true);
-        if (editingId) {
-            const res = await updateSubject(editingId, formData);
-            if (res.success) {
-                setEditingId(null);
-                setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
-                fetchSubjects(search);
+        try {
+            if (editingId) {
+                const res = await updateSubject(editingId, formData);
+                if (res.success) {
+                    toast.success("Subject updated successfully!");
+                    setEditingId(null);
+                    setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
+                    fetchSubjects(search);
+                } else {
+                    toast.error(res.error || "Failed to update subject.");
+                }
+            } else {
+                const res = await createSubject(formData);
+                if (res.success) {
+                    toast.success("Subject created successfully!");
+                    setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
+                    fetchSubjects(search);
+                } else {
+                    toast.error(res.error || "Failed to create subject.");
+                }
             }
-        } else {
-            const res = await createSubject(formData);
-            if (res.success) {
-                setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
-                fetchSubjects(search);
-            }
+        } catch (error) {
+            toast.error("An unexpected error occurred.");
+        } finally {
+            setSubmitting(false);
         }
-        setSubmitting(false);
     };
 
     const handleDelete = async (id: string) => {
         if (confirm("Are you sure you want to delete this subject? All associated units and flashcards might be affected?")) {
-            const res = await deleteSubject(id);
-            if (res.success) {
-                fetchSubjects(search);
+            try {
+                const res = await deleteSubject(id);
+                if (res.success) {
+                    toast.success("Subject deleted successfully!");
+                    fetchSubjects(search);
+                } else {
+                    toast.error(res.error || "Failed to delete subject.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
             }
         }
     };
@@ -281,7 +300,7 @@ export default function SubjectManager() {
                                                 <button
                                                     className="StudentTable__action-btn"
                                                     title="Delete"
-                                                    style={{ color: '#EF4444' }}
+                                                    style={{ color: 'var(--doodle-red)' }}
                                                     onClick={() => handleDelete(subject.id)}
                                                 >
                                                     <Trash2 size={14} />
@@ -304,7 +323,7 @@ export default function SubjectManager() {
                             setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }} style={{ cursor: 'pointer' }}>
-                            <Plus size={32} color="#94A3B8" />
+                            <Plus size={32} color="var(--text-gray)" />
                             <span>Add New Subject</span>
                         </div>
                     </div>

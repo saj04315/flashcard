@@ -18,6 +18,7 @@ import {
     LayoutGrid
 } from "lucide-react";
 import Button from "../../components/Button";
+import { toast } from "sonner";
 import { getUnits, createUnit, updateUnit, deleteUnit, type Unit } from "../actions/unitActions";
 import { getSubjects, type Subject } from "../actions/subjectActions";
 
@@ -70,26 +71,37 @@ export default function UnitManager() {
 
     const handleSave = async () => {
         if (!formData.title || !formData.subject_id) {
-            alert("Please fill in all fields.");
+            toast.error("Please fill in all fields.");
             return;
         }
 
         setSubmitting(true);
-        if (editingId) {
-            const res = await updateUnit(editingId, formData);
-            if (res.success) {
-                setEditingId(null);
-                setFormData(prev => ({ ...prev, title: "" }));
-                fetchData(search);
+        try {
+            if (editingId) {
+                const res = await updateUnit(editingId, formData);
+                if (res.success) {
+                    toast.success("Unit updated successfully!");
+                    setEditingId(null);
+                    setFormData(prev => ({ ...prev, title: "" }));
+                    fetchData(search);
+                } else {
+                    toast.error(res.error || "Failed to update unit.");
+                }
+            } else {
+                const res = await createUnit(formData);
+                if (res.success) {
+                    toast.success("Unit created successfully!");
+                    setFormData(prev => ({ ...prev, title: "" }));
+                    fetchData(search);
+                } else {
+                    toast.error(res.error || "Failed to create unit.");
+                }
             }
-        } else {
-            const res = await createUnit(formData);
-            if (res.success) {
-                setFormData(prev => ({ ...prev, title: "" }));
-                fetchData(search);
-            }
+        } catch (error) {
+            toast.error("An unexpected error occurred.");
+        } finally {
+            setSubmitting(false);
         }
-        setSubmitting(false);
     };
 
     const handleEdit = (unit: Unit) => {
@@ -103,9 +115,16 @@ export default function UnitManager() {
 
     const handleDelete = async (id: string) => {
         if (confirm("Are you sure you want to delete this unit?")) {
-            const res = await deleteUnit(id);
-            if (res.success) {
-                fetchData(search);
+            try {
+                const res = await deleteUnit(id);
+                if (res.success) {
+                    toast.success("Unit deleted successfully!");
+                    fetchData(search);
+                } else {
+                    toast.error(res.error || "Failed to delete unit.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
             }
         }
     };
@@ -251,7 +270,7 @@ export default function UnitManager() {
                                             <button className="UnitListItem__action-btn" onClick={() => handleEdit(unit)}>
                                                 <Edit2 size={18} />
                                             </button>
-                                            <button className="UnitListItem__action-btn" style={{ color: '#EF4444' }} onClick={() => handleDelete(unit.id)}>
+                                            <button className="UnitListItem__action-btn" style={{ color: 'var(--doodle-red)' }} onClick={() => handleDelete(unit.id)}>
                                                 <Trash2 size={18} />
                                             </button>
                                         </div>

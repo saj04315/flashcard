@@ -1,6 +1,7 @@
 import React from "react";
 import "./StudyPage.css";
 import Path from "../components/Path";
+import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 import StudyInterface from "./StudyInterface";
 
@@ -19,12 +20,24 @@ export default async function StudyPage({
     // Fetch flashcards for this Unit
     const flashcards = await db.collection("flashcards").find({ unit_id: unitId }).toArray();
 
-    // Fetch Subject for breadcrumbs
+    // Fetch Subject for breadcrumbs and color
     let subjectName = "Subject";
+    let subjectColor = "#7ED321"; // Default green if not found
     if (unit) {
-        const subject = await db.collection("subjects").findOne({ _id: unit.subject_id as any });
-        if (subject) subjectName = subject.name;
+        const subject = await db.collection("subjects").findOne({
+            $or: [
+                { _id: unit.subject_id as any },
+                { _id: ObjectId.isValid(unit.subject_id) ? new ObjectId(unit.subject_id) : unit.subject_id as any }
+            ]
+        });
+        if (subject) {
+            subjectName = subject.name;
+            subjectColor = subject.color || subjectColor;
+        }
     }
+    
+    // Convert ObjectId to string if needed for client component
+    const sanitizedFlashcards = JSON.parse(JSON.stringify(flashcards));
 
     const unitTitle = unit?.title || "Unit";
 
@@ -42,6 +55,7 @@ export default async function StudyPage({
                 flashcards={JSON.parse(JSON.stringify(flashcards))}
                 subjectName={subjectName}
                 unitTitle={unitTitle}
+                subjectColor={subjectColor}
             />
         </div>
     );

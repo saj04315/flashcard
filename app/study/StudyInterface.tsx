@@ -12,9 +12,10 @@ interface StudyInterfaceProps {
     flashcards: any[];
     subjectName: string;
     unitTitle: string;
+    subjectColor: string;
 }
 
-export default function StudyInterface({ flashcards, subjectName, unitTitle }: StudyInterfaceProps) {
+export default function StudyInterface({ flashcards, subjectName, unitTitle, subjectColor }: StudyInterfaceProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
 
@@ -52,7 +53,7 @@ export default function StudyInterface({ flashcards, subjectName, unitTitle }: S
         enter: (direction: number) => ({
             x: direction > 0 ? 500 : -500,
             opacity: 0,
-            scale: 0.8
+            scale: 0.9
         }),
         center: {
             zIndex: 1,
@@ -64,21 +65,22 @@ export default function StudyInterface({ flashcards, subjectName, unitTitle }: S
             zIndex: 0,
             x: direction < 0 ? 500 : -500,
             opacity: 0,
-            scale: 0.8
+            scale: 0.9
         })
     };
 
     return (
-        <div className="StudyInterface" style={{ overflow: 'hidden' }}>
+        <div className="StudyInterface">
             <div className="StudyPage__progress-container">
                 <ProgressBar
                     current={currentIndex + 1}
                     total={totalCards}
                     title="Study Progress"
+                    accentColor={subjectColor}
                 />
             </div>
 
-            <main className="StudyPage__card-area" style={{ position: 'relative', minHeight: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <main className="StudyPage__card-area">
                 <AnimatePresence initial={false} custom={direction} mode="wait">
                     <motion.div
                         key={currentIndex}
@@ -101,28 +103,32 @@ export default function StudyInterface({ flashcards, subjectName, unitTitle }: S
                             key={currentIndex}
                             question={currentCard.question}
                             answer={currentCard.answer}
-                            questionImg={currentCard.questionImage}
-                            answerImg={currentCard.answerImage}
+                            questionImg={currentCard.question_img_url || currentCard.questionImage || currentCard.question_img}
+                            answerImg={currentCard.answer_img_url || currentCard.answerImage || currentCard.answer_img}
+                            subjectColor={subjectColor}
+                            unitTitle={unitTitle}
                         />
                     </motion.div>
                 </AnimatePresence>
             </main>
 
             <div className="StudyPage__nav">
-                <Button
-                    className=""
+                <button
+                    className="btn-nav--prev"
                     onClick={handlePrev}
                     disabled={currentIndex === 0}
                 >
-                    Previous
-                </Button>
-                <Button
-                    className="btn-3d--orange"
+                    <ChevronLeft size={24} />
+                    <span>Previous</span>
+                </button>
+                <button
+                    className="btn-nav--next"
                     onClick={handleNext}
                     disabled={currentIndex === totalCards - 1}
                 >
-                    Next
-                </Button>
+                    <span>Next</span>
+                    <ChevronRight size={24} />
+                </button>
             </div>
 
             <footer className="StudyPage__guide">

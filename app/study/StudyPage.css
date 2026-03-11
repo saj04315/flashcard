@@ -1,64 +1,93 @@
 .StudyPage {
-    padding: 90px 40px 40px;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
+    padding: 100px 40px 40px;
+    width: 100%;
     min-height: 100vh;
-    background: linear-gradient(rgba(248, 250, 252, 0.948), rgba(248, 250, 252, 0.959)), url('/flashcard.jpg');
+    background: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url('/subject.jpg') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* Force parent containers to be full width on Study Page */
-.container:has(.StudyPage),
-.container:has(.StudyPage) main {
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.StudyInterface {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 20px 40px 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    align-items: center;
+    font-family: 'Inter', sans-serif;
 }
 
 .StudyPage__header {
     width: 100%;
-    margin-bottom: 40px;
+    max-width: 1000px;
+    margin-bottom: 24px;
+}
+
+.StudyInterface {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .StudyPage__progress-container {
     width: 100%;
-    margin-bottom: 48px;
-}
-
-/* Override ProgressBar styles for this page if needed */
-.StudyPage__progress-container .ProgressBar {
-    max-width: none;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .StudyPage__card-area {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
 }
 
 .StudyPage__nav {
     display: flex;
-    gap: 24px;
-    margin-bottom: 64px;
+    gap: 32px;
+    margin-bottom: 48px;
+}
+
+.StudyPage__nav button {
+    min-width: 180px;
+    height: 56px;
+    border-radius: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-nav--prev {
+    background: white;
+    color: #475569;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-nav--prev:hover:not(:disabled) {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+}
+
+.btn-nav--next {
+    background: #56a694;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 14px rgba(86, 166, 148, 0.4);
+}
+
+.btn-nav--next:hover:not(:disabled) {
+    background: #4a8f80;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(86, 166, 148, 0.4);
+}
+
+.StudyPage__nav button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
 .StudyPage__guide {
@@ -67,70 +96,201 @@
     justify-content: center;
 }
 
-/* Responsive Queries */
-@media (max-width: 768px) {
-    .StudyPage {
-        padding: 100px 20px 24px;
-    }
+/* ProgressBar Overrides for Study Page */
+.ProgressBar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
-    .StudyPage__header {
-        margin-bottom: 20px;
-    }
+.ProgressBar__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #1e293b;
+    font-weight: 800;
+}
 
-    .StudyPage__progress-container {
-        margin-bottom: 0px;
-    }
+.ProgressBar__title-group {
+    color: black !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+}
 
-    .StudyPage__card-area {
-        margin-bottom: 0px;
-    }
+.ProgressBar__count {
+    font-size: 16px;
+     color: black !important;
+}
 
-    .StudyPage__nav {
-        gap: 16px;
-        margin-bottom: 24px;
-    }
+.ProgressBar__track {
+    width: 100%;
+    height: 16px;
+    background: #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    .StudyInterface {
-        padding: 120px 20px 40px !important;
-        gap: 24px !important;
+.ProgressBar__fill {
+    height: 100%;
+    background: #56a694;
+    border-radius: 8px;
+}
+
+.ProgressBar__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Flashcard Redesign */
+.Flashcard-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.Flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 540px;
+    transform-style: preserve-3d;
+}
+
+.Flashcard {
+    border-radius: 32px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.Flashcard--back {
+    transform: rotateY(180deg);
+}
+
+.Flashcard__unit-badge {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: 900;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.Flashcard__text-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+}
+
+.Flashcard__text {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 800px;
+}
+
+.Flashcard .Flashcard__image {
+    width: 100%;
+    max-height: 180px;
+    display: flex;
+    justify-content: center;
+}
+
+.Flashcard .Flashcard__image img {
+    max-height: 180px;
+    object-fit: contain;
+}
+
+.Flashcard__flip-btn-container {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+
+.btn-flip {
+    background: #f2a359 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 8px 24px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 0 #d97706 !important;
+    height: auto !important;
+}
+
+.btn-flip:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 0 #d97706 !important;
+}
+
+.KeyboardGuide {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    padding: 12px 32px;
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.KeyboardGuide__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.KeyboardGuide__key {
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.KeyboardGuide__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.KeyboardGuide__separator {
+    width: 1px;
+    height: 24px;
+    background: #e2e8f0;
+    margin: 0 8px;
+}
+
+@media (max-width: 600px) {
+    .KeyboardGuide {
+        display: none;
     }
 }
 
-@media (max-width: 480px) {
-    .StudyPage {
-        padding: 80px 16px 20px;
-    }
-
-    .StudyPage__header {
-        margin-bottom: 20px;
-    }
-
-    .StudyPage__progress-container {
-        margin-bottom: 0px;
-    }
-
-    .StudyPage__card-area {
-        margin-bottom: 0px;
-    }
-
-    .StudyPage__nav {
-        gap: 10px;
-        margin-bottom: 20px;
-        flex-direction: row !important;
-    }
-
-    .StudyInterface {
-        padding: 10px !important;
-        margin: 0 !important;
-        gap: 20px !important;
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-    .btn-nav--outline,
-    .btn-nav--solid {
-        min-width: 110px;
-        padding: 8px 16px !important;
-        font-size: 13px !important;
-    }
-}

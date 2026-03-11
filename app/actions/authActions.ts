@@ -45,8 +45,12 @@ export async function checkUserStatus() {
                 grade: mongoUser.grade
             }
         };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error checking user status:", error);
+        if (error.name === 'MongoServerSelectionError') {
+            console.error("MongoDB Connection Timeout: Please check Atlas IP whitelisting.");
+            return { authenticated: false, error: "Database connection timeout. Contact admin." };
+        }
         return { authenticated: false, error: "Internal Server Error" };
     }
 }

@@ -16,6 +16,7 @@ import {
     Loader2
 } from "lucide-react";
 import Button from "../../components/Button";
+import { toast } from "sonner";
 import { syncUsers, getStudents, approveStudent, deleteStudent, type Student } from "../actions/userActions";
 
 export default function StudentManager() {
@@ -50,18 +51,32 @@ export default function StudentManager() {
 
     const handleApprove = async (id: string) => {
         if (confirm("Are you sure you want to approve this student?")) {
-            const res = await approveStudent(id);
-            if (res.success) {
-                fetchStudents(search);
+            try {
+                const res = await approveStudent(id);
+                if (res.success) {
+                    toast.success("Student approved successfully!");
+                    fetchStudents(search);
+                } else {
+                    toast.error(res.error || "Failed to approve student.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
             }
         }
     };
 
     const handleDelete = async (id: string) => {
         if (confirm("Are you sure you want to delete this student?")) {
-            const res = await deleteStudent(id);
-            if (res.success) {
-                fetchStudents(search);
+            try {
+                const res = await deleteStudent(id);
+                if (res.success) {
+                    toast.success("Student deleted successfully!");
+                    fetchStudents(search);
+                } else {
+                    toast.error(res.error || "Failed to delete student.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
             }
         }
     };

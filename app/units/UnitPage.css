@@ -3,7 +3,8 @@
     max-width: 100%;
     margin: 0 auto;
     min-height: 100vh;
-    background: var(--background);
+    background: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url('/subject.jpg') no-repeat center center fixed;
+    background-size: cover;
     transition: padding 0.3s ease;
 }
 

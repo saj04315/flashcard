@@ -11,6 +11,8 @@ interface FlashcardProps {
     questionImg?: string;
     answerImg?: string;
     onFlip?: () => void;
+    subjectColor?: string;
+    unitTitle?: string;
 }
 
 const Flashcard: React.FC<FlashcardProps> = ({
@@ -19,6 +21,8 @@ const Flashcard: React.FC<FlashcardProps> = ({
     questionImg,
     answerImg,
     onFlip,
+    subjectColor = "#7ED321",
+    unitTitle = "UNIT 2",
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
@@ -27,8 +31,12 @@ const Flashcard: React.FC<FlashcardProps> = ({
         if (onFlip) onFlip();
     };
 
+    const cardStyle: React.CSSProperties = {
+        "--subject-color": subjectColor,
+    } as any;
+
     return (
-        <div className="Flashcard-wrapper">
+        <div className="Flashcard-wrapper" style={cardStyle}>
             <motion.div
                 className="Flashcard-inner"
                 initial={false}
@@ -36,63 +44,49 @@ const Flashcard: React.FC<FlashcardProps> = ({
                 transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
             >
                 {/* Front Face (Question) */}
-                <div className="Flashcard Flashcard--front">
-                    <div className="Flashcard__shapes">
-                        <div className="Flashcard__shape Flashcard__shape--1"></div>
-                        <div className="Flashcard__shape Flashcard__shape--2"></div>
-                        <div className="Flashcard__shape Flashcard__shape--3"></div>
-                        <div className="Flashcard__shape Flashcard__shape--4"></div>
-                    </div>
-
-                    <div className="Flashcard__badge">QUESTION</div>
+                <div className="Flashcard Flashcard--front" style={{ border: `24px solid ${subjectColor}`, backgroundColor: 'white' }}>
+                    <div className="Flashcard__unit-badge">{unitTitle}</div>
 
                     <div className="Flashcard__text-content">
+                        <div className="Flashcard__text" dangerouslySetInnerHTML={{ __html: question }}></div>
                         {questionImg && (
                             <div className="Flashcard__image">
-                                <img src={questionImg} alt="Question" width={100} height={100} />
+                                <img src={questionImg} alt="Question" />
                             </div>
                         )}
-                        <div className="Flashcard__text">{question}</div>
                     </div>
 
-                    <div className="Flashcard__footer">
+                    <div className="Flashcard__flip-btn-container">
                         <Button
-                            className="btn-3d--orange"
+                            className="btn-flip"
                             onClick={handleFlip}
-                            icon={<RotateCw size={20} />}
+                            icon={<RotateCw size={16} />}
                         >
-                            Flip Card
+                            Flip
                         </Button>
                     </div>
                 </div>
 
                 {/* Back Face (Answer) */}
-                <div className="Flashcard Flashcard--back">
-                    <div className="Flashcard__shapes">
-                        <div className="Flashcard__shape Flashcard__shape--1"></div>
-                        <div className="Flashcard__shape Flashcard__shape--2"></div>
-                        <div className="Flashcard__shape Flashcard__shape--3"></div>
-                        <div className="Flashcard__shape Flashcard__shape--4"></div>
-                    </div>
-
-                    <div className="Flashcard__badge">ANSWER</div>
+                <div className="Flashcard Flashcard--back" style={{ border: `24px solid ${subjectColor}`, backgroundColor: 'white' }}>
+                    <div className="Flashcard__unit-badge">{unitTitle}</div>
 
                     <div className="Flashcard__text-content">
+                        <div className="Flashcard__text" dangerouslySetInnerHTML={{ __html: answer }}></div>
                         {answerImg && (
                             <div className="Flashcard__image">
-                                <img src={answerImg} alt="Answer" width={100} height={100} />
+                                <img src={answerImg} alt="Answer" />
                             </div>
                         )}
-                        <div className="Flashcard__text">{answer}</div>
                     </div>
 
-                    <div className="Flashcard__footer">
+                    <div className="Flashcard__flip-btn-container">
                         <Button
-                            className="btn-3d--orange"
+                            className="btn-flip"
                             onClick={handleFlip}
-                            icon={<RotateCw size={20} />}
+                            icon={<RotateCw size={16} />}
                         >
-                            Flip Card
+                            Flip
                         </Button>
                     </div>
                 </div>
