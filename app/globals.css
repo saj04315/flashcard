@@ -742,7 +742,7 @@ p {
   color: white;
   padding: 4px 12px;
   border-radius: 4px;
-  font-family: 'DynaPuff', cursive;
+  font-family: 'DynaPuff';
   font-size: 14px;
   font-weight: 700;
   z-index: 2;
@@ -840,7 +840,7 @@ p {
   color: white;
   padding: 4px 12px;
   border-radius: 4px;
-  font-family: 'DynaPuff', cursive;
+  font-family: 'DynaPuff';
   font-size: 14px;
   font-weight: 700;
   z-index: 2;
