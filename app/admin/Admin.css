@@ -5,13 +5,13 @@
 .AdminLayout {
     display: flex;
     min-height: 100vh;
-    background-color: #F8FAFC;
+    background-color: var(--background);
 }
 
 /* SIDEBAR */
 .AdminSidebar {
     width: 280px;
-    background-color: #1a2e4a;
+    background-color: var(--doodle-ink);
     /* Matches your dark blue */
     color: white;
     padding: 32px 0;
@@ -77,9 +77,9 @@
 
 .AdminSidebar__item--active {
     background-color: rgba(255, 255, 255, 0.1);
-    color: #6BA898;
+    color: var(--doodle-green);
     /* Teal accent */
-    border-left-color: #6BA898;
+    border-left-color: var(--doodle-green);
 }
 
 /* MAIN CONTENT AREA */
@@ -108,7 +108,7 @@
 
 .AdminHeader__title h1 {
     font-size: 20px;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin: 0;
 }
 
@@ -129,7 +129,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background-color: #F1F5F9;
+    background-color: var(--doodle-paper);
     padding: 8px 16px;
     border-radius: 20px;
     width: 300px;
@@ -145,13 +145,13 @@
 
 .AdminHeader__mobile-toggle {
     display: none;
-    color: #1a2e4a;
+    color: var(--text-black);
     cursor: pointer;
 }
 
 
 .AdminHeader__notification {
-    color: #64748B;
+    color: var(--text-gray);
     cursor: pointer;
     position: relative;
 }
@@ -183,17 +183,17 @@
 
 .FlashcardForm-card__header {
     padding: 32px 40px;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid var(--doodle-paper);
 }
 
 .FlashcardForm-card__header h2 {
     font-size: 24px;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 8px;
 }
 
 .FlashcardForm-card__header p {
-    color: #64748B;
+    color: var(--text-gray);
     font-size: 14px;
 }
 
@@ -211,7 +211,7 @@
 .FlashcardForm__section-title {
     font-size: 14px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 16px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -232,13 +232,13 @@
 }
 
 .FlashcardForm__toolbar-btn {
-    color: #64748B;
+    color: var(--text-gray);
     cursor: pointer;
     transition: color 0.2s;
 }
 
 .FlashcardForm__toolbar-btn:hover {
-    color: #1a2e4a;
+    color: var(--text-black);
 }
 
 .FlashcardForm__textarea {
@@ -271,7 +271,7 @@
 }
 
 .FlashcardForm__upload-box:hover {
-    border-color: #508DF7;
+    border-color: var(--doodle-blue);
     background-color: #F8FAFC;
 }
 
@@ -284,7 +284,7 @@
 .FlashcardForm__upload-box span {
     font-size: 13px;
     font-weight: 600;
-    color: #64748B;
+    color: var(--text-gray);
 }
 
 .FlashcardForm__upload-box--active span {
@@ -335,7 +335,7 @@
     border: 1px solid #E2E8F0;
     border-radius: 12px;
     background-color: #F8FAFC;
-    color: #1a2e4a;
+    color: var(--text-black);
     font-weight: 500;
     font-size: 14px;
 }
@@ -343,7 +343,7 @@
 .btn--outline-gray {
     background-color: white;
     border: 1px solid #E2E8F0;
-    color: #1a2e4a;
+    color: var(--text-black);
     font-weight: 700;
     padding: 10px 24px;
     border-radius: 999px;
@@ -360,12 +360,12 @@
 .UnitManager__header h1 {
     font-size: 32px;
     font-weight: 800;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 8px;
 }
 
 .UnitManager__header p {
-    color: #64748B;
+    color: var(--text-gray);
     font-size: 16px;
 }
 
@@ -391,7 +391,7 @@
     display: block;
     font-size: 12px;
     font-weight: 700;
-    color: #64748B;
+    color: var(--text-gray);
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -413,18 +413,18 @@
     width: 6px;
     height: 24px;
     border-radius: 3px;
-    background-color: #508DF7;
+    background-color: var(--doodle-blue);
 }
 
 .UnitManager__group-title {
     font-size: 18px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
 }
 
 .UnitManager__group-count {
     background-color: #E2E8F0;
-    color: #64748B;
+    color: var(--text-gray);
     font-size: 11px;
     font-weight: 700;
     padding: 2px 10px;
@@ -474,7 +474,7 @@
 .UnitListItem__info h3 {
     font-size: 16px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 4px;
 }
 
@@ -506,8 +506,8 @@
 }
 
 .UnitListItem__action-btn:hover {
-    background-color: #F1F5F9;
-    color: #1a2e4a;
+    background-color: var(--doodle-paper);
+    color: var(--text-black);
 }
 
 /* STUDENT MANAGER SPECIFIC */
@@ -530,7 +530,7 @@
     gap: 12px;
     font-size: 18px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 24px;
 }
 
@@ -554,13 +554,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 24px 32px;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid var(--doodle-paper);
 }
 
 .StudentManager__table-header h2 {
     font-size: 20px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
 }
 
 .StudentTable {
@@ -576,13 +576,13 @@
     color: #94A3B8;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid var(--doodle-paper);
 }
 
 .StudentTable td {
     padding: 16px 32px;
     font-size: 14px;
-    color: #1a2e4a;
+    color: var(--text-black);
     border-bottom: 1px solid #F8FAFC;
 }
 
@@ -600,8 +600,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: #F1F5F9;
-    color: #508DF7;
+    background-color: var(--doodle-paper);
+    color: var(--doodle-blue);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -610,7 +610,7 @@
 }
 
 .StudentTable__email {
-    color: #64748B;
+    color: var(--text-gray);
     font-size: 13px;
 }
 
@@ -626,12 +626,12 @@
 
 .StatusBadge--active {
     background-color: #F0FDF4;
-    color: #16A34A;
+    color: var(--doodle-green);
 }
 
 .StatusBadge--pending {
     background-color: #FFF7ED;
-    color: #EA580C;
+    color: var(--doodle-yellow);
 }
 
 .StudentTable__actions {
@@ -655,8 +655,8 @@
 }
 
 .StudentTable__action-btn:hover {
-    background-color: #F1F5F9;
-    color: #1a2e4a;
+    background-color: var(--doodle-paper);
+    color: var(--text-black);
 }
 
 .StudentTable__action-btn--approve:hover {
@@ -672,7 +672,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #F1F5F9;
+    border-top: 1px solid var(--doodle-paper);
     background-color: #F8FAFC;
 }
 
@@ -683,7 +683,7 @@
 
 .StudentManager__info {
     font-size: 13px;
-    color: #64748B;
+    color: var(--text-gray);
 }
 
 /* Responsive Queries for Admin Area */
@@ -790,7 +790,7 @@
 
     .StudentTable tr {
         padding: 16px;
-        border-bottom: 1px solid #F1F5F9;
+        border-bottom: 1px solid var(--doodle-paper);
     }
 
     .StudentTable td {
@@ -808,12 +808,12 @@
 .SubjectManager__header h1 {
     font-size: 32px;
     font-weight: 800;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 8px;
 }
 
 .SubjectManager__header p {
-    color: #64748B;
+    color: var(--text-gray);
     font-size: 16px;
 }
 
@@ -831,7 +831,7 @@
     gap: 12px;
     font-size: 18px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 24px;
 }
 
@@ -846,7 +846,7 @@
     display: block;
     font-size: 14px;
     font-weight: 600;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 12px;
 }
 
@@ -862,7 +862,7 @@
 }
 
 .SubjectManager__input:focus {
-    border-color: #508DF7;
+    border-color: var(--doodle-blue);
     background-color: white;
     box-shadow: 0 0 0 4px rgba(80, 141, 247, 0.1);
 }
@@ -884,7 +884,7 @@
 }
 
 .SubjectManager__color-btn--active {
-    box-shadow: 0 0 0 2px #508DF7;
+    box-shadow: 0 0 0 2px var(--doodle-blue);
 }
 
 .SubjectManager__icon-grid {
@@ -905,19 +905,19 @@
     height: 44px;
     border-radius: 12px;
     background-color: white;
-    color: #64748B;
+    color: var(--text-gray);
     cursor: pointer;
     transition: all 0.2s;
     border: 1px solid transparent;
 }
 
 .SubjectManager__icon-btn:hover {
-    background-color: #F1F5F9;
-    color: #1a2e4a;
+    background-color: var(--doodle-paper);
+    color: var(--text-black);
 }
 
 .SubjectManager__icon-btn--active {
-    background-color: #508DF7;
+    background-color: var(--doodle-blue);
     color: white;
     box-shadow: 0 4px 12px rgba(80, 141, 247, 0.3);
 }
@@ -940,7 +940,7 @@
     gap: 12px;
     font-size: 20px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
 }
 
 .SubjectManager__grid {
@@ -953,7 +953,7 @@
     background: white;
     border-radius: 20px;
     padding: 24px;
-    border-top: 6px solid #508DF7;
+    border-top: 6px solid var(--doodle-blue);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     transition: transform 0.2s;
 }
@@ -976,13 +976,13 @@
 .SubjectItem-card__title {
     font-size: 18px;
     font-weight: 700;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 8px;
 }
 
 .SubjectItem-card__desc {
     font-size: 13px;
-    color: #64748B;
+    color: var(--text-gray);
     margin-bottom: 20px;
     line-height: 1.5;
 }
@@ -991,7 +991,7 @@
     display: flex;
     justify-content: space-between;
     padding-top: 16px;
-    border-top: 1px solid #F1F5F9;
+    border-top: 1px solid var(--doodle-paper);
 }
 
 .SubjectItem-card__stat {
@@ -1014,13 +1014,13 @@
 }
 
 .SubjectItem-card--add:hover {
-    background-color: #F1F5F9;
+    background-color: var(--doodle-paper);
     border-color: #CBD5E1;
 }
 
 .SubjectItem-card--add span {
     margin-top: 12px;
     font-weight: 600;
-    color: #64748B;
+    color: var(--text-gray);
     font-size: 14px;
 }

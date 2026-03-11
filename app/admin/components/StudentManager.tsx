@@ -74,7 +74,7 @@ export default function StudentManager() {
                     <p>Enroll new students and manage the current roster.</p>
                 </div>
                 {isSyncing && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#64748B' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-gray)' }}>
                         <Loader2 size={16} className="animate-spin" />
                         Syncing with Clerk...
                     </div>
@@ -85,7 +85,7 @@ export default function StudentManager() {
                 <div className="StudentManager__table-header">
                     <h2>Student Roster</h2>
                     <div className="AdminHeader__search">
-                        <Search size={18} color="#64748B" />
+                        <Search size={18} color="var(--text-gray)" />
                         <input
                             type="text"
                             placeholder="Search roster..."
@@ -98,7 +98,7 @@ export default function StudentManager() {
                 <div style={{ minHeight: '300px', position: 'relative' }}>
                     {loading ? (
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
-                            <Loader2 size={32} className="animate-spin" color="#508DF7" />
+                            <Loader2 size={32} className="animate-spin" color="var(--doodle-blue)" />
                         </div>
                     ) : (
                         <table className="StudentTable">
@@ -114,7 +114,7 @@ export default function StudentManager() {
                             <tbody>
                                 {students.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                                        <td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: 'var(--text-gray)' }}>
                                             No students found.
                                         </td>
                                     </tr>

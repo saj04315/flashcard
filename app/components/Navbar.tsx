@@ -3,7 +3,7 @@
 import React from "react";
 import "./Navbar.css";
 import { BookOpen, Search, LogOut } from "lucide-react";
-import { UserButton, SignOutButton, Show, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { UserButton, SignOutButton, Show, SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -11,6 +11,7 @@ const Navbar: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
+    const { user } = useUser();
     const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -66,8 +67,8 @@ const Navbar: React.FC = () => {
                     <Show when="signed-in">
                         <div className="Navbar__user">
                             <div className="Navbar__user-info">
-                                <span className="Navbar__user-name">Alex Johnson</span>
-                                <span className="Navbar__user-grade">Grade 11 Student</span>
+                                <span className="Navbar__user-name">{user?.fullName || user?.username || "Guest"}</span>
+                                <span className="Navbar__user-grade">{(user?.publicMetadata?.grade as string) || "Student"}</span>
                             </div>
                             <UserButton />
                         </div>
@@ -115,8 +116,8 @@ const Navbar: React.FC = () => {
                     <Show when="signed-in">
                         <div className="Navbar__mobile-user">
                             <div className="Navbar__user-info">
-                                <span className="Navbar__user-name">Alex Johnson</span>
-                                <span className="Navbar__user-grade">Grade 11 Student</span>
+                                <span className="Navbar__user-name">{user?.fullName || user?.username || "Guest"}</span>
+                                <span className="Navbar__user-grade">{(user?.publicMetadata?.grade as string) || "Student"}</span>
                             </div>
                             <UserButton />
                         </div>

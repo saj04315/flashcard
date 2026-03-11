@@ -74,12 +74,12 @@ export default function LoginPage() {
                 <div className="LoginCard__body" style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "40px" }}>
                     {loading ? (
                         <div style={{ padding: "40px" }}>
-                            <Loader2 className="animate-spin" size={40} color="#508DF7" />
+                            <Loader2 className="animate-spin" size={40} color="var(--doodle-blue)" />
                         </div>
                     ) : isPending ? (
-                        <div style={{ textAlign: "center", color: "#64748B" }}>
+                        <div style={{ textAlign: "center", color: "var(--text-gray)" }}>
                             <div style={{ marginBottom: "20px" }}>
-                                <ShieldCheck size={48} color="#F2A359" style={{ margin: "0 auto" }} />
+                                <ShieldCheck size={48} color="var(--doodle-yellow)" style={{ margin: "0 auto" }} />
                             </div>
                             <p style={{ fontSize: "16px", fontWeight: 600,color:"black" }}>Please check back later.</p>
                             <p style={{ fontSize: "14px", marginTop: "8px",color:"black" }}>Once approved, you will have full access to your subjects.</p>

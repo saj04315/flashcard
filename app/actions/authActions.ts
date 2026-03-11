@@ -41,7 +41,8 @@ export async function checkUserStatus() {
                 name: mongoUser.name,
                 email: mongoUser.email,
                 status: mongoUser.status,
-                role: mongoUser.role
+                role: mongoUser.role,
+                grade: mongoUser.grade
             }
         };
     } catch (error) {

@@ -129,7 +129,7 @@ export default function UnitManager() {
     if (orphanedUnits.length > 0) {
         groupedUnits.push({
             subject: "Others",
-            color: "#64748B",
+            color: "var(--text-gray)",
             units: orphanedUnits
         });
     }
@@ -143,7 +143,7 @@ export default function UnitManager() {
 
             <div className="UnitManager__create-card">
                 <div className="SubjectManager__form-title">
-                    <PlusCircle size={24} color="#508DF7" />
+                    <PlusCircle size={24} color="var(--doodle-blue)" />
                     <span>{editingId ? "Edit Unit" : "Add New Unit"}</span>
                 </div>
 
@@ -203,7 +203,7 @@ export default function UnitManager() {
                 <h2>Available Units</h2>
                 <div className="AdminHeader__right">
                     <div className="AdminHeader__search">
-                        <Search size={18} color="#64748B" />
+                        <Search size={18} color="var(--text-gray)" />
                         <input
                             type="text"
                             placeholder="Search units..."
@@ -217,10 +217,10 @@ export default function UnitManager() {
             <div className="UnitManager__content" style={{ minHeight: '300px', position: 'relative' }}>
                 {loading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
-                        <Loader2 size={32} className="animate-spin" color="#508DF7" />
+                        <Loader2 size={32} className="animate-spin" color="var(--doodle-blue)" />
                     </div>
                 ) : units.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '60px', color: '#64748B' }}>
+                    <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-gray)' }}>
                         No units found.
                     </div>
                 ) : (

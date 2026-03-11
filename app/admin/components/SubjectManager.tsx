@@ -146,7 +146,7 @@ export default function SubjectManager() {
 
             <div className="SubjectManager__create-card">
                 <div className="SubjectManager__form-title">
-                    <PlusCircle size={24} color="#508DF7" />
+                    <PlusCircle size={24} color="var(--doodle-blue)" />
                     <span>{editingId ? "Edit Subject" : "Create New Subject"}</span>
                 </div>
 
@@ -174,7 +174,7 @@ export default function SubjectManager() {
                                 placeholder="Brief description..."
                                 maxLength={100}
                             />
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '10px', color: '#64748B', marginTop: '4px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '10px', color: 'var(--text-gray)', marginTop: '4px' }}>
                                 <span>{formData.description.length}/100 max charaters</span>
                             </div>
                         </div>
@@ -236,11 +236,11 @@ export default function SubjectManager() {
 
             <div className="SubjectManager__list-header">
                 <h2>
-                    <LayoutGrid size={24} color="#508DF7" />
+                    <LayoutGrid size={24} color="var(--doodle-blue)" />
                     Available Subjects
                 </h2>
                 <div className="AdminHeader__search">
-                    <Search size={18} color="#64748B" />
+                    <Search size={18} color="var(--text-gray)" />
                     <input
                         type="text"
                         placeholder="Search subjects..."
@@ -253,12 +253,12 @@ export default function SubjectManager() {
             <div style={{ minHeight: '300px', position: 'relative' }}>
                 {loading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
-                        <Loader2 size={32} className="animate-spin" color="#508DF7" />
+                        <Loader2 size={32} className="animate-spin" color="var(--doodle-blue)" />
                     </div>
                 ) : (
                     <div className="SubjectManager__grid">
                         {subjects.length === 0 ? (
-                            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--text-gray)' }}>
                                 No subjects found.
                             </div>
                         ) : (

@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     padding: 16px 40px;
-    background-color: #608bf0;
-    color: white;
+    background-color: var(--navbar-bg);
+    color: var(--text-white);
     width: 100%;
     position: fixed;
     top: 0;
@@ -39,7 +39,7 @@
 }
 
 .Navbar__link {
-    color: white;
+    color: var(--text-white);
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background-color: #F8FAFC;
+    background-color: var(--doodle-paper);
     padding: 8px 16px;
     border-radius: 8px;
     width: 100%;
@@ -76,7 +76,7 @@
     outline: none;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
-    color: #1a2e4a;
+    color: var(--text-black);
 }
 
 .Navbar__menu-toggle {
@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background-color: #F8FAFC;
+    background-color: var(--doodle-paper);
     padding: 10px 16px;
     border-radius: 8px;
     width: 100%;
@@ -119,7 +119,7 @@
     outline: none;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
-    color: #1a2e4a;
+    color: var(--text-black);
 }
 
 .Navbar__mobile-auth {
@@ -216,7 +216,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--text-white);
     cursor: pointer;
     transition: background 0.2s;
 }

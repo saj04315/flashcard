@@ -18,12 +18,12 @@
 .SubjectPage__title {
     font-family: 'DynaPuff', cursive;
     font-size: 36px;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-bottom: 8px;
 }
 
 .SubjectPage__subtitle {
-    color: #7a8a9a;
+    color: var(--text-gray);
     font-size: 16px;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .DailyGoal {
-    background-color: #1a2e4a;
+    background-color: var(--text-black);
     border-radius: 12px;
     padding: 32px;
     display: flex;
@@ -53,14 +53,14 @@
     top: 0;
     bottom: 0;
     width: 6px;
-    background-color: #F2A359;
+    background-color: var(--highlight);
     /* Orange accent border */
 }
 
 .DailyGoal__icon {
     width: 64px;
     height: 64px;
-    background-color: #F2A359;
+    background-color: var(--highlight);
     border-radius: 8px;
     display: flex;
     align-items: center;

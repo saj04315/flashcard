@@ -28,8 +28,8 @@ export default function AdminDashboardPage() {
             default:
                 return (
                     <div style={{ padding: '40px', textAlign: 'center' }}>
-                        <h2 style={{ color: '#1a2e4a' }}>{currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} Section</h2>
-                        <p style={{ color: '#64748B' }}>This section is currently under development.</p>
+                        <h2 style={{ color: 'var(--text-black)' }}>{currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} Section</h2>
+                        <p style={{ color: 'var(--text-gray)' }}>This section is currently under development.</p>
                     </div>
                 );
         }
@@ -58,7 +58,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="AdminHeader__right">
                         <div className="AdminHeader__search">
-                            <Search size={18} color="#64748B" />
+                            <Search size={18} color="var(--text-gray)" />
                             <input type="text" placeholder="Search resources..." />
                         </div>
                         <div className="AdminHeader__notification AdminHeader__notification--badge">

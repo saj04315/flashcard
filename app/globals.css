@@ -5,19 +5,29 @@
    ***************************************************************** */
 
 :root {
-  /* Colors */
-  --background: #508DF7;
-  --highlight: #F2A359;
+  /* Doodle Palette */
+  --doodle-blue: #4285F4;
+  --doodle-red: #EA4335;
+  --doodle-yellow: #FBBC05;
+  --doodle-green: #34A853;
+  --doodle-paper: #F9F9F9;
+  --doodle-ink: #2D2D2D;
+  --doodle-ink-light: #5F6368;
+
+  /* Design Tokens mapping */
+  --background: var(--doodle-paper);
+  --navbar-bg: #1A2D54;
+  --highlight: var(--doodle-yellow);
   --text-white: #FFFFFF;
-  --text-gray: #D1D1D1;
-  --text-black: #000000;
+  --text-gray: var(--doodle-ink-light);
+  --text-black: var(--doodle-ink);
 
   /* FlashcardDeck Colors */
-  --card-accent: #6BA898;
-  --card-accent-dark: #4D7A6E;
-  --card-bg: #ffffff;
-  --card-text-title: #1a2e4a;
-  --card-text-meta: #7a8a9a;
+  --card-accent: var(--doodle-green);
+  --card-accent-dark: #2E8B44; 
+  --card-bg: #FFFFFF;
+  --card-text-title: var(--doodle-ink);
+  --card-text-meta: var(--doodle-ink-light);
 
   /* Spacing */
   --space-xs: 8px;
@@ -43,7 +53,7 @@
 
 body {
   background-color: var(--background);
-  color: var(--text-white);
+  color: var(--text-black);
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   min-height: 100vh;
@@ -69,7 +79,7 @@ h1 {
 
 p {
   font-size: var(--font-size-p);
-  color: var(--text-white);
+  color: var(--text-black);
 }
 
 /* *****************************************************************
@@ -521,7 +531,8 @@ p {
   width: 100%;
   padding: 32px;
   margin-top: 64px;
-  border-top: 1px solid #E9EEF2;
+  background-color: var(--navbar-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
