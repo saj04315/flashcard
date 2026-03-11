@@ -110,18 +110,16 @@ export default function StudyInterface({ flashcards, subjectName, unitTitle }: S
 
             <div className="StudyPage__nav">
                 <Button
-                    className="btn-nav--outline"
+                    className=""
                     onClick={handlePrev}
                     disabled={currentIndex === 0}
-                    icon={<ChevronLeft size={20} />}
                 >
                     Previous
                 </Button>
                 <Button
-                    className="btn-nav--solid"
+                    className="btn-3d--orange"
                     onClick={handleNext}
                     disabled={currentIndex === totalCards - 1}
-                    icon={<ChevronRight size={20} />}
                 >
                     Next
                 </Button>

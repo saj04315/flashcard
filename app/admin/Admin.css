@@ -88,7 +88,10 @@
     margin-left: 280px;
     display: flex;
     flex-direction: column;
+    width: calc(100% - 280px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
 }
+
 
 .AdminHeader {
     height: 80px;
@@ -108,6 +111,13 @@
     color: #1a2e4a;
     margin: 0;
 }
+
+.AdminHeader__left-flex {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 
 .AdminHeader__right {
     display: flex;
@@ -132,6 +142,13 @@
     outline: none;
     font-size: 14px;
 }
+
+.AdminHeader__mobile-toggle {
+    display: none;
+    color: #1a2e4a;
+    cursor: pointer;
+}
+
 
 .AdminHeader__notification {
     color: #64748B;
@@ -668,6 +685,120 @@
     font-size: 13px;
     color: #64748B;
 }
+
+/* Responsive Queries for Admin Area */
+@media (max-width: 1200px) {
+    .AdminSidebar {
+        width: 80px;
+    }
+
+    .AdminSidebar__logo-text,
+    .AdminSidebar__item span {
+        display: none;
+    }
+
+    .AdminSidebar__logo {
+        padding: 0;
+        justify-content: center;
+    }
+
+    .AdminMain {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+}
+
+@media (max-width: 992px) {
+    .FlashcardForm__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .StudentManager__form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .AdminSidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .AdminSidebar--open {
+        transform: translateX(0);
+        width: 280px;
+    }
+
+    .AdminSidebar--open .AdminSidebar__logo-text,
+    .AdminSidebar--open .AdminSidebar__item span {
+        display: block;
+    }
+
+    .AdminMain {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .AdminHeader {
+        padding: 0 20px;
+    }
+
+    .AdminHeader__mobile-toggle {
+        display: block;
+    }
+
+    .AdminHeader__search {
+        display: none;
+    }
+
+    .AdminContent {
+        padding: 20px;
+    }
+
+    .FlashcardForm-card__header,
+    .FlashcardForm-card__body {
+        padding: 24px;
+    }
+
+    .SubjectManager__form-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .UnitManager__form-grid {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 576px) {
+    .StudentManager__form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .StudentTable thead {
+        display: none;
+    }
+
+    .StudentTable,
+    .StudentTable tbody,
+    .StudentTable tr,
+    .StudentTable td {
+        display: block;
+        width: 100%;
+    }
+
+    .StudentTable tr {
+        padding: 16px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .StudentTable td {
+        padding: 8px 0;
+        border: none;
+    }
+}
+
 
 /* SUBJECT MANAGER SPECIFIC */
 .SubjectManager__header {

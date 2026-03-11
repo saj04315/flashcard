@@ -1,10 +1,8 @@
 .Navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     padding: 16px 40px;
     background-color: #608bf0;
-    /* Updated header background color */
     color: white;
     width: 100%;
     position: fixed;
@@ -13,7 +11,16 @@
     right: 0;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
+
+.Navbar__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 
 .Navbar__left,
 .Navbar__right {
@@ -71,6 +78,110 @@
     font-size: 14px;
     color: #1a2e4a;
 }
+
+.Navbar__menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.Navbar__auth-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.Navbar__mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 16px;
+}
+
+.Navbar__mobile-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #F8FAFC;
+    padding: 10px 16px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.Navbar__mobile-search input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #1a2e4a;
+}
+
+.Navbar__mobile-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Responseive Queries */
+@media (max-width: 1024px) {
+    .Navbar {
+        padding: 16px 20px;
+    }
+
+    .Navbar__center {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Navbar__center {
+        display: none;
+        /* Hide main search on tablet/mobile */
+    }
+
+    .Navbar__user,
+    .Navbar__logout {
+        display: none;
+    }
+
+    .Navbar__mobile-menu {
+        display: flex;
+    }
+
+    .Navbar__mobile-user {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .Navbar__mobile-user .Navbar__user-info {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .Navbar__mobile-logout {
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Navbar__logo span {
+        font-size: 18px;
+    }
+
+    .Navbar__right {
+        gap: 12px;
+    }
+}
+
 
 .Navbar__user {
     display: flex;

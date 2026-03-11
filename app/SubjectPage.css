@@ -7,7 +7,9 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    transition: padding 0.3s ease;
 }
+
 
 .SubjectPage__header {
     margin-bottom: 40px;
@@ -106,4 +108,65 @@
 .DailyGoal .ProgressBar__bottom {
     display: none;
     /* Hide standard labels inside goal section */
+}
+
+/* Responsive Queries for Subject Page */
+@media (max-width: 1024px) {
+    .SubjectPage {
+        padding: 140px 24px 40px;
+    }
+
+    .SubjectGrid {
+        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .SubjectPage {
+        padding: 120px 20px 40px;
+    }
+
+    .SubjectPage__title {
+        font-size: 28px;
+    }
+
+    .DailyGoal {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .DailyGoal__icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .DailyGoal__title {
+        font-size: 20px;
+    }
+
+    .DailyGoal__progress {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .SubjectPage {
+        padding: 100px 16px 40px;
+        text-align: center;
+    }
+
+    .SubjectPage__header {
+        margin-bottom: 24px;
+    }
+
+    .SubjectGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .DailyGoal__info {
+        text-align: left;
+    }
 }

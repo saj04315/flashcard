@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import "./../Admin.css";
-import { Search, Bell } from "lucide-react";
+import { Search, Bell, Menu, X } from "lucide-react";
 import AdminSidebar from "../components/AdminSidebar";
 import FlashcardForm from "../components/FlashcardForm";
 import SubjectManager from "../components/SubjectManager";
@@ -11,6 +11,9 @@ import StudentManager from "../components/StudentManager";
 
 export default function AdminDashboardPage() {
     const [currentTab, setCurrentTab] = useState('students');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     const renderContent = () => {
         switch (currentTab) {
@@ -34,12 +37,24 @@ export default function AdminDashboardPage() {
 
     return (
         <div className="AdminLayout">
-            <AdminSidebar currentTab={currentTab} onTabChange={setCurrentTab} />
+            <AdminSidebar
+                currentTab={currentTab}
+                onTabChange={(tab) => {
+                    setCurrentTab(tab);
+                    setIsSidebarOpen(false); // Close sidebar on selection on mobile
+                }}
+                isOpen={isSidebarOpen}
+            />
 
             <main className="AdminMain">
                 <header className="AdminHeader">
-                    <div className="AdminHeader__title">
-                        <h1>Teacher Management Control Center</h1>
+                    <div className="AdminHeader__left-flex">
+                        <button className="AdminHeader__mobile-toggle" onClick={toggleSidebar}>
+                            {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                        <div className="AdminHeader__title">
+                            <h1>Teacher Management</h1>
+                        </div>
                     </div>
                     <div className="AdminHeader__right">
                         <div className="AdminHeader__search">

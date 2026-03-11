@@ -7,7 +7,9 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    transition: padding 0.3s ease;
 }
+
 
 .UnitPage__header {
     margin-bottom: 48px;
@@ -122,4 +124,57 @@
 
 .ChallengeBanner__link:hover {
     text-decoration: underline;
+}
+
+/* Responsive Queries for Unit Page */
+@media (max-width: 1024px) {
+    .UnitPage {
+        padding: 140px 24px 40px;
+    }
+
+    .UnitGrid {
+        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .UnitPage {
+        padding: 120px 20px 40px;
+    }
+
+    .UnitPage__title {
+        font-size: 28px;
+    }
+
+    .ChallengeBanner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .ChallengeBanner__link {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .UnitPage {
+        padding: 100px 16px 40px;
+        text-align: center;
+    }
+
+    .UnitPage__subtitle {
+        margin: 0 auto;
+    }
+
+    .UnitGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .ChallengeBanner__left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
 }

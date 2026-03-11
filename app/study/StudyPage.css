@@ -1,7 +1,8 @@
 .StudyPage {
-    padding: 120px 40px 40px;
-    max-width: 100%;
-    margin: 0 auto;
+    padding: 90px 40px 40px;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
     min-height: 100vh;
     background: linear-gradient(rgba(248, 250, 252, 0.948), rgba(248, 250, 252, 0.959)), url('/flashcard.jpg');
     background-size: cover;
@@ -9,6 +10,26 @@
     background-attachment: fixed;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+/* Force parent containers to be full width on Study Page */
+.container:has(.StudyPage),
+.container:has(.StudyPage) main {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.StudyInterface {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
     align-items: center;
 }
 
@@ -40,38 +61,76 @@
     margin-bottom: 64px;
 }
 
-.btn-nav--outline {
-    background: white;
-    border: 2px solid #F2A359;
-    color: #F2A359;
-    box-shadow: none;
-    min-width: 180px;
-    border-radius: 999px;
-    text-transform: capitalize;
-}
-
-.btn-nav--outline:hover {
-    background: #FFF7EE;
-    box-shadow: none;
-}
-
-.btn-nav--solid {
-    background-color: #6BA898;
-    border: none;
-    color: white;
-    box-shadow: 0 4px 12px rgba(107, 168, 152, 0.4);
-    min-width: 180px;
-    border-radius: 999px;
-    text-transform: capitalize;
-}
-
-.btn-nav--solid:hover {
-    background-color: #5D9586;
-    box-shadow: 0 6px 16px rgba(107, 168, 152, 0.5);
-}
-
 .StudyPage__guide {
     width: 100%;
     display: flex;
     justify-content: center;
 }
+
+/* Responsive Queries */
+@media (max-width: 768px) {
+    .StudyPage {
+        padding: 100px 20px 24px;
+    }
+
+    .StudyPage__header {
+        margin-bottom: 20px;
+    }
+
+    .StudyPage__progress-container {
+        margin-bottom: 0px;
+    }
+
+    .StudyPage__card-area {
+        margin-bottom: 0px;
+    }
+
+    .StudyPage__nav {
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .StudyInterface {
+        padding: 120px 20px 40px !important;
+        gap: 24px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .StudyPage {
+        padding: 80px 16px 20px;
+    }
+
+    .StudyPage__header {
+        margin-bottom: 20px;
+    }
+
+    .StudyPage__progress-container {
+        margin-bottom: 0px;
+    }
+
+    .StudyPage__card-area {
+        margin-bottom: 0px;
+    }
+
+    .StudyPage__nav {
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-direction: row !important;
+    }
+
+    .StudyInterface {
+        padding: 10px !important;
+        margin: 0 !important;
+        gap: 20px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .btn-nav--outline,
+    .btn-nav--solid {
+        min-width: 110px;
+        padding: 8px 16px !important;
+        font-size: 13px !important;
+    }
+}
