@@ -11,7 +11,7 @@ export interface Flashcard {
     question: string;
     answer: string;
     questionImage?: string;
-    answerImage?: string;
+    answerImages?: string[];
     order?: number;
     createdAt?: Date;
 }

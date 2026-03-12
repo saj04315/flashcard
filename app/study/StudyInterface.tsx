@@ -104,7 +104,7 @@ export default function StudyInterface({ flashcards, subjectName, unitTitle, sub
                             question={currentCard.question}
                             answer={currentCard.answer}
                             questionImg={currentCard.question_img_url || currentCard.questionImage || currentCard.question_img}
-                            answerImg={currentCard.answer_img_url || currentCard.answerImage || currentCard.answer_img}
+                            answerImages={currentCard.answerImages || (currentCard.answer_img_url || currentCard.answerImage || currentCard.answer_img ? [currentCard.answer_img_url || currentCard.answerImage || currentCard.answer_img].filter(Boolean) as string[] : undefined)}
                             subjectColor={subjectColor}
                             unitTitle={unitTitle}
                         />

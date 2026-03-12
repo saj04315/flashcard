@@ -201,6 +201,7 @@ p {
   width: 100%;
   height: 400px;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: height 0.3s ease;
 }
 
@@ -236,6 +237,8 @@ p {
   text-align: center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,0,0);
   transition: padding 0.3s ease;
 }
 
@@ -247,7 +250,8 @@ p {
 
 
 .Flashcard--back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translate3d(0,0,0);
+  -webkit-transform: rotateY(180deg) translate3d(0,0,0);
 }
 
 .Flashcard__shapes {

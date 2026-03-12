@@ -16,7 +16,7 @@
 }
 
 .SubjectPage__title {
-    font-family: 'DynaPuff', cursive;
+    font-family: 'DynaPuff';
     font-size: 36px;
     color: var(--text-black);
     margin-bottom: 8px;

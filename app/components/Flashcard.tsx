@@ -9,7 +9,7 @@ interface FlashcardProps {
     question?: string;
     answer?: string;
     questionImg?: string;
-    answerImg?: string;
+    answerImages?: string[];
     onFlip?: () => void;
     subjectColor?: string;
     unitTitle?: string;
@@ -19,7 +19,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
     question = "What is the largest planet in our solar system?",
     answer = "Jupiter",
     questionImg,
-    answerImg,
+    answerImages,
     onFlip,
     subjectColor = "#7ED321",
     unitTitle = "UNIT 2",
@@ -73,9 +73,13 @@ const Flashcard: React.FC<FlashcardProps> = ({
 
                     <div className="Flashcard__text-content">
                         <div className="Flashcard__text" dangerouslySetInnerHTML={{ __html: answer }}></div>
-                        {answerImg && (
-                            <div className="Flashcard__image">
-                                <img src={answerImg} alt="Answer" />
+                        {answerImages && answerImages.length > 0 && (
+                            <div className="Flashcard__images" style={{ display: 'flex', gap: '16px', justifyContent: 'center', width: '100%' }}>
+                                {answerImages.map((img, i) => (
+                                    <div key={i} className="Flashcard__image" style={{ width: '150px', flexShrink: 0 }}>
+                                        <img src={img} alt={`Answer ${i + 1}`} style={{ width: '100%', objectFit: 'contain' }} />
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>

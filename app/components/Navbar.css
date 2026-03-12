@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: 'DynaPuff', cursive;
+    font-family: 'DynaPuff';
     font-size: 20px;
     font-weight: 700;
 }

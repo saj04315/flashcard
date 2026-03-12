@@ -24,7 +24,7 @@ export default function FlashcardForm() {
     const [questionHtml, setQuestionHtml] = useState('');
     const [answerHtml, setAnswerHtml] = useState('');
     const [questionImage, setQuestionImage] = useState<string | null>(null);
-    const [answerImage, setAnswerImage] = useState<string | null>(null);
+    const [answerImages, setAnswerImages] = useState<string[]>([]);
 
     // Upload/Submit state
     const [uploadingQuestion, setUploadingQuestion] = useState(false);
@@ -98,14 +98,21 @@ export default function FlashcardForm() {
 
     const handleImageUpload = async (file: File, type: 'question' | 'answer') => {
         try {
-            if (type === 'question') setUploadingQuestion(true);
-            else setUploadingAnswer(true);
-
-            const url = await uploadImage(file);
-
-            if (type === 'question') setQuestionImage(url);
-            else setAnswerImage(url);
-            toast.success("Image uploaded successfully!");
+            if (type === 'question') {
+                setUploadingQuestion(true);
+                const url = await uploadImage(file);
+                setQuestionImage(url);
+                toast.success("Question image uploaded successfully!");
+            } else {
+                if (answerImages.length >= 3) {
+                    toast.error("You can only upload up to 3 answer images.");
+                    return;
+                }
+                setUploadingAnswer(true);
+                const url = await uploadImage(file);
+                setAnswerImages((prev) => [...prev, url]);
+                toast.success("Answer image uploaded successfully!");
+            }
         } catch (error) {
             toast.error("Upload failed. Make sure Appwrite is configured correctly.");
         } finally {
@@ -138,7 +145,7 @@ export default function FlashcardForm() {
                 question: questionHtml,
                 answer: answerHtml,
                 questionImage: questionImage || undefined,
-                answerImage: answerImage || undefined,
+                answerImages: answerImages.length > 0 ? answerImages : undefined,
             });
 
             if (res.success) {
@@ -162,7 +169,7 @@ export default function FlashcardForm() {
         setQuestionHtml('');
         setAnswerHtml('');
         setQuestionImage(null);
-        setAnswerImage(null);
+        setAnswerImages([]);
     };
 
     const handleMoveUp = async (index: number) => {
@@ -282,22 +289,36 @@ export default function FlashcardForm() {
                             onChange={(e) => handleFileChange(e, 'answer')}
                         />
 
+                        {/* RENDER UPLOADED IMAGES ROW */}
+                        {answerImages.length > 0 && (
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                                {answerImages.map((imgUrl, index) => (
+                                    <div key={index} style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '12px', border: '2px solid #E9EEF2', overflow: 'hidden' }}>
+                                        <X 
+                                            size={16} 
+                                            style={{ position: 'absolute', top: '4px', right: '4px', cursor: 'pointer', backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: '50%', color: 'var(--doodle-red)', zIndex: 10 }}
+                                            onClick={(e) => { 
+                                                e.stopPropagation(); 
+                                                setAnswerImages(prev => prev.filter((_, i) => i !== index)); 
+                                            }} 
+                                        />
+                                        <div style={{ backgroundImage: `url(${imgUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%', height: '100%' }}></div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
                         <div
-                            className={`FlashcardForm__upload-box ${answerImage ? 'FlashcardForm__upload-box--active' : ''}`}
-                            onClick={() => !uploadingAnswer && answerInputRef.current?.click()}
+                            className={`FlashcardForm__upload-box ${answerImages.length >= 3 ? 'FlashcardForm__upload-box--disabled' : ''}`}
+                            style={answerImages.length >= 3 ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                            onClick={() => !uploadingAnswer && answerImages.length < 3 && answerInputRef.current?.click()}
                         >
                             {uploadingAnswer ? (
                                 <Loader2 size={20} className="animate-spin" />
-                            ) : answerImage ? (
-                                <>
-                                    <X size={16} className="FlashcardForm__remove-img" onClick={(e) => { e.stopPropagation(); setAnswerImage(null); }} />
-                                    <div className="FlashcardForm__img-preview" style={{ backgroundImage: `url(${answerImage})` }}></div>
-                                    <span>Image Uploaded</span>
-                                </>
                             ) : (
                                 <>
                                     <Camera size={20} />
-                                    <span>Upload Answer Image (Optional)</span>
+                                    <span>{answerImages.length >= 3 ? "Max 3 Answer Images Uploaded" : "Upload Answer Image (Optional)"}</span>
                                 </>
                             )}
                         </div>
