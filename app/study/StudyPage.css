@@ -292,5 +292,21 @@
     .KeyboardGuide {
         display: none;
     }
+
+    .StudyPage__nav {
+        gap: 16px;
+    }
+
+    .StudyPage__nav button {
+        min-width: 140px;
+        height: 48px;
+        font-size: 16px;
+        padding: 0 16px;
+    }
+
+    .btn-flip {
+        padding: 6px 16px !important;
+        font-size: 14px !important;
+    }
 }
 
