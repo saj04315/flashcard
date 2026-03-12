@@ -5,6 +5,7 @@ import { GraduationCap, ShieldCheck, Lock, Headphones, Loader2 } from "lucide-re
 import { SignIn, useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { checkUserStatus } from "../actions/authActions";
+import Link from "next/link";
 
 export default function LoginPage() {
     const { isLoaded, isSignedIn, user } = useUser();
@@ -85,7 +86,10 @@ export default function LoginPage() {
                             <p style={{ fontSize: "14px", marginTop: "8px",color:"black" }}>Once approved, you will have full access to your subjects.</p>
                         </div>
                     ) : (
-                        <SignIn routing="hash" forceRedirectUrl="/" />
+                        <>
+                            <SignIn routing="hash" forceRedirectUrl="/" />
+                            
+                        </>
                     )}
                 </div>
             </motion.div>

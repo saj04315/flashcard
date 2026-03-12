@@ -4,52 +4,40 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
     PlusCircle,
     Search,
-    Beaker,
-    LayoutGrid,
-    Compass,
-    Globe,
-    Palette,
-    Music,
-    Activity,
-    Code,
-    Microscope,
+    GraduationCap,
+    School,
+    Book,
+    Square,
+    Circle,
     Triangle,
     Plus,
-    BookOpen,
     Trash2,
     Edit2,
     Loader2
 } from "lucide-react";
 import Button from "../../components/Button";
 import { toast } from "sonner";
-import { getSubjects, createSubject, updateSubject, deleteSubject, type Subject } from "../actions/subjectActions";
-import { getGrades, type Grade } from "../actions/gradeActions";
+import { getGrades, createGrade, updateGrade, deleteGrade, type Grade } from "../actions/gradeActions";
 
 const icons = [
-    { id: 'beaker', component: Beaker },
-    { id: 'grid', component: LayoutGrid },
-    { id: 'compass', component: Compass },
-    { id: 'globe', component: Globe },
-    { id: 'palette', component: Palette },
-    { id: 'music', component: Music },
-    { id: 'basketball', component: Activity },
-    { id: 'code', component: Code },
-    { id: 'microscope', component: Microscope },
-    { id: 'triangle', component: Triangle },
-    { id: 'book', component: BookOpen },
+    { id: 'graduation_cap', component: GraduationCap },
+    { id: 'school', component: School },
+    { id: 'book', component: Book },
+    { id: 'square', component: Square },
+    { id: 'circle', component: Circle },
+    { id: 'triangle', component: Triangle }
 ];
 
 const colors = [
-    '#4285F4', // Doodle Blue
-    '#EA4335', // Doodle Red
-    '#FBBC05', // Doodle Yellow
-    '#34A853', // Doodle Green
-    '#A142F4', // Doodle Purple
-    '#F2A359', // Doodle Orange
+    '#F28F3B', // Orange
+    '#4285F4', // Blue
+    '#EA4335', // Red
+    '#FBBC05', // Yellow
+    '#34A853', // Green
+    '#A142F4', // Purple
 ];
 
-export default function SubjectManager() {
-    const [subjects, setSubjects] = useState<Subject[]>([]);
+export default function GradeManager() {
     const [grades, setGrades] = useState<Grade[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
@@ -60,27 +48,25 @@ export default function SubjectManager() {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        gradeId: "",
-        color: colors[2],
-        icon: 'globe'
+        color: colors[0],
+        icon: 'graduation_cap'
     });
 
-    const fetchSubjects = useCallback(async (searchTerm: string = "") => {
+    const fetchGrades = useCallback(async (searchTerm: string = "") => {
         setLoading(true);
-        const data = await getSubjects(searchTerm);
-        setSubjects(data);
+        const data = await getGrades(searchTerm);
+        setGrades(data);
         setLoading(false);
     }, []);
 
     useEffect(() => {
-        fetchSubjects();
-        getGrades().then(setGrades);
-    }, [fetchSubjects]);
+        fetchGrades();
+    }, [fetchGrades]);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearch(value);
-        fetchSubjects(value);
+        fetchGrades(value);
     };
 
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -90,30 +76,30 @@ export default function SubjectManager() {
 
     const handleSave = async () => {
         if (!formData.name) {
-            toast.error("Please enter a subject name.");
+            toast.error("Please enter a grade name.");
             return;
         }
 
         setSubmitting(true);
         try {
             if (editingId) {
-                const res = await updateSubject(editingId, formData);
+                const res = await updateGrade(editingId, formData);
                 if (res.success) {
-                    toast.success("Subject updated successfully!");
+                    toast.success("Grade updated successfully!");
                     setEditingId(null);
-                    setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
-                    fetchSubjects(search);
+                    setFormData({ name: "", description: "", color: colors[0], icon: 'graduation_cap' });
+                    fetchGrades(search);
                 } else {
-                    toast.error(res.error || "Failed to update subject.");
+                    toast.error(res.error || "Failed to update grade.");
                 }
             } else {
-                const res = await createSubject(formData);
+                const res = await createGrade(formData);
                 if (res.success) {
-                    toast.success("Subject created successfully!");
-                    setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
-                    fetchSubjects(search);
+                    toast.success("Grade created successfully!");
+                    setFormData({ name: "", description: "", color: colors[0], icon: 'graduation_cap' });
+                    fetchGrades(search);
                 } else {
-                    toast.error(res.error || "Failed to create subject.");
+                    toast.error(res.error || "Failed to create grade.");
                 }
             }
         } catch (error) {
@@ -124,14 +110,14 @@ export default function SubjectManager() {
     };
 
     const handleDelete = async (id: string) => {
-        if (confirm("Are you sure you want to delete this subject? All associated units and flashcards might be affected?")) {
+        if (confirm("Are you sure you want to delete this grade? All associated subjects might be affected.")) {
             try {
-                const res = await deleteSubject(id);
+                const res = await deleteGrade(id);
                 if (res.success) {
-                    toast.success("Subject deleted successfully!");
-                    fetchSubjects(search);
+                    toast.success("Grade deleted successfully!");
+                    fetchGrades(search);
                 } else {
-                    toast.error(res.error || "Failed to delete subject.");
+                    toast.error(res.error || "Failed to delete grade.");
                 }
             } catch (error) {
                 toast.error("An unexpected error occurred.");
@@ -139,67 +125,51 @@ export default function SubjectManager() {
         }
     };
 
-    const handleEdit = (subject: Subject) => {
-        setEditingId(subject.id);
+    const handleEdit = (grade: Grade) => {
+        setEditingId(grade.id);
         setFormData({
-            name: subject.name,
-            description: subject.description,
-            gradeId: subject.gradeId || "",
-            color: subject.color,
-            icon: subject.icon
+            name: grade.name,
+            description: grade.description,
+            color: grade.color,
+            icon: grade.icon
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const cancelEdit = () => {
         setEditingId(null);
-        setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
+        setFormData({ name: "", description: "", color: colors[0], icon: 'graduation_cap' });
     };
 
     const getIconComponent = (iconId: string) => {
         const iconDef = icons.find(i => i.id === iconId);
-        return iconDef ? iconDef.component : Globe;
+        return iconDef ? iconDef.component : GraduationCap;
     };
 
     return (
         <div className="SubjectManager">
             <div className="SubjectManager__header">
-                <h1>Manage Subjects</h1>
-                <p>Create, organize, and monitor your curriculum subjects</p>
+                <h1>Manage Grades</h1>
+                <p>Create, organize, and monitor educational grades/levels</p>
             </div>
 
             <div className="SubjectManager__create-card">
                 <div className="SubjectManager__form-title">
-                    <PlusCircle size={24} color="var(--doodle-blue)" />
-                    <span>{editingId ? "Edit Subject" : "Create New Subject"}</span>
+                    <PlusCircle size={24} color="var(--doodle-orange, #F28F3B)" />
+                    <span>{editingId ? "Edit Grade" : "Create New Grade"}</span>
                 </div>
 
                 <div className="SubjectManager__form-grid">
                     <div className="SubjectManager__form-left">
-                        <div className="SubjectManager__field" style={{ marginBottom: '24px' }}>
-                            <label className="SubjectManager__field-label">Select Grade</label>
-                            <select
-                                name="gradeId"
-                                value={formData.gradeId}
-                                onChange={handleFormChange as any}
-                                className="SubjectManager__input"
-                                style={{ backgroundColor: 'white' }}
-                            >
-                                <option value="">No Grade (Standalone)</option>
-                                {grades.map(g => (
-                                    <option key={g.id} value={g.id}>{g.name}</option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="SubjectManager__field">
-                            <label className="SubjectManager__field-label">Subject Name</label>
+                            <label className="SubjectManager__field-label">Grade Name</label>
                             <input
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleFormChange}
                                 className="SubjectManager__input"
-                                placeholder="e.g. Advanced Mathematics"
+                                placeholder="e.g. 10th Grade"
                             />
                         </div>
                         <div className="SubjectManager__field" style={{ marginTop: '24px' }}>
@@ -214,7 +184,7 @@ export default function SubjectManager() {
                                 maxLength={100}
                             />
                             <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '10px', color: 'var(--text-gray)', marginTop: '4px' }}>
-                                <span>{formData.description.length}/100 max charaters</span>
+                                <span>{formData.description.length}/100 max characters</span>
                             </div>
                         </div>
                         <div className="SubjectManager__field" style={{ marginTop: '24px' }}>
@@ -233,7 +203,7 @@ export default function SubjectManager() {
                     </div>
 
                     <div className="SubjectManager__form-right">
-                        <label className="SubjectManager__field-label">Subject Icon</label>
+                        <label className="SubjectManager__field-label">Grade Icon</label>
                         <div className="SubjectManager__icon-grid">
                             {icons.map(icon => (
                                 <button
@@ -259,7 +229,7 @@ export default function SubjectManager() {
                         </button>
                     )}
                     <Button
-                        className="btn-3d--teal"
+                        className="btn-3d--orange"
                         style={{ padding: '12px 32px' }}
                         onClick={handleSave}
                         disabled={submitting}
@@ -267,7 +237,7 @@ export default function SubjectManager() {
                         {submitting ? (
                             <Loader2 size={18} className="animate-spin" />
                         ) : (
-                            editingId ? "Update Subject" : "Save Subject"
+                            editingId ? "Update Grade" : "Save Grade"
                         )}
                     </Button>
                 </div>
@@ -275,14 +245,14 @@ export default function SubjectManager() {
 
             <div className="SubjectManager__list-header">
                 <h2>
-                    <LayoutGrid size={24} color="var(--doodle-blue)" />
-                    Available Subjects
+                    <GraduationCap size={24} color="var(--doodle-orange, #F28F3B)" />
+                    Available Grades
                 </h2>
                 <div className="AdminHeader__search">
                     <Search size={18} color="var(--text-gray)" />
                     <input
                         type="text"
-                        placeholder="Search subjects..."
+                        placeholder="Search grades..."
                         value={search}
                         onChange={handleSearchChange}
                     />
@@ -292,28 +262,28 @@ export default function SubjectManager() {
             <div style={{ minHeight: '300px', position: 'relative' }}>
                 {loading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
-                        <Loader2 size={32} className="animate-spin" color="var(--doodle-blue)" />
+                        <Loader2 size={32} className="animate-spin" color="var(--doodle-orange, #F28F3B)" />
                     </div>
                 ) : (
                     <div className="SubjectManager__grid">
-                        {subjects.length === 0 ? (
+                        {grades.length === 0 ? (
                             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--text-gray)' }}>
-                                No subjects found.
+                                No grades found.
                             </div>
                         ) : (
-                            subjects.map(subject => {
-                                const Icon = getIconComponent(subject.icon);
+                            grades.map(grade => {
+                                const Icon = getIconComponent(grade.icon);
                                 return (
-                                    <div key={subject.id} className="SubjectItem-card" style={{ borderTopColor: subject.color }}>
+                                    <div key={grade.id} className="SubjectItem-card" style={{ borderTopColor: grade.color }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                            <div className="SubjectItem-card__icon" style={{ backgroundColor: `${subject.color}15`, color: subject.color }}>
+                                            <div className="SubjectItem-card__icon" style={{ backgroundColor: `${grade.color}15`, color: grade.color }}>
                                                 <Icon size={24} />
                                             </div>
                                             <div style={{ display: 'flex', gap: '4px' }}>
                                                 <button
                                                     className="StudentTable__action-btn"
                                                     title="Edit"
-                                                    onClick={() => handleEdit(subject)}
+                                                    onClick={() => handleEdit(grade)}
                                                 >
                                                     <Edit2 size={14} />
                                                 </button>
@@ -321,17 +291,17 @@ export default function SubjectManager() {
                                                     className="StudentTable__action-btn"
                                                     title="Delete"
                                                     style={{ color: 'var(--doodle-red)' }}
-                                                    onClick={() => handleDelete(subject.id)}
+                                                    onClick={() => handleDelete(grade.id)}
                                                 >
                                                     <Trash2 size={14} />
                                                 </button>
                                             </div>
                                         </div>
-                                        <h3 className="SubjectItem-card__title">{subject.name}</h3>
-                                        <p className="SubjectItem-card__desc">{subject.description}</p>
+                                        <h3 className="SubjectItem-card__title">{grade.name}</h3>
+                                        <p className="SubjectItem-card__desc">{grade.description}</p>
                                         <div className="SubjectItem-card__stats">
-                                            <span className="SubjectItem-card__stat">● {subject.unitsCount || 0} Units</span>
-                                            <span className="SubjectItem-card__stat">● {subject.studentsCount || 0} Students</span>
+                                            <span className="SubjectItem-card__stat">● {grade.subjectCount || 0} Subjects</span>
+                                            <span className="SubjectItem-card__stat">● {grade.studentsCount || 0} Students</span>
                                         </div>
                                     </div>
                                 );
@@ -340,11 +310,11 @@ export default function SubjectManager() {
 
                         <div className="SubjectItem-card SubjectItem-card--add" onClick={() => {
                             setEditingId(null);
-                            setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
+                            setFormData({ name: "", description: "", color: colors[0], icon: 'graduation_cap' });
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }} style={{ cursor: 'pointer' }}>
                             <Plus size={32} color="var(--text-gray)" />
-                            <span>Add New Subject</span>
+                            <span>Add New Grade</span>
                         </div>
                     </div>
                 )}

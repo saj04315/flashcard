@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Editor from 'react-simple-wysiwyg';
-import { Camera, Loader2, X, CheckCircle, Image as ImageIcon } from "lucide-react";
+import { Camera, Loader2, X, CheckCircle, Image as ImageIcon, ChevronUp, ChevronDown, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { createFlashcard } from "../actions/flashcardActions";
+import { createFlashcard, getFlashcards, updateFlashcardOrders, deleteFlashcard, type Flashcard } from "../actions/flashcardActions";
 import { uploadImage } from "@/lib/appwrite";
 import { getSubjects, type Subject } from "../actions/subjectActions";
 import { getUnitsBySubject, type Unit } from "../actions/unitActions";
@@ -13,6 +13,8 @@ export default function FlashcardForm() {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [units, setUnits] = useState<Unit[]>([]);
     const [loadingData, setLoadingData] = useState(true);
+    const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
+    const [loadingCards, setLoadingCards] = useState(false);
 
     // Selection state
     const [selectedSubjectId, setSelectedSubjectId] = useState("");
@@ -75,6 +77,25 @@ export default function FlashcardForm() {
         fetchUnits();
     }, [selectedSubjectId]);
 
+    useEffect(() => {
+        const fetchCards = async () => {
+            if (!selectedUnitId) {
+                setFlashcards([]);
+                return;
+            }
+            setLoadingCards(true);
+            try {
+                const cards = await getFlashcards(selectedUnitId);
+                setFlashcards(cards);
+            } catch (error) {
+                console.error("Error fetching flashcards", error);
+            } finally {
+                setLoadingCards(false);
+            }
+        };
+        fetchCards();
+    }, [selectedUnitId]);
+
     const handleImageUpload = async (file: File, type: 'question' | 'answer') => {
         try {
             if (type === 'question') setUploadingQuestion(true);
@@ -123,6 +144,10 @@ export default function FlashcardForm() {
             if (res.success) {
                 toast.success("Flashcard saved successfully!");
                 clearForm();
+                
+                // Refresh the card list silently
+                const cards = await getFlashcards(selectedUnitId);
+                setFlashcards(cards);
             } else {
                 toast.error("Failed to save flashcard: " + res.error);
             }
@@ -140,7 +165,52 @@ export default function FlashcardForm() {
         setAnswerImage(null);
     };
 
+    const handleMoveUp = async (index: number) => {
+        if (index === 0) return;
+        const newFlashcards = [...flashcards];
+        const temp = newFlashcards[index];
+        newFlashcards[index] = newFlashcards[index - 1];
+        newFlashcards[index - 1] = temp;
+        
+        newFlashcards.forEach((card, i) => card.order = i);
+        setFlashcards(newFlashcards);
+
+        const updates = newFlashcards.map((card, i) => ({ id: card.id, order: i }));
+        await updateFlashcardOrders(updates);
+    };
+
+    const handleMoveDown = async (index: number) => {
+        if (index === flashcards.length - 1) return;
+        const newFlashcards = [...flashcards];
+        const temp = newFlashcards[index];
+        newFlashcards[index] = newFlashcards[index + 1];
+        newFlashcards[index + 1] = temp;
+
+        newFlashcards.forEach((card, i) => card.order = i);
+        setFlashcards(newFlashcards);
+
+        const updates = newFlashcards.map((card, i) => ({ id: card.id, order: i }));
+        await updateFlashcardOrders(updates);
+    };
+
+    const handleDeleteCard = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this flashcard?")) return;
+        try {
+            const res = await deleteFlashcard(id);
+            if (res.success) {
+                toast.success("Flashcard deleted!");
+                const cards = await getFlashcards(selectedUnitId);
+                setFlashcards(cards);
+            } else {
+                toast.error(res.error || "Failed to delete");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
+        <div className="FlashcardForm-container">
         <div className="FlashcardForm-card">
             <div className="FlashcardForm-card__header">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -293,6 +363,42 @@ export default function FlashcardForm() {
                     </div>
                 </div>
             </div>
+        </div>
+        
+        {/* Flashcard List Management */}
+        <div className="FlashcardList-section" style={{ marginTop: '40px' }}>
+            <h3 style={{ marginBottom: '16px', color: 'var(--doodle-blue)' }}>Manage Unit Flashcards</h3>
+            {loadingCards ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}><Loader2 className="animate-spin" /></div>
+            ) : flashcards.length === 0 ? (
+                <div style={{ padding: '40px', textAlign: 'center', backgroundColor: 'white', borderRadius: '16px', border: '2px solid var(--border-color)', color: 'var(--text-gray)' }}>
+                    No flashcards created for this unit yet.
+                </div>
+            ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {flashcards.map((card, index) => (
+                        <div key={card.id || index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'white', border: '2px solid var(--border-color)', borderRadius: '12px', padding: '16px', boxSizing: 'border-box' }}>
+                            <div style={{ flex: 1, minWidth: 0, marginRight: '16px', maxHeight: '100px', overflow: 'hidden' }}>
+                                <div style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', color: 'var(--text-gray)', marginBottom: '4px' }}>Flashcard {index + 1}</div>
+                                <div style={{ fontWeight: '600', color: 'var(--doodle-blue)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: card.question }} />
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <button onClick={() => handleMoveUp(index)} disabled={index === 0} style={{ padding: '8px', cursor: index === 0 ? 'default' : 'pointer', backgroundColor: 'var(--bg-light)', border: 'none', borderRadius: '8px', opacity: index === 0 ? 0.3 : 1 }}>
+                                    <ChevronUp size={18} />
+                                </button>
+                                <button onClick={() => handleMoveDown(index)} disabled={index === flashcards.length - 1} style={{ padding: '8px', cursor: index === flashcards.length - 1 ? 'default' : 'pointer', backgroundColor: 'var(--bg-light)', border: 'none', borderRadius: '8px', opacity: index === flashcards.length - 1 ? 0.3 : 1 }}>
+                                    <ChevronDown size={18} />
+                                </button>
+                                <button onClick={() => handleDeleteCard(card.id)} style={{ padding: '8px', cursor: 'pointer', backgroundColor: '#FEE2E2', color: 'var(--doodle-red)', border: 'none', borderRadius: '8px', marginLeft: '8px' }}>
+                                    <Trash2 size={18} />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+
         </div>
     );
 }

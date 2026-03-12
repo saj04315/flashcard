@@ -40,6 +40,7 @@ export default function UnitManager() {
     const [formData, setFormData] = useState({
         subject_id: "",
         title: "",
+        bgImage: "",
     });
 
     const fetchData = useCallback(async (searchTerm: string = "") => {
@@ -82,7 +83,7 @@ export default function UnitManager() {
                 if (res.success) {
                     toast.success("Unit updated successfully!");
                     setEditingId(null);
-                    setFormData(prev => ({ ...prev, title: "" }));
+                    setFormData(prev => ({ ...prev, title: "", bgImage: "" }));
                     fetchData(search);
                 } else {
                     toast.error(res.error || "Failed to update unit.");
@@ -91,7 +92,7 @@ export default function UnitManager() {
                 const res = await createUnit(formData);
                 if (res.success) {
                     toast.success("Unit created successfully!");
-                    setFormData(prev => ({ ...prev, title: "" }));
+                    setFormData(prev => ({ ...prev, title: "", bgImage: "" }));
                     fetchData(search);
                 } else {
                     toast.error(res.error || "Failed to create unit.");
@@ -109,6 +110,7 @@ export default function UnitManager() {
         setFormData({
             subject_id: unit.subject_id,
             title: unit.title,
+            bgImage: unit.bgImage || "",
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -134,6 +136,7 @@ export default function UnitManager() {
         setFormData({
             subject_id: subjects[0]?.id || "",
             title: "",
+            bgImage: "",
         });
     };
 
@@ -166,7 +169,7 @@ export default function UnitManager() {
                     <span>{editingId ? "Edit Unit" : "Add New Unit"}</span>
                 </div>
 
-                <div className="UnitManager__form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr auto', gap: '24px', alignItems: 'flex-end' }}>
+                <div className="UnitManager__form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '24px', alignItems: 'flex-end' }}>
                     <div className="UnitManager__field">
                         <label className="UnitManager__field-label">Select Subject</label>
                         <div className="FlashcardForm__select-group" style={{ width: '100%' }}>
@@ -187,9 +190,20 @@ export default function UnitManager() {
                         <input
                             type="text"
                             className="SubjectManager__input"
-                            placeholder="e.g. Intro to Quantum Mechanics"
+                            placeholder="e.g. Intro to Mechanics"
                             value={formData.title}
                             onChange={(e) => setFormData(p => ({ ...p, title: e.target.value }))}
+                        />
+                    </div>
+
+                    <div className="UnitManager__field">
+                        <label className="UnitManager__field-label">Background Image URL</label>
+                        <input
+                            type="text"
+                            className="SubjectManager__input"
+                            placeholder="e.g. https://images.unsplash..."
+                            value={formData.bgImage}
+                            onChange={(e) => setFormData(p => ({ ...p, bgImage: e.target.value }))}
                         />
                     </div>
 

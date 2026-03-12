@@ -10,6 +10,7 @@ export interface Unit {
     subject_id: string;
     title: string;
     order: number;
+    bgImage?: string;
     cardCount?: number;
     lastUpdated?: string;
     subjectName?: string;
@@ -46,6 +47,7 @@ export async function getUnits(search: string = ""): Promise<Unit[]> {
                 _id: u._id.toString(),
                 subjectName: subject?.name || "Unknown",
                 subjectColor: subject?.color || "#64748B",
+                bgImage: u.bgImage || "",
                 cardCount: cardCount,
                 lastUpdated: u.updatedAt ? new Date(u.updatedAt).toLocaleDateString() : "Recently"
             };
@@ -95,7 +97,7 @@ export async function getUnitsBySubject(subjectId: string): Promise<Unit[]> {
     }
 }
 
-export async function createUnit(data: { subject_id: string; title: string; order?: number }) {
+export async function createUnit(data: { subject_id: string; title: string; order?: number; bgImage?: string }) {
     try {
         const client = await clientPromise;
         const db = client.db();

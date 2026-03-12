@@ -21,11 +21,12 @@ export default async function RootLayout({
 }>) {
   const headersList = await headers();
   const currentPath = headersList.get("x-pathname") || "";
+  const isAuthPage = currentPath === "/login" || currentPath.startsWith("/sign-up");
 
   const { authenticated, status, role } = await checkUserStatus();
 
   // 1. Basic Auth & Status Check
-  if (authenticated && status !== "Active" && status !== "Approved" && currentPath !== "/login") {
+  if (authenticated && status !== "Active" && status !== "Approved" && !isAuthPage) {
     redirect("/login");
   }
 
@@ -39,12 +40,12 @@ export default async function RootLayout({
       <html lang="en">
         <body className="antialiased">
           <Toaster richColors position="top-center" />
-          <Navbar />
-          <div className="container" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+          {!isAuthPage && <Navbar />}
+          <div className={isAuthPage ? "" : "container"} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
             <main style={{ flex: 1 }}>
               {children}
             </main>
-            <Footer />
+            {!isAuthPage && <Footer />}
           </div>
         </body>
       </html>

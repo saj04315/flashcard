@@ -1,29 +1,21 @@
 import React from "react";
 import "./SubjectPage.css";
 import {
-  FlaskConical, BookOpen, Globe, Sigma, Trophy,
-  Cpu, Beaker, Atom, History,
-  Map, Languages, Palette, LineChart, LucideIcon
+  Trophy, BookOpen, GraduationCap, School, Book
 } from "lucide-react";
-import SubjectCard from "./components/SubjectCard";
+import GradeCard from "./components/GradeCard";
 import ProgressBar from "./components/ProgressBar";
 import clientPromise from "@/lib/mongodb";
 
-// Mapping for database icon strings to Lucide components
-const iconMap: Record<string, LucideIcon> = {
-  "computer_science_icon_url": Cpu,
-  "mathematics_icon_url": Sigma,
-  "physics_icon_url": Atom,
-  "chemistry_icon_url": Beaker,
-  "biology_icon_url": Beaker,
-  "history_icon_url": History,
-  "geography_icon_url": Map,
-  "literature_icon_url": Languages,
-  "art_icon_url": Palette,
-  "economics_icon_url": LineChart,
+// Mapping for database icon strings to Lucide components if needed for Grades
+const gradeIconMap: Record<string, any> = {
+  "graduation_cap": GraduationCap,
+  "school": School,
+  "book": Book,
+  "default": GraduationCap
 };
 
-export default async function Home({
+export default async function GradesPage({
   searchParams,
 }: {
   searchParams: Promise<{ search?: string }>;
@@ -33,30 +25,35 @@ export default async function Home({
   const db = client.db();
 
   const query = search ? { name: { $regex: search, $options: "i" } } : {};
-  const subjects = await db.collection("subjects").find(query).toArray();
+  // Assuming a 'grades' collection exists
+  const grades = await db.collection("grades").find(query).toArray();
 
   return (
     <div className="SubjectPage">
       <header className="SubjectPage__header">
-        <h1 className="SubjectPage__title">My Subjects</h1>
+        <h1 className="SubjectPage__title">My Grades</h1>
         <p className="SubjectPage__subtitle">
-          Welcome back, Alex! Pick a subject to resume your learning.
+          Select a grade to view its subjects.
         </p>
       </header>
 
       <div className="SubjectGrid">
-        {subjects.map((sub: any) => (
-          <SubjectCard
-            key={sub._id.toString()}
-            subject={sub.name}
-            cardCount={Math.floor(Math.random() * 50) + 10} // Placeholder for now
-            masteryPercent={Math.floor(Math.random() * 100)} // Placeholder for now
-            Icon={iconMap[sub.icon] || BookOpen}
-            accentColor={sub.color}
-            bgImage={`https://images.unsplash.com/featured/?${encodeURIComponent(sub.name)}`}
-            href={`/units?subjectId=${sub._id}`}
+        {grades.map((grade: any) => (
+          <GradeCard
+            key={grade._id.toString()}
+            grade={grade.name}
+            subjectCount={grade.subjectCount || 0}
+            Icon={gradeIconMap[grade.icon] || GraduationCap}
+            accentColor={grade.color || '#F28F3B'}
+            bgImage={grade.bgImage || `https://images.unsplash.com/photo-1546410531-bea5aadcb6ce?auto=format&fit=crop&q=80&w=320`}
+            href={`/subjects?gradeId=${grade._id}`}
           />
         ))}
+        {grades.length === 0 && (
+            <div style={{ color: 'white', gridColumn: '1 / -1', textAlign: 'center', padding: '40px' }}>
+                No grades found. Please add grades from the admin panel.
+            </div>
+        )}
       </div>
 
       <section className="DailyGoal">

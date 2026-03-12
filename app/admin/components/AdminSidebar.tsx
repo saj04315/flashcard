@@ -37,6 +37,12 @@ export default function AdminSidebar({ currentTab, onTabChange, isOpen }: AdminS
             <nav className="AdminSidebar__nav">
 
                 <SidebarItem
+                    icon={<SchoolIcon size={20} />}
+                    label="Grades"
+                    isActive={currentTab === 'grades'}
+                    onClick={() => onTabChange('grades')}
+                />
+                <SidebarItem
                     icon={<Shapes size={20} />}
                     label="Subjects"
                     isActive={currentTab === 'subjects'}

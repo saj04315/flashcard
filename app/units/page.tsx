@@ -56,7 +56,7 @@ export default async function UnitsPage({
                             key={unit._id.toString()}
                             unitNumber={unit.order || index + 1}
                             title={unit.title.toUpperCase()}
-                            bgImage={`https://images.unsplash.com/photo-${1451187580459 + index}-43490279c0fa?auto=format&fit=crop&q=80&w=640`}
+                            bgImage={unit.bgImage || `https://images.unsplash.com/photo-${1451187580459 + index}-43490279c0fa?auto=format&fit=crop&q=80&w=640`}
                             Icon={Book}
                             href={`/study?unitId=${unit._id}`}
                         />

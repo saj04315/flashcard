@@ -8,15 +8,18 @@ import FlashcardForm from "../components/FlashcardForm";
 import SubjectManager from "../components/SubjectManager";
 import UnitManager from "../components/UnitManager";
 import StudentManager from "../components/StudentManager";
+import GradeManager from "../components/GradeManager";
 
 export default function AdminDashboardPage() {
-    const [currentTab, setCurrentTab] = useState('students');
+    const [currentTab, setCurrentTab] = useState('grades');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     const renderContent = () => {
         switch (currentTab) {
+            case 'grades':
+                return <GradeManager />;
             case 'flashcards':
                 return <FlashcardForm />;
             case 'subjects':

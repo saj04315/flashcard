@@ -4,23 +4,22 @@ import clientPromise from "../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
-export interface Subject {
+export interface Grade {
     id: string;
     _id: string;
     name: string;
     description: string;
     color: string;
     icon: string;
-    gradeId?: string;
-    unitsCount?: number;
+    subjectCount?: number;
     studentsCount?: number;
 }
 
-export async function getSubjects(search: string = ""): Promise<Subject[]> {
+export async function getGrades(search: string = ""): Promise<Grade[]> {
     try {
         const client = await clientPromise;
         const db = client.db();
-        const subjectsCollection = db.collection("subjects");
+        const gradesCollection = db.collection("grades");
 
         let query = {} as any;
         if (search) {
@@ -30,42 +29,39 @@ export async function getSubjects(search: string = ""): Promise<Subject[]> {
             ];
         }
 
-        const subjects = await subjectsCollection.find(query).toArray();
+        const grades = await gradesCollection.find(query).toArray();
 
-        // Count units for each subject (placeholder logic if needed)
-        // In a real app, you might aggregate or have a separate query
-        const unitsCollection = db.collection("units");
+        const subjectsCollection = db.collection("subjects");
 
-        const enhancedSubjects = await Promise.all(subjects.map(async (s) => {
-            const unitsCount = await unitsCollection.countDocuments({ subject_id: s._id.toString() });
+        const enhancedGrades = await Promise.all(grades.map(async (g) => {
+            const subjectCount = await subjectsCollection.countDocuments({ gradeId: g._id.toString() });
             return {
-                ...s,
-                id: s._id.toString(),
-                _id: s._id.toString(),
-                name: s.name,
-                description: s.description || s.desc || "", // Handle both variations
-                color: s.color,
-                icon: s.icon,
-                gradeId: s.gradeId || "",
-                unitsCount: unitsCount,
-                studentsCount: s.studentsCount || 0
+                ...g,
+                id: g._id.toString(),
+                _id: g._id.toString(),
+                name: g.name,
+                description: g.description || "",
+                color: g.color,
+                icon: g.icon,
+                subjectCount: subjectCount,
+                studentsCount: g.studentsCount || 0
             };
         }));
 
-        return enhancedSubjects as unknown as Subject[];
+        return enhancedGrades as unknown as Grade[];
     } catch (error) {
-        console.error("Error fetching subjects:", error);
+        console.error("Error fetching grades:", error);
         return [];
     }
 }
 
-export async function createSubject(data: Omit<Subject, "id" | "_id">) {
+export async function createGrade(data: Omit<Grade, "id" | "_id">) {
     try {
         const client = await clientPromise;
         const db = client.db();
-        const subjectsCollection = db.collection("subjects");
+        const gradesCollection = db.collection("grades");
 
-        const result = await subjectsCollection.insertOne({
+        const result = await gradesCollection.insertOne({
             ...data,
             createdAt: new Date(),
         });
@@ -73,16 +69,16 @@ export async function createSubject(data: Omit<Subject, "id" | "_id">) {
         revalidatePath("/admin");
         return { success: true, id: result.insertedId.toString() };
     } catch (error) {
-        console.error("Error creating subject:", error);
+        console.error("Error creating grade:", error);
         return { success: false, error: (error as Error).message };
     }
 }
 
-export async function updateSubject(id: string, data: Partial<Subject>) {
+export async function updateGrade(id: string, data: Partial<Grade>) {
     try {
         const client = await clientPromise;
         const db = client.db();
-        const subjectsCollection = db.collection("subjects");
+        const gradesCollection = db.collection("grades");
 
         let filter: any = { _id: id };
         if (ObjectId.isValid(id)) {
@@ -91,33 +87,33 @@ export async function updateSubject(id: string, data: Partial<Subject>) {
 
         const { id: _, _id: __, ...updateData } = data as any;
 
-        await subjectsCollection.updateOne(filter, { $set: updateData });
+        await gradesCollection.updateOne(filter, { $set: updateData });
 
         revalidatePath("/admin");
         return { success: true };
     } catch (error) {
-        console.error("Error updating subject:", error);
+        console.error("Error updating grade:", error);
         return { success: false, error: (error as Error).message };
     }
 }
 
-export async function deleteSubject(id: string) {
+export async function deleteGrade(id: string) {
     try {
         const client = await clientPromise;
         const db = client.db();
-        const subjectsCollection = db.collection("subjects");
+        const gradesCollection = db.collection("grades");
 
         let filter: any = { _id: id };
         if (ObjectId.isValid(id)) {
             filter = { $or: [{ _id: new ObjectId(id) }, { _id: id }] };
         }
 
-        await subjectsCollection.deleteOne(filter);
+        await gradesCollection.deleteOne(filter);
 
         revalidatePath("/admin");
         return { success: true };
     } catch (error) {
-        console.error("Error deleting subject:", error);
+        console.error("Error deleting grade:", error);
         return { success: false, error: (error as Error).message };
     }
 }
