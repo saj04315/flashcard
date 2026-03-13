@@ -1,5 +1,5 @@
 import React from "react";
-import { Globe, BookOpen, Clock, Lock, Play } from "lucide-react";
+import { Globe, BookOpen, Clock, Lock, Play, Layers } from "lucide-react";
 import Button from "./Button";
 
 interface UnitCardProps {
@@ -17,6 +17,8 @@ interface UnitCardProps {
 const UnitCard: React.FC<UnitCardProps> = ({
     unitNumber = 1,
     title = "The Solar System",
+    cardCount = 0,
+    duration = 0,
    
     bgImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=320",
     Icon = Globe,
@@ -44,6 +46,16 @@ const UnitCard: React.FC<UnitCardProps> = ({
             <div className="UnitCard__content">
                 <h3 className="UnitCard__title">{title}</h3>
 
+                <div className="UnitCard__stats">
+                    <div className="UnitCard__stat">
+                        <Layers size={14} />
+                        <span>{cardCount} CARDS</span>
+                    </div>
+                    <div className="UnitCard__stat">
+                        <Clock size={14} />
+                        <span>{duration} MIN READ</span>
+                    </div>
+                </div>
 
                 <a href={isLocked ? undefined : href} style={{ textDecoration: 'none', display: 'block' }}>
                     <Button

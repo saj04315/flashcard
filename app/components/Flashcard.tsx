@@ -21,7 +21,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
     questionImg,
     answerImages,
     onFlip,
-    subjectColor = "#7ED321",
+    subjectColor = "#ffffffff",
     unitTitle = "UNIT 2",
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);

@@ -37,6 +37,25 @@ export default async function UnitsPage({
     }
     const units = await db.collection("units").find(query).toArray();
 
+    // Fetch flashcard counts for each unit
+    const unitsWithStats = await Promise.all(units.map(async (unit) => {
+        const cardCount = await db.collection("flashcards").countDocuments({
+            $or: [
+                { unit_id: unit._id.toString() },
+                { unit_id: unit._id }
+            ]
+        });
+        
+        // Read time: roughly 0.5 mins per card, min 1 minute
+        const duration = Math.max(1, Math.ceil(cardCount * 0.5));
+        
+        return {
+            ...unit,
+            cardCount,
+            duration
+        };
+    }));
+
     const subjectName = subject?.name || "Subject";
 
     return (
@@ -50,12 +69,14 @@ export default async function UnitsPage({
             </header>
 
             <div className="UnitGrid">
-                {units.length > 0 ? (
-                    units.map((unit: any, index: number) => (
+                {unitsWithStats.length > 0 ? (
+                    unitsWithStats.map((unit: any, index: number) => (
                         <UnitCard
                             key={unit._id.toString()}
                             unitNumber={unit.order || index + 1}
                             title={unit.title.toUpperCase()}
+                            cardCount={unit.cardCount}
+                            duration={unit.duration}
                             bgImage={unit.bgImage || `https://images.unsplash.com/photo-${1451187580459 + index}-43490279c0fa?auto=format&fit=crop&q=80&w=640`}
                             Icon={Book}
                             href={`/study?unitId=${unit._id}`}

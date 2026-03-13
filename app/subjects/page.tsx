@@ -42,24 +42,6 @@ export default async function SubjectsPage({
   
   const subjects = await db.collection("subjects").find(query).toArray();
 
-  const subjectsWithStats = await Promise.all(subjects.map(async (sub) => {
-    const unitCount = await db.collection("units").countDocuments({ 
-        $or: [
-            { subject_id: sub._id.toString() },
-            { subject_id: sub._id }
-        ]
-    });
-    
-    // Read time is 0.5 min per unit, minimum of 2 minutes
-    const readTime = Math.max(2, Math.ceil(unitCount * 0.5));
-    
-    return {
-        ...sub,
-        unitCount,
-        readTime
-    };
-  }));
-
   return (
     <div className="SubjectPage">
       <header className="SubjectPage__header">
@@ -70,12 +52,10 @@ export default async function SubjectsPage({
       </header>
 
       <div className="SubjectGrid">
-        {subjectsWithStats.map((sub: any) => (
+        {subjects.map((sub: any) => (
           <SubjectCard
             key={sub._id.toString()}
             subject={sub.name}
-            unitCount={sub.unitCount}
-            readTime={sub.readTime}
             Icon={iconMap[sub.icon] || BookOpen}
             accentColor={sub.color}
             bgImage={`https://images.unsplash.com/featured/?${encodeURIComponent(sub.name)}`}
