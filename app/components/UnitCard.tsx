@@ -4,7 +4,7 @@ import React from "react";
 import { Globe, BookOpen, Clock, Lock, Layers, Book, Beaker, Atom, Cpu, Map, LucideIcon } from "lucide-react";
 import Button from "./Button";
 import { useAppDispatch } from "../store/hooks";
-import { setUnit } from "../store/navigationSlice";
+
 
 const iconMap: Record<string, LucideIcon> = {
     globe: Globe,

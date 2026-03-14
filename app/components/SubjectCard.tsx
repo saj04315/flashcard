@@ -9,7 +9,7 @@ import Button from './Button';
 import Link from 'next/link';
 import { useAppDispatch } from '../store/hooks';
 import { setAccentColor } from '../store/themeSlice';
-import { setSubject } from '../store/navigationSlice';
+
 
 // *****************************************************************
 // SubjectCard Component
@@ -50,7 +50,7 @@ export default function SubjectCard({
 
     const handleCardClick = () => {
         dispatch(setAccentColor(accentColor));
-        dispatch(setSubject({ id: subjectId, name: subject }));
+       
     };
 
     const ResolvedIcon = Icon || (iconName && iconMap[iconName]) || BookOpen || FlaskConical;
@@ -82,4 +82,4 @@ export default function SubjectCard({
             </div>
         </div>
     );
-}
+}

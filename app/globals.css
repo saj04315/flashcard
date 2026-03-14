@@ -359,6 +359,13 @@ p {
   word-wrap: break-word;
 }
 
+@media (max-width: 600px) {
+  .Flashcard__text {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+}
+
 @media (max-width: 480px) {
   .Flashcard__text {
     font-size: 18px;
