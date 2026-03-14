@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ChevronRight } from "lucide-react";
+import { useAppSelector } from "../store/hooks";
 
 interface PathItem {
     label: string;
@@ -13,12 +14,25 @@ interface PathProps {
 }
 
 const Path: React.FC<PathProps> = ({ items }) => {
+    const { subjectId, unitId } = useAppSelector((state) => state.navigation);
+
     if (!items || items.length === 0) return null;
+
+    // Replace placeholder tokens in hrefs with real IDs from Redux state
+    const resolvedItems = items.map((item) => {
+        let resolvedHref = item.href;
+        if (resolvedHref) {
+            resolvedHref = resolvedHref
+                .replace(':subjectId', subjectId)
+                .replace(':unitId', unitId);
+        }
+        return { ...item, href: resolvedHref };
+    });
 
     return (
         <nav className="Path" aria-label="Breadcrumb">
-            {items.map((item, index) => {
-                const isLast = index === items.length - 1;
+            {resolvedItems.map((item, index) => {
+                const isLast = index === resolvedItems.length - 1;
 
                 return (
                     <React.Fragment key={index}>

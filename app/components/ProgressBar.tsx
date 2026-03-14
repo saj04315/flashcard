@@ -15,7 +15,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     current = 4,
     total = 30,
     title = "Study Progress",
-    accentColor = "#6BA898",
+    accentColor = "#d10c0cff",
 }) => {
     const percentage = Math.round((current / total) * 100);
     const remaining = total - current;
@@ -38,7 +38,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    style={{ backgroundColor: accentColor }}
+                    style={{ backgroundColor: "#d10c0cff" }}
                 />
             </div>
 

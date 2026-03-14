@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { RotateCw } from "lucide-react";
 import { motion } from "framer-motion";
 import Button from "./Button";
+import { useAppSelector } from "../store/hooks";
 
 interface FlashcardProps {
     question?: string;
@@ -21,9 +22,12 @@ const Flashcard: React.FC<FlashcardProps> = ({
     questionImg,
     answerImages,
     onFlip,
-    subjectColor = "#ffffffff",
+    subjectColor, // Remove the default here, handle it below
     unitTitle = "UNIT 2",
 }) => {
+    const globalAccentColor = useAppSelector((state) => state.theme.accentColor);
+    const finalSubjectColor = subjectColor && subjectColor !== "#ffffffff" ? subjectColor : globalAccentColor;
+
     const [isFlipped, setIsFlipped] = useState(false);
 
     const handleFlip = () => {
@@ -32,7 +36,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
     };
 
     const cardStyle: React.CSSProperties = {
-        "--subject-color": subjectColor,
+        "--subject-color": finalSubjectColor,
     } as any;
 
     return (
@@ -44,8 +48,8 @@ const Flashcard: React.FC<FlashcardProps> = ({
                 transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
             >
                 {/* Front Face (Question) */}
-                <div className="Flashcard Flashcard--front" style={{ border: `24px solid ${subjectColor}`, backgroundColor: 'white' }}>
-                    <div className="Flashcard__unit-badge">{unitTitle}</div>
+                <div className="Flashcard Flashcard--front" style={{ border: `24px solid ${finalSubjectColor}`, backgroundColor: 'white' }}>
+                    {/* <div className="Flashcard__unit-badge">{unitTitle}</div> */}
 
                     <div className="Flashcard__text-content">
                         <div className="Flashcard__text" dangerouslySetInnerHTML={{ __html: question }}></div>
@@ -68,7 +72,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
                 </div>
 
                 {/* Back Face (Answer) */}
-                <div className="Flashcard Flashcard--back" style={{ border: `24px solid ${subjectColor}`, backgroundColor: 'white' }}>
+                <div className="Flashcard Flashcard--back" style={{ border: `24px solid ${finalSubjectColor}`, backgroundColor: 'white' }}>
                     <div className="Flashcard__unit-badge">{unitTitle}</div>
 
                     <div className="Flashcard__text-content">

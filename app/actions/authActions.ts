@@ -15,7 +15,7 @@ export async function checkUserStatus() {
         const db = mongoClient.db();
         const usersCollection = db.collection("users");
 
-        let mongoUser = await usersCollection.findOne({ email: email });
+        const mongoUser = await usersCollection.findOne({ email: email });
 
         // If user doesn't exist in MongoDB, sync them
         if (!mongoUser) {

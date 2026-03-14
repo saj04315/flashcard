@@ -25,7 +25,7 @@ export async function getUnits(search: string = ""): Promise<Unit[]> {
         const subjectsCollection = db.collection("subjects");
         const flashcardsCollection = db.collection("flashcards");
 
-        let query = {} as any;
+        const query = {} as any;
         if (search) {
             query.title = { $regex: search, $options: "i" };
         }

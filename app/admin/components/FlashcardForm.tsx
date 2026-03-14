@@ -8,8 +8,13 @@ import { createFlashcard, getFlashcards, updateFlashcardOrders, deleteFlashcard,
 import { uploadImage } from "@/lib/appwrite";
 import { getSubjects, type Subject } from "../actions/subjectActions";
 import { getUnitsBySubject, type Unit } from "../actions/unitActions";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setAccentColor } from "../../store/themeSlice";
 
 export default function FlashcardForm() {
+    const dispatch = useAppDispatch();
+    const globalAccentColor = useAppSelector((state) => state.theme.accentColor);
+
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [units, setUnits] = useState<Unit[]>([]);
     const [loadingData, setLoadingData] = useState(true);
@@ -51,6 +56,11 @@ export default function FlashcardForm() {
     useEffect(() => {
         const fetchUnits = async () => {
             if (selectedSubjectId) {
+                const subj = subjects.find(s => s.id === selectedSubjectId);
+                if (subj && subj.color) {
+                    dispatch(setAccentColor(subj.color));
+                }
+                
                 console.log("Fetching units for subject:", selectedSubjectId);
                 setLoadingData(true);
                 try {
@@ -398,7 +408,7 @@ export default function FlashcardForm() {
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {flashcards.map((card, index) => (
-                        <div key={card.id || index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'white', border: '2px solid var(--border-color)', borderRadius: '12px', padding: '16px', boxSizing: 'border-box' }}>
+                        <div key={card.id || index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'white', border: `2px solid ${globalAccentColor}`, borderRadius: '12px', padding: '16px', boxSizing: 'border-box' }}>
                             <div style={{ flex: 1, minWidth: 0, marginRight: '16px', maxHeight: '100px', overflow: 'hidden' }}>
                                 <div style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', color: 'var(--text-gray)', marginBottom: '4px' }}>Flashcard {index + 1}</div>
                                 <div style={{ fontWeight: '600', color: 'var(--doodle-blue)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: card.question }} />

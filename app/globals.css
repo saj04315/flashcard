@@ -355,6 +355,8 @@ p {
   margin-bottom: 40px;
   max-width: 90%;
   transition: font-size 0.3s ease;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 @media (max-width: 480px) {

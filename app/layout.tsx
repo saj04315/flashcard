@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { checkUserStatus } from "./actions/authActions";
+import StoreProvider from "./StoreProvider";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
@@ -39,14 +40,16 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="antialiased">
-          <Toaster richColors position="top-center" />
-          {!isAuthPage && <Navbar />}
-          <div className={isAuthPage ? "" : "container"} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-            <main style={{ flex: 1 }}>
-              {children}
-            </main>
-            {!isAuthPage && <Footer />}
-          </div>
+          <StoreProvider>
+            <Toaster richColors position="top-center" />
+            {!isAuthPage && <Navbar />}
+            <div className={isAuthPage ? "" : "container"} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+              <main style={{ flex: 1 }}>
+                {children}
+              </main>
+              {!isAuthPage && <Footer />}
+            </div>
+          </StoreProvider>
         </body>
       </html>
     </ClerkProvider>

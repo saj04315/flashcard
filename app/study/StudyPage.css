@@ -215,6 +215,8 @@
     line-height: 1.1;
     text-align: center;
     max-width: 800px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .Flashcard .Flashcard__image {

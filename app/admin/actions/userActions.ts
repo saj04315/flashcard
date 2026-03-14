@@ -67,7 +67,7 @@ export async function getStudents(search: string = ""): Promise<Student[]> {
         const db = mongoClient.db();
         const usersCollection = db.collection("users");
 
-        let query = { role: "student" } as any;
+        const query = { role: "student" } as any;
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },

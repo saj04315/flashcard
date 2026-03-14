@@ -2,7 +2,7 @@ import React from "react";
 import "./UnitPage.css";
 import {
     Globe, Leaf, CloudLightning, Trophy, Zap,
-    BookOpen, Book, Beaker, Atom, Cpu,
+    BookOpen, Beaker, Atom, Cpu,
     LucideIcon
 } from "lucide-react";
 import UnitCard from "../components/UnitCard";
@@ -61,7 +61,11 @@ export default async function UnitsPage({
     return (
         <div className="UnitPage">
             <header className="UnitPage__header">
-                <Path items={[{ label: "Dashboard", href: "/" }, { label: subjectName }]} />
+                <Path items={[
+                    { label: "Dashboard", href: "/" },
+                    { label: subjectName, href: `/subjects?gradeId=:subjectId` },
+                    { label: subjectName + " Units" }
+                ]} />
                 <h1 className="UnitPage__title">{subjectName} Units</h1>
                 <p className="UnitPage__subtitle">
                     Select a unit to start practicing your flashcards and master the curriculum.
@@ -74,11 +78,12 @@ export default async function UnitsPage({
                         <UnitCard
                             key={unit._id.toString()}
                             unitNumber={unit.order || index + 1}
+                            unitId={unit._id.toString()}
                             title={unit.title.toUpperCase()}
                             cardCount={unit.cardCount}
                             duration={unit.duration}
                             bgImage={unit.bgImage || `https://images.unsplash.com/photo-${1451187580459 + index}-43490279c0fa?auto=format&fit=crop&q=80&w=640`}
-                            Icon={Book}
+                            iconName="book"
                             href={`/study?unitId=${unit._id}`}
                         />
                     ))

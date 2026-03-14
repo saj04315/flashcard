@@ -8,14 +8,17 @@ import Flashcard from "../components/Flashcard";
 import Button from "../components/Button";
 import KeyboardGuide from "../components/KeyboardGuide";
 
+import { useAppSelector } from "../store/hooks";
+
 interface StudyInterfaceProps {
     flashcards: any[];
     subjectName: string;
     unitTitle: string;
-    subjectColor: string;
 }
 
-export default function StudyInterface({ flashcards, subjectName, unitTitle, subjectColor }: StudyInterfaceProps) {
+export default function StudyInterface({ flashcards, subjectName, unitTitle }: StudyInterfaceProps) {
+    const globalAccentColor = useAppSelector((state) => state.theme.accentColor);
+    const subjectColor = globalAccentColor || "#7ED321"; // fallback color
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
 

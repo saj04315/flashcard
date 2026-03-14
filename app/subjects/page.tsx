@@ -1,27 +1,9 @@
 import React from "react";
 import "../SubjectPage.css";
-import {
-  FlaskConical, BookOpen, Globe, Sigma, Trophy,
-  Cpu, Beaker, Atom, History,
-  Map, Languages, Palette, LineChart, LucideIcon
-} from "lucide-react";
+import { Trophy } from "lucide-react";
 import SubjectCard from "../components/SubjectCard";
 import ProgressBar from "../components/ProgressBar";
 import clientPromise from "@/lib/mongodb";
-
-// Mapping for database icon strings to Lucide components
-const iconMap: Record<string, LucideIcon> = {
-  "computer_science_icon_url": Cpu,
-  "mathematics_icon_url": Sigma,
-  "physics_icon_url": Atom,
-  "chemistry_icon_url": Beaker,
-  "biology_icon_url": Beaker,
-  "history_icon_url": History,
-  "geography_icon_url": Map,
-  "literature_icon_url": Languages,
-  "art_icon_url": Palette,
-  "economics_icon_url": LineChart,
-};
 
 export default async function SubjectsPage({
   searchParams,
@@ -56,7 +38,8 @@ export default async function SubjectsPage({
           <SubjectCard
             key={sub._id.toString()}
             subject={sub.name}
-            Icon={iconMap[sub.icon] || BookOpen}
+            subjectId={sub._id.toString()}
+            iconName={sub.icon}
             accentColor={sub.color}
             bgImage={`https://images.unsplash.com/featured/?${encodeURIComponent(sub.name)}`}
             href={`/units?subjectId=${sub._id}`}

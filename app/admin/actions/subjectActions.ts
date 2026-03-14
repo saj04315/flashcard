@@ -22,7 +22,7 @@ export async function getSubjects(search: string = ""): Promise<Subject[]> {
         const db = client.db();
         const subjectsCollection = db.collection("subjects");
 
-        let query = {} as any;
+        const query = {} as any;
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },

@@ -21,7 +21,7 @@ export async function getGrades(search: string = ""): Promise<Grade[]> {
         const db = client.db();
         const gradesCollection = db.collection("grades");
 
-        let query = {} as any;
+        const query = {} as any;
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },

@@ -1,14 +1,29 @@
+'use client';
+
 import React from "react";
-import { Globe, BookOpen, Clock, Lock, Play, Layers } from "lucide-react";
+import { Globe, BookOpen, Clock, Lock, Layers, Book, Beaker, Atom, Cpu, Map, LucideIcon } from "lucide-react";
 import Button from "./Button";
+import { useAppDispatch } from "../store/hooks";
+import { setUnit } from "../store/navigationSlice";
+
+const iconMap: Record<string, LucideIcon> = {
+    globe: Globe,
+    book: Book,
+    bookopen: BookOpen,
+    beaker: Beaker,
+    atom: Atom,
+    cpu: Cpu,
+    map: Map,
+};
 
 interface UnitCardProps {
     unitNumber?: number;
+    unitId?: string;
     title?: string;
     cardCount?: number;
     duration?: number;
     bgImage?: string;
-    Icon?: any;
+    iconName?: string;
     isLocked?: boolean;
     unlockText?: string;
     href?: string;
@@ -16,16 +31,25 @@ interface UnitCardProps {
 
 const UnitCard: React.FC<UnitCardProps> = ({
     unitNumber = 1,
+    unitId = '',
     title = "The Solar System",
     cardCount = 0,
     duration = 0,
    
     bgImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=320",
-    Icon = Globe,
+    iconName = 'globe',
     isLocked = false,
     unlockText = "",
     href = "#",
 }) => {
+    const dispatch = useAppDispatch();
+    const Icon = iconMap[iconName.toLowerCase()] || BookOpen;
+
+    const handleClick = () => {
+        if (!isLocked) {
+            dispatch(setUnit({ id: unitId, title }));
+        }
+    };
     return (
         <div className={`UnitCard ${isLocked ? "UnitCard--locked" : ""}`}>
             <div
@@ -57,7 +81,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
                     </div>
                 </div>
 
-                <a href={isLocked ? undefined : href} style={{ textDecoration: 'none', display: 'block' }}>
+                <a href={isLocked ? undefined : href} style={{ textDecoration: 'none', display: 'block' }} onClick={handleClick}>
                     <Button
                         className={isLocked ? "btn-3d--locked" : "btn-3d--teal"}
                         style={{ width: "100%", gap: "8px" }}
