@@ -82,6 +82,37 @@ export async function deleteFlashcard(id: string) {
     }
 }
 
+export async function updateFlashcard(
+    id: string,
+    data: { question: string; answer: string; questionImage?: string | null; answerImages?: string[] }
+) {
+    try {
+        const client = await clientPromise;
+        const db = client.db();
+        const collection = db.collection("flashcards");
+
+        let filter: any = { _id: id };
+        if (ObjectId.isValid(id)) {
+            filter = { $or: [{ _id: new ObjectId(id) }, { _id: id }] };
+        }
+
+        await collection.updateOne(filter, {
+            $set: {
+                question: data.question,
+                answer: data.answer,
+                questionImage: data.questionImage ?? null,
+                answerImages: data.answerImages ?? [],
+            },
+        });
+
+        revalidatePath("/admin");
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating flashcard:", error);
+        return { success: false, error: (error as Error).message };
+    }
+}
+
 export async function updateFlashcardOrders(updates: { id: string; order: number }[]) {
     try {
         const client = await clientPromise;

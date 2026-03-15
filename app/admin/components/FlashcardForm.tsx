@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Editor from 'react-simple-wysiwyg';
-import { Camera, Loader2, X, CheckCircle, Image as ImageIcon, ChevronUp, ChevronDown, Trash2 } from "lucide-react";
+import { Camera, Loader2, X, CheckCircle, Image as ImageIcon, ChevronUp, ChevronDown, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
-import { createFlashcard, getFlashcards, updateFlashcardOrders, deleteFlashcard, type Flashcard } from "../actions/flashcardActions";
+import { createFlashcard, updateFlashcard, getFlashcards, updateFlashcardOrders, deleteFlashcard, type Flashcard } from "../actions/flashcardActions";
 import { uploadImage } from "@/lib/appwrite";
 import { getSubjects, type Subject } from "../actions/subjectActions";
 import { getUnitsBySubject, type Unit } from "../actions/unitActions";
@@ -36,6 +36,9 @@ export default function FlashcardForm() {
     const [uploadingAnswer, setUploadingAnswer] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    // Edit state
+    const [editingCard, setEditingCard] = useState<Flashcard | null>(null);
 
     const questionInputRef = useRef<HTMLInputElement>(null);
     const answerInputRef = useRef<HTMLInputElement>(null);
@@ -138,6 +141,16 @@ export default function FlashcardForm() {
         }
     };
 
+    const handleEditCard = (card: Flashcard) => {
+        setEditingCard(card);
+        setQuestionHtml(card.question);
+        setAnswerHtml(card.answer);
+        setQuestionImage(card.questionImage || null);
+        setAnswerImages(card.answerImages || []);
+        // Scroll to the top of the form
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const handleSubmit = async () => {
         if (!selectedUnitId) {
             toast.error("Please select a unit.");
@@ -150,19 +163,32 @@ export default function FlashcardForm() {
 
         setSubmitting(true);
         try {
-            const res = await createFlashcard({
-                unit_id: selectedUnitId,
-                question: questionHtml,
-                answer: answerHtml,
-                questionImage: questionImage || undefined,
-                answerImages: answerImages.length > 0 ? answerImages : undefined,
-            });
+            let res;
+            if (editingCard) {
+                res = await updateFlashcard(editingCard.id, {
+                    question: questionHtml,
+                    answer: answerHtml,
+                    questionImage: questionImage || null,
+                    answerImages: answerImages.length > 0 ? answerImages : [],
+                });
+                if (res.success) {
+                    toast.success("Flashcard updated successfully!");
+                }
+            } else {
+                res = await createFlashcard({
+                    unit_id: selectedUnitId,
+                    question: questionHtml,
+                    answer: answerHtml,
+                    questionImage: questionImage || undefined,
+                    answerImages: answerImages.length > 0 ? answerImages : undefined,
+                });
+                if (res.success) {
+                    toast.success("Flashcard saved successfully!");
+                }
+            }
 
             if (res.success) {
-                toast.success("Flashcard saved successfully!");
                 clearForm();
-                
-                // Refresh the card list silently
                 const cards = await getFlashcards(selectedUnitId);
                 setFlashcards(cards);
             } else {
@@ -180,6 +206,7 @@ export default function FlashcardForm() {
         setAnswerHtml('');
         setQuestionImage(null);
         setAnswerImages([]);
+        setEditingCard(null);
     };
 
     const handleMoveUp = async (index: number) => {
@@ -232,9 +259,18 @@ export default function FlashcardForm() {
             <div className="FlashcardForm-card__header">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h2>Create New Flashcard</h2>
-                        <p>Design a new learning asset with rich content for your students.</p>
+                        <h2>{editingCard ? 'Edit Flashcard' : 'Create New Flashcard'}</h2>
+                        <p>{editingCard ? 'Update the question, answer, and images for this flashcard.' : 'Design a new learning asset with rich content for your students.'}</p>
                     </div>
+                    {editingCard && (
+                        <button
+                            className="btn--outline-gray"
+                            onClick={clearForm}
+                            style={{ padding: '8px 16px', fontSize: '13px' }}
+                        >
+                            Cancel Edit
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -375,20 +411,20 @@ export default function FlashcardForm() {
                     </div>
 
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', paddingBottom: '4px' }}>
-                        <button className="btn--outline-gray" onClick={clearForm} style={{ padding: '12px 24px' }}>Clear Form</button>
+                        <button className="btn--outline-gray" onClick={clearForm} style={{ padding: '12px 24px' }}>{editingCard ? 'Cancel' : 'Clear Form'}</button>
                         <button
                             className="btn-3d--teal"
-                            style={{ padding: '12px 32px', minWidth: '160px' }}
+                            style={{ padding: '12px 32px', minWidth: '180px' }}
                             onClick={handleSubmit}
                             disabled={submitting || uploadingQuestion || uploadingAnswer}
                         >
                             {submitting ? (
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <Loader2 size={18} className="animate-spin" />
-                                    <span>Saving...</span>
+                                    <span>{editingCard ? 'Updating...' : 'Saving...'}</span>
                                 </div>
                             ) : (
-                                "Save Flashcard"
+                                editingCard ? 'Update Flashcard' : 'Save Flashcard'
                             )}
                         </button>
                     </div>
@@ -420,7 +456,14 @@ export default function FlashcardForm() {
                                 <button onClick={() => handleMoveDown(index)} disabled={index === flashcards.length - 1} style={{ padding: '8px', cursor: index === flashcards.length - 1 ? 'default' : 'pointer', backgroundColor: 'var(--bg-light)', border: 'none', borderRadius: '8px', opacity: index === flashcards.length - 1 ? 0.3 : 1 }}>
                                     <ChevronDown size={18} />
                                 </button>
-                                <button onClick={() => handleDeleteCard(card.id)} style={{ padding: '8px', cursor: 'pointer', backgroundColor: '#FEE2E2', color: 'var(--doodle-red)', border: 'none', borderRadius: '8px', marginLeft: '8px' }}>
+                                <button
+                                    onClick={() => handleEditCard(card)}
+                                    title="Edit flashcard"
+                                    style={{ padding: '8px', cursor: 'pointer', backgroundColor: '#EFF6FF', color: '#3B82F6', border: 'none', borderRadius: '8px' }}
+                                >
+                                    <Pencil size={18} />
+                                </button>
+                                <button onClick={() => handleDeleteCard(card.id)} style={{ padding: '8px', cursor: 'pointer', backgroundColor: '#FEE2E2', color: 'var(--doodle-red)', border: 'none', borderRadius: '8px' }}>
                                     <Trash2 size={18} />
                                 </button>
                             </div>
