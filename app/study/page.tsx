@@ -18,7 +18,7 @@ export default async function StudyPage({
     const unit = await db.collection("units").findOne({ _id: unitId as any });
 
     // Fetch flashcards for this Unit
-    const flashcards = await db.collection("flashcards").find({ unit_id: unitId }).toArray();
+    const flashcards = await db.collection("flashcards").find({ unit_id: unitId }).sort({ order: 1 }).toArray();
 
     // Fetch Subject for breadcrumbs
     let subjectName = "Subject";
