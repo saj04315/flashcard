@@ -60,6 +60,7 @@ export default async function StudyPage({
                 flashcards={JSON.parse(JSON.stringify(flashcards))}
                 subjectName={subjectName}
                 unitTitle={unitTitle}
+                unitId={unitId}
             />
         </div>
     );

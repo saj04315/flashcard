@@ -12,6 +12,7 @@ interface FlashcardProps {
     questionImg?: string;
     answerImages?: string[];
     onFlip?: () => void;
+    onAnswerViewed?: () => void;
     subjectColor?: string;
     unitTitle?: string;
 }
@@ -22,6 +23,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
     questionImg,
     answerImages,
     onFlip,
+    onAnswerViewed,
     subjectColor, // Remove the default here, handle it below
     unitTitle = "UNIT 2",
 }) => {
@@ -31,7 +33,14 @@ const Flashcard: React.FC<FlashcardProps> = ({
     const [isFlipped, setIsFlipped] = useState(false);
 
     const handleFlip = () => {
+        const wasFlipped = isFlipped;
         setIsFlipped(!isFlipped);
+        
+        // Call onAnswerViewed only when flipping TO the answer (not back to question)
+        if (!wasFlipped && onAnswerViewed) {
+            onAnswerViewed();
+        }
+        
         if (onFlip) onFlip();
     };
 
