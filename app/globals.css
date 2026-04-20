@@ -886,3 +886,12 @@ p {
   letter-spacing: 1px;
   margin-bottom: 12px;
 }
+
+.FarmFloatButton {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1200;
+  width: 72px;
+  height: 72px;
+}

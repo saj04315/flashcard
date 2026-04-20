@@ -7,6 +7,8 @@ import { checkUserStatus } from "./actions/authActions";
 import StoreProvider from "./StoreProvider";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Flashcard App",
@@ -49,6 +51,9 @@ export default async function RootLayout({
               </main>
               {!isAuthPage && <Footer />}
             </div>
+            <Link href="/farm" className="FarmFloatButton">
+              <Image src="/farm/btn.png" alt="Farm button" width={72} height={72} />
+            </Link>
           </StoreProvider>
         </body>
       </html>
