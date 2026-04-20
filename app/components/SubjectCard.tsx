@@ -1,5 +1,14 @@
+'use client';
+
 import React from 'react';
-import { FlaskConical } from 'lucide-react';
+import { 
+  FlaskConical, Layers, Clock, BookOpen, Globe, Sigma, Trophy,
+  Cpu, Beaker, Atom, History, Map, Languages, Palette, LineChart, LucideIcon
+} from 'lucide-react';
+import Button from './Button';
+import Link from 'next/link';
+import { useAppDispatch } from '../store/hooks';
+import { setAccentColor } from '../store/themeSlice';
 
 
 // *****************************************************************
@@ -7,49 +16,70 @@ import { FlaskConical } from 'lucide-react';
 // Displays a subject card with icon, title, card count, and mastery
 // *****************************************************************
 
+const iconMap: Record<string, LucideIcon> = {
+  "computer_science_icon_url": Cpu,
+  "mathematics_icon_url": Sigma,
+  "physics_icon_url": Atom,
+  "chemistry_icon_url": Beaker,
+  "biology_icon_url": Beaker,
+  "history_icon_url": History,
+  "geography_icon_url": Map,
+  "literature_icon_url": Languages,
+  "art_icon_url": Palette,
+  "economics_icon_url": LineChart,
+};
+
 export default function SubjectCard({
     subject = 'Science',
-    cardCount = 30,
-    masteryPercent = 85,
-    Icon = FlaskConical,
-    accentColor = '#e1eeeaff',
-    accentDark = '#91a5a0ff',
+    subjectId = '',
+    iconName,
+    Icon,
+    accentColor = '#6BA898', // Default to teal like UnitCard
+    bgImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=320",
     href = '#',
 }: {
     subject?: string;
-    cardCount?: number;
-    masteryPercent?: number;
+    subjectId?: string;
+    iconName?: string;
     Icon?: any;
     accentColor?: string;
-    accentDark?: string;
+    bgImage?: string;
     href?: string;
 }) {
+    const dispatch = useAppDispatch();
+
+    const handleCardClick = () => {
+        dispatch(setAccentColor(accentColor));
+       
+    };
+
+    const ResolvedIcon = Icon || (iconName && iconMap[iconName]) || BookOpen || FlaskConical;
+
     return (
-        <a href={href} className="SubjectCard" style={{ textDecoration: 'none' }}>
-            {/* Top colored section with icon */}
+        <div className="SubjectCard">
             <div
-                className="SubjectCard__top"
-                style={{ backgroundColor: accentColor }}
+                className="SubjectCard__header"
+                style={{ backgroundImage: `url(${bgImage})` }}
             >
-                {/* Decorative corner squares */}
-                <div className="SubjectCard__corner-dots">
-                    <span></span>
-                    <span></span>
-                </div>
-
-                {/* Lucide icon */}
-                <div className="SubjectCard__icon">
-                    <Icon size={36} color="white" strokeWidth={1.5} />
+                <div className="SubjectCard__overlay" style={{ backgroundColor: `${accentColor}B3` }}></div>
+                <div className="SubjectCard__badge">SUBJECT</div>
+                <div className="SubjectCard__icon-wrapper">
+                    <ResolvedIcon size={48} color="white" />
                 </div>
             </div>
 
-            {/* Bottom white info section */}
-            <div className="SubjectCard__bottom">
-                <p className="SubjectCard__subject">{subject.toUpperCase()}</p>
-                <p className="SubjectCard__meta">
-                    {cardCount} CARDS&nbsp;•&nbsp;{masteryPercent}% MASTERED
-                </p>
+            <div className="SubjectCard__content">
+                <h3 className="SubjectCard__title">{subject}</h3>
+
+                <Link href={href} style={{ textDecoration: 'none', display: 'block' }} onClick={handleCardClick}>
+                    <Button
+                        className="btn-3d--teal"
+                        style={{ width: "100%", gap: "8px" }}
+                    >
+                        CHOOSE UNIT
+                    </Button>
+                </Link>
             </div>
-        </a>
+        </div>
     );
 }

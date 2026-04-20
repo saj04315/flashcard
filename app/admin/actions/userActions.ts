@@ -67,7 +67,7 @@ export async function getStudents(search: string = ""): Promise<Student[]> {
         const db = mongoClient.db();
         const usersCollection = db.collection("users");
 
-        let query = { role: "student" } as any;
+        const query = { role: "student" } as any;
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },
@@ -107,7 +107,7 @@ export async function approveStudent(studentId: string) {
         return { success: true };
     } catch (error) {
         console.error("Approve error:", error);
-        return { success: false };
+        return { success: false, error: (error as Error).message };
     }
 }
 
@@ -127,6 +127,6 @@ export async function deleteStudent(studentId: string) {
         return { success: true };
     } catch (error) {
         console.error("Delete error:", error);
-        return { success: false };
+        return { success: false, error: (error as Error).message };
     }
 }

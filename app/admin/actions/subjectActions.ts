@@ -1,6 +1,6 @@
 "use server";
 
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
@@ -11,6 +11,7 @@ export interface Subject {
     description: string;
     color: string;
     icon: string;
+    gradeId?: string;
     unitsCount?: number;
     studentsCount?: number;
 }
@@ -21,7 +22,7 @@ export async function getSubjects(search: string = ""): Promise<Subject[]> {
         const db = client.db();
         const subjectsCollection = db.collection("subjects");
 
-        let query = {} as any;
+        const query = {} as any;
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },
@@ -45,6 +46,7 @@ export async function getSubjects(search: string = ""): Promise<Subject[]> {
                 description: s.description || s.desc || "", // Handle both variations
                 color: s.color,
                 icon: s.icon,
+                gradeId: s.gradeId || "",
                 unitsCount: unitsCount,
                 studentsCount: s.studentsCount || 0
             };

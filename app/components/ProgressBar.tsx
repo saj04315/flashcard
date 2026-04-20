@@ -8,24 +8,26 @@ interface ProgressBarProps {
     current?: number;
     total?: number;
     title?: string;
+    accentColor?: string;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
     current = 4,
     total = 30,
     title = "Study Progress",
+    accentColor = "#d10c0cff",
 }) => {
     const percentage = Math.round((current / total) * 100);
     const remaining = total - current;
 
     return (
         <div className="ProgressBar">
-            <div className="ProgressBar__top">
-                <div className="ProgressBar__title-group">
-                    <BookOpen size={20} />
+            <div className="ProgressBar__top ">
+                <div className="ProgressBar__title-group text-black">
+                    <BookOpen size={24} />
                     <span>{title}</span>
                 </div>
-                <div className="ProgressBar__count">
+                <div className="ProgressBar__count text-black">
                     {current} of {total} cards
                 </div>
             </div>
@@ -36,6 +38,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
+                    style={{ backgroundColor: "#d10c0cff" }}
                 />
             </div>
 

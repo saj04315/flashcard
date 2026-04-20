@@ -21,7 +21,9 @@ import {
     Loader2
 } from "lucide-react";
 import Button from "../../components/Button";
+import { toast } from "sonner";
 import { getSubjects, createSubject, updateSubject, deleteSubject, type Subject } from "../actions/subjectActions";
+import { getGrades, type Grade } from "../actions/gradeActions";
 
 const icons = [
     { id: 'beaker', component: Beaker },
@@ -38,16 +40,17 @@ const icons = [
 ];
 
 const colors = [
-    '#EF4444', // Red
-    '#10B981', // Green
-    '#508DF7', // Blue (Current Primary)
-    '#F2A359', // Orange
-    '#A855F7', // Purple
-    '#64748B', // Gray
+    '#4285F4', // Doodle Blue
+    '#EA4335', // Doodle Red
+    '#FBBC05', // Doodle Yellow
+    '#34A853', // Doodle Green
+    '#A142F4', // Doodle Purple
+    '#F2A359', // Doodle Orange
 ];
 
 export default function SubjectManager() {
     const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [grades, setGrades] = useState<Grade[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [submitting, setSubmitting] = useState(false);
@@ -57,6 +60,7 @@ export default function SubjectManager() {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
+        gradeId: "",
         color: colors[2],
         icon: 'globe'
     });
@@ -70,6 +74,7 @@ export default function SubjectManager() {
 
     useEffect(() => {
         fetchSubjects();
+        getGrades().then(setGrades);
     }, [fetchSubjects]);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,33 +90,51 @@ export default function SubjectManager() {
 
     const handleSave = async () => {
         if (!formData.name) {
-            alert("Please enter a subject name.");
+            toast.error("Please enter a subject name.");
             return;
         }
 
         setSubmitting(true);
-        if (editingId) {
-            const res = await updateSubject(editingId, formData);
-            if (res.success) {
-                setEditingId(null);
-                setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
-                fetchSubjects(search);
+        try {
+            if (editingId) {
+                const res = await updateSubject(editingId, formData);
+                if (res.success) {
+                    toast.success("Subject updated successfully!");
+                    setEditingId(null);
+                    setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
+                    fetchSubjects(search);
+                } else {
+                    toast.error(res.error || "Failed to update subject.");
+                }
+            } else {
+                const res = await createSubject(formData);
+                if (res.success) {
+                    toast.success("Subject created successfully!");
+                    setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
+                    fetchSubjects(search);
+                } else {
+                    toast.error(res.error || "Failed to create subject.");
+                }
             }
-        } else {
-            const res = await createSubject(formData);
-            if (res.success) {
-                setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
-                fetchSubjects(search);
-            }
+        } catch (error) {
+            toast.error("An unexpected error occurred.");
+        } finally {
+            setSubmitting(false);
         }
-        setSubmitting(false);
     };
 
     const handleDelete = async (id: string) => {
         if (confirm("Are you sure you want to delete this subject? All associated units and flashcards might be affected?")) {
-            const res = await deleteSubject(id);
-            if (res.success) {
-                fetchSubjects(search);
+            try {
+                const res = await deleteSubject(id);
+                if (res.success) {
+                    toast.success("Subject deleted successfully!");
+                    fetchSubjects(search);
+                } else {
+                    toast.error(res.error || "Failed to delete subject.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
             }
         }
     };
@@ -121,6 +144,7 @@ export default function SubjectManager() {
         setFormData({
             name: subject.name,
             description: subject.description,
+            gradeId: subject.gradeId || "",
             color: subject.color,
             icon: subject.icon
         });
@@ -129,7 +153,7 @@ export default function SubjectManager() {
 
     const cancelEdit = () => {
         setEditingId(null);
-        setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
+        setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
     };
 
     const getIconComponent = (iconId: string) => {
@@ -146,12 +170,27 @@ export default function SubjectManager() {
 
             <div className="SubjectManager__create-card">
                 <div className="SubjectManager__form-title">
-                    <PlusCircle size={24} color="#508DF7" />
+                    <PlusCircle size={24} color="var(--doodle-blue)" />
                     <span>{editingId ? "Edit Subject" : "Create New Subject"}</span>
                 </div>
 
                 <div className="SubjectManager__form-grid">
                     <div className="SubjectManager__form-left">
+                        <div className="SubjectManager__field" style={{ marginBottom: '24px' }}>
+                            <label className="SubjectManager__field-label">Select Grade</label>
+                            <select
+                                name="gradeId"
+                                value={formData.gradeId}
+                                onChange={handleFormChange as any}
+                                className="SubjectManager__input"
+                                style={{ backgroundColor: 'white' }}
+                            >
+                                <option value="">No Grade (Standalone)</option>
+                                {grades.map(g => (
+                                    <option key={g.id} value={g.id}>{g.name}</option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="SubjectManager__field">
                             <label className="SubjectManager__field-label">Subject Name</label>
                             <input
@@ -172,7 +211,11 @@ export default function SubjectManager() {
                                 onChange={handleFormChange}
                                 className="SubjectManager__input"
                                 placeholder="Brief description..."
+                                maxLength={100}
                             />
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '10px', color: 'var(--text-gray)', marginTop: '4px' }}>
+                                <span>{formData.description.length}/100 max charaters</span>
+                            </div>
                         </div>
                         <div className="SubjectManager__field" style={{ marginTop: '24px' }}>
                             <label className="SubjectManager__field-label">Theme Color</label>
@@ -232,11 +275,11 @@ export default function SubjectManager() {
 
             <div className="SubjectManager__list-header">
                 <h2>
-                    <LayoutGrid size={24} color="#508DF7" />
+                    <LayoutGrid size={24} color="var(--doodle-blue)" />
                     Available Subjects
                 </h2>
                 <div className="AdminHeader__search">
-                    <Search size={18} color="#64748B" />
+                    <Search size={18} color="var(--text-gray)" />
                     <input
                         type="text"
                         placeholder="Search subjects..."
@@ -249,12 +292,12 @@ export default function SubjectManager() {
             <div style={{ minHeight: '300px', position: 'relative' }}>
                 {loading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
-                        <Loader2 size={32} className="animate-spin" color="#508DF7" />
+                        <Loader2 size={32} className="animate-spin" color="var(--doodle-blue)" />
                     </div>
                 ) : (
                     <div className="SubjectManager__grid">
                         {subjects.length === 0 ? (
-                            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--text-gray)' }}>
                                 No subjects found.
                             </div>
                         ) : (
@@ -277,7 +320,7 @@ export default function SubjectManager() {
                                                 <button
                                                     className="StudentTable__action-btn"
                                                     title="Delete"
-                                                    style={{ color: '#EF4444' }}
+                                                    style={{ color: 'var(--doodle-red)' }}
                                                     onClick={() => handleDelete(subject.id)}
                                                 >
                                                     <Trash2 size={14} />
@@ -297,10 +340,10 @@ export default function SubjectManager() {
 
                         <div className="SubjectItem-card SubjectItem-card--add" onClick={() => {
                             setEditingId(null);
-                            setFormData({ name: "", description: "", color: colors[2], icon: 'globe' });
+                            setFormData({ name: "", description: "", gradeId: "", color: colors[2], icon: 'globe' });
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }} style={{ cursor: 'pointer' }}>
-                            <Plus size={32} color="#94A3B8" />
+                            <Plus size={32} color="var(--text-gray)" />
                             <span>Add New Subject</span>
                         </div>
                     </div>

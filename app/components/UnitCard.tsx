@@ -1,14 +1,30 @@
+'use client';
+
 import React from "react";
-import { Globe, BookOpen, Clock, Lock, Play } from "lucide-react";
+import { Globe, BookOpen, Clock, Lock, Layers, Book, Beaker, Atom, Cpu, Map, LucideIcon } from "lucide-react";
 import Button from "./Button";
+import { useAppDispatch } from "../store/hooks";
+import { setUnit } from "../store/navigationSlice";
+
+
+const iconMap: Record<string, LucideIcon> = {
+    globe: Globe,
+    book: Book,
+    bookopen: BookOpen,
+    beaker: Beaker,
+    atom: Atom,
+    cpu: Cpu,
+    map: Map,
+};
 
 interface UnitCardProps {
     unitNumber?: number;
+    unitId?: string;
     title?: string;
     cardCount?: number;
     duration?: number;
     bgImage?: string;
-    Icon?: any;
+    iconName?: string;
     isLocked?: boolean;
     unlockText?: string;
     href?: string;
@@ -16,15 +32,25 @@ interface UnitCardProps {
 
 const UnitCard: React.FC<UnitCardProps> = ({
     unitNumber = 1,
+    unitId = '',
     title = "The Solar System",
-    cardCount = 30,
-    duration = 15,
+    cardCount = 0,
+    duration = 0,
+   
     bgImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=320",
-    Icon = Globe,
+    iconName = 'globe',
     isLocked = false,
     unlockText = "",
     href = "#",
 }) => {
+    const dispatch = useAppDispatch();
+    const Icon = iconMap[iconName.toLowerCase()] || BookOpen;
+
+    const handleClick = () => {
+        if (!isLocked) {
+            dispatch(setUnit({ id: unitId, title }));
+        }
+    };
     return (
         <div className={`UnitCard ${isLocked ? "UnitCard--locked" : ""}`}>
             <div
@@ -45,31 +71,24 @@ const UnitCard: React.FC<UnitCardProps> = ({
             <div className="UnitCard__content">
                 <h3 className="UnitCard__title">{title}</h3>
 
-                {isLocked ? (
-                    <div className="UnitCard__unlock-info">
-                        <Lock size={14} />
-                        <span>{unlockText || "LOCKED"}</span>
+                <div className="UnitCard__stats">
+                    <div className="UnitCard__stat">
+                        <Layers size={14} />
+                        <span>{cardCount} CARDS</span>
                     </div>
-                ) : (
-                    <div className="UnitCard__stats">
-                        <div className="UnitCard__stat">
-                            <BookOpen size={16} />
-                            <span>{cardCount} Cards</span>
-                        </div>
-                        <div className="UnitCard__stat">
-                            <Clock size={16} />
-                            <span>{duration} Min</span>
-                        </div>
+                    <div className="UnitCard__stat">
+                        <Clock size={14} />
+                        <span>{duration} MIN READ</span>
                     </div>
-                )}
+                </div>
 
-                <a href={isLocked ? undefined : href} style={{ textDecoration: 'none', display: 'block' }}>
+                <a href={isLocked ? undefined : href} style={{ textDecoration: 'none', display: 'block' }} onClick={handleClick}>
                     <Button
                         className={isLocked ? "btn-3d--locked" : "btn-3d--teal"}
                         style={{ width: "100%", gap: "8px" }}
                         disabled={isLocked}
                     >
-                        {!isLocked && <Play size={18} fill="currentColor" />}
+                        
                         {isLocked ? "LOCKED" : "START LEARNING"}
                     </Button>
                 </a>

@@ -13,6 +13,7 @@ interface SidebarItemProps {
 interface AdminSidebarProps {
     currentTab: string;
     onTabChange: (tab: string) => void;
+    isOpen?: boolean;
 }
 
 const SidebarItem: React.FC<SidebarItemProps & { onClick: () => void }> = ({ icon, label, isActive = false, onClick }) => (
@@ -26,21 +27,21 @@ const SidebarItem: React.FC<SidebarItemProps & { onClick: () => void }> = ({ ico
     </button>
 );
 
-export default function AdminSidebar({ currentTab, onTabChange }: AdminSidebarProps) {
+export default function AdminSidebar({ currentTab, onTabChange, isOpen }: AdminSidebarProps) {
     return (
-        <aside className="AdminSidebar">
+        <aside className={`AdminSidebar ${isOpen ? "AdminSidebar--open" : ""}`}>
             <div className="AdminSidebar__logo">
-                <div className="AdminSidebar__logo-icon">
-                    <SchoolIcon size={32} color="white" />
-                </div>
-                <div className="AdminSidebar__logo-text">
-                    <h2>Flashcard Edu</h2>
-                    <p>Control Center</p>
-                </div>
+
             </div>
 
             <nav className="AdminSidebar__nav">
-               
+
+                <SidebarItem
+                    icon={<SchoolIcon size={20} />}
+                    label="Grades"
+                    isActive={currentTab === 'grades'}
+                    onClick={() => onTabChange('grades')}
+                />
                 <SidebarItem
                     icon={<Shapes size={20} />}
                     label="Subjects"

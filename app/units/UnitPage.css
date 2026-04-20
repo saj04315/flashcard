@@ -3,24 +3,27 @@
     max-width: 100%;
     margin: 0 auto;
     min-height: 100vh;
-    background-color: #F8FAFC;
+    background: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url('/subject.jpg') no-repeat center center fixed;
+    background-size: cover;
+    transition: padding 0.3s ease;
 }
+
 
 .UnitPage__header {
     margin-bottom: 48px;
 }
 
 .UnitPage__title {
-    font-family: 'DynaPuff', cursive;
+    font-family: 'DynaPuff';
     font-size: 36px;
-    color: #1a2e4a;
+    color: var(--text-black);
     margin-top: 24px;
     margin-bottom: 8px;
     text-transform: uppercase;
 }
 
 .UnitPage__subtitle {
-    color: #7a8a9a;
+    color: var(--text-gray);
     font-size: 16px;
     max-width: 800px;
 }
@@ -50,8 +53,8 @@
 
 /* Button Variations */
 .btn-3d--teal {
-    background-color: #6BA898;
-    box-shadow: 0 4px 0 #4D7A6E;
+    background-color: var(--doodle-green);
+    box-shadow: 0 4px 0 #2E8B44;
 }
 
 .btn-3d--teal:active {
@@ -119,4 +122,63 @@
 
 .ChallengeBanner__link:hover {
     text-decoration: underline;
+}
+
+/* Responsive Queries for Unit Page */
+@media (max-width: 1024px) {
+    .UnitPage {
+        padding: 140px 24px 40px;
+    }
+
+    .UnitGrid {
+        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .UnitPage {
+        padding: 120px 20px 40px;
+    }
+
+    .UnitPage__title {
+        font-size: 28px;
+    }
+
+    .ChallengeBanner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .ChallengeBanner__link {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .UnitPage {
+        padding: 100px 16px 40px;
+        text-align: center;
+    }
+
+    .UnitPage__subtitle {
+        margin: 0 auto;
+    }
+
+    .UnitGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .ChallengeBanner__left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .btn-3d {
+        padding: 8px 24px;
+        font-size: 16px;
+        min-width: 120px;
+    }
 }

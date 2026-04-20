@@ -4,31 +4,52 @@ import React, { useState } from "react";
 import { RotateCw } from "lucide-react";
 import { motion } from "framer-motion";
 import Button from "./Button";
+import { useAppSelector } from "../store/hooks";
 
 interface FlashcardProps {
     question?: string;
     answer?: string;
     questionImg?: string;
-    answerImg?: string;
+    answerImages?: string[];
     onFlip?: () => void;
+    onAnswerViewed?: () => void;
+    subjectColor?: string;
+    unitTitle?: string;
 }
 
 const Flashcard: React.FC<FlashcardProps> = ({
     question = "What is the largest planet in our solar system?",
     answer = "Jupiter",
     questionImg,
-    answerImg,
+    answerImages,
     onFlip,
+    onAnswerViewed,
+    subjectColor, // Remove the default here, handle it below
+    unitTitle = "UNIT 2",
 }) => {
+    const globalAccentColor = useAppSelector((state) => state.theme.accentColor);
+    const finalSubjectColor = subjectColor && subjectColor !== "#ffffffff" ? subjectColor : globalAccentColor;
+
     const [isFlipped, setIsFlipped] = useState(false);
 
     const handleFlip = () => {
+        const wasFlipped = isFlipped;
         setIsFlipped(!isFlipped);
+        
+        // Call onAnswerViewed only when flipping TO the answer (not back to question)
+        if (!wasFlipped && onAnswerViewed) {
+            onAnswerViewed();
+        }
+        
         if (onFlip) onFlip();
     };
 
+    const cardStyle: React.CSSProperties = {
+        "--subject-color": finalSubjectColor,
+    } as any;
+
     return (
-        <div className="Flashcard-wrapper">
+        <div className="Flashcard-wrapper" style={cardStyle}>
             <motion.div
                 className="Flashcard-inner"
                 initial={false}
@@ -36,63 +57,53 @@ const Flashcard: React.FC<FlashcardProps> = ({
                 transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
             >
                 {/* Front Face (Question) */}
-                <div className="Flashcard Flashcard--front">
-                    <div className="Flashcard__shapes">
-                        <div className="Flashcard__shape Flashcard__shape--1"></div>
-                        <div className="Flashcard__shape Flashcard__shape--2"></div>
-                        <div className="Flashcard__shape Flashcard__shape--3"></div>
-                        <div className="Flashcard__shape Flashcard__shape--4"></div>
-                    </div>
-
-                    <div className="Flashcard__badge">QUESTION</div>
+                <div className="Flashcard Flashcard--front" style={{ border: `24px solid ${finalSubjectColor}`, backgroundColor: 'white' }}>
+                    {/* <div className="Flashcard__unit-badge">{unitTitle}</div> */}
 
                     <div className="Flashcard__text-content">
+                        <div className="Flashcard__text" dangerouslySetInnerHTML={{ __html: question }}></div>
                         {questionImg && (
                             <div className="Flashcard__image">
                                 <img src={questionImg} alt="Question" />
                             </div>
                         )}
-                        <div className="Flashcard__text">{question}</div>
                     </div>
 
-                    <div className="Flashcard__footer">
+                    <div className="Flashcard__flip-btn-container">
                         <Button
-                            className="btn-3d--orange"
+                            className="btn-flip"
                             onClick={handleFlip}
-                            icon={<RotateCw size={20} />}
+                            icon={<RotateCw size={16} />}
                         >
-                            Flip Card
+                            Flip
                         </Button>
                     </div>
                 </div>
 
                 {/* Back Face (Answer) */}
-                <div className="Flashcard Flashcard--back">
-                    <div className="Flashcard__shapes">
-                        <div className="Flashcard__shape Flashcard__shape--1"></div>
-                        <div className="Flashcard__shape Flashcard__shape--2"></div>
-                        <div className="Flashcard__shape Flashcard__shape--3"></div>
-                        <div className="Flashcard__shape Flashcard__shape--4"></div>
-                    </div>
-
-                    <div className="Flashcard__badge">ANSWER</div>
+                <div className="Flashcard Flashcard--back" style={{ border: `24px solid ${finalSubjectColor}`, backgroundColor: 'white' }}>
+                    {/* <div className="Flashcard__unit-badge">{unitTitle}</div> */}
 
                     <div className="Flashcard__text-content">
-                        {answerImg && (
-                            <div className="Flashcard__image">
-                                <img src={answerImg} alt="Answer" />
+                        <div className="Flashcard__text" dangerouslySetInnerHTML={{ __html: answer }}></div>
+                        {answerImages && answerImages.length > 0 && (
+                            <div className="Flashcard__images" style={{ display: 'flex', gap: '16px', justifyContent: 'center', width: '100%' }}>
+                                {answerImages.map((img, i) => (
+                                    <div key={i} className="Flashcard__image" style={{ width: '300px', flexShrink: 0 }}>
+                                        <img src={img} alt={`Answer ${i + 1}`} style={{ width: '100%', objectFit: 'contain' }} />
+                                    </div>
+                                ))}
                             </div>
                         )}
-                        <div className="Flashcard__text">{answer}</div>
                     </div>
 
-                    <div className="Flashcard__footer">
+                    <div className="Flashcard__flip-btn-container">
                         <Button
-                            className="btn-3d--orange"
+                            className="btn-flip"
                             onClick={handleFlip}
-                            icon={<RotateCw size={20} />}
+                            icon={<RotateCw size={16} />}
                         >
-                            Flip Card
+                            Flip
                         </Button>
                     </div>
                 </div>

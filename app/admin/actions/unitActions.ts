@@ -1,6 +1,6 @@
 "use server";
 
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
@@ -10,6 +10,7 @@ export interface Unit {
     subject_id: string;
     title: string;
     order: number;
+    bgImage?: string;
     cardCount?: number;
     lastUpdated?: string;
     subjectName?: string;
@@ -24,7 +25,7 @@ export async function getUnits(search: string = ""): Promise<Unit[]> {
         const subjectsCollection = db.collection("subjects");
         const flashcardsCollection = db.collection("flashcards");
 
-        let query = {} as any;
+        const query = {} as any;
         if (search) {
             query.title = { $regex: search, $options: "i" };
         }
@@ -46,6 +47,7 @@ export async function getUnits(search: string = ""): Promise<Unit[]> {
                 _id: u._id.toString(),
                 subjectName: subject?.name || "Unknown",
                 subjectColor: subject?.color || "#64748B",
+                bgImage: u.bgImage || "",
                 cardCount: cardCount,
                 lastUpdated: u.updatedAt ? new Date(u.updatedAt).toLocaleDateString() : "Recently"
             };
@@ -58,7 +60,44 @@ export async function getUnits(search: string = ""): Promise<Unit[]> {
     }
 }
 
-export async function createUnit(data: { subject_id: string; title: string; order?: number }) {
+export async function getUnitsBySubject(subjectId: string): Promise<Unit[]> {
+    console.log("EXEC_CHECK: getUnitsBySubject called with:", subjectId);
+    try {
+        const client = await clientPromise;
+        const db = client.db();
+        const unitsCollection = db.collection("units");
+
+        let query: any = { subject_id: subjectId };
+
+        if (subjectId && ObjectId.isValid(subjectId)) {
+            try {
+                query = {
+                    $or: [
+                        { subject_id: subjectId },
+                        { subject_id: new ObjectId(subjectId) }
+                    ]
+                };
+            } catch (e) {
+                console.warn("ObjectId conversion failed for subjectId:", subjectId, "Value type:", typeof subjectId);
+                // Fallback to searching by string only
+                query = { subject_id: subjectId };
+            }
+        }
+
+        const units = await unitsCollection.find(query).sort({ order: 1 }).toArray();
+
+        return units.map(u => ({
+            ...u,
+            id: u._id.toString(),
+            _id: u._id.toString(),
+        })) as unknown as Unit[];
+    } catch (error) {
+        console.error("Error fetching units by subject:", error);
+        return [];
+    }
+}
+
+export async function createUnit(data: { subject_id: string; title: string; order?: number; bgImage?: string }) {
     try {
         const client = await clientPromise;
         const db = client.db();

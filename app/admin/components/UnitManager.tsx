@@ -18,6 +18,7 @@ import {
     LayoutGrid
 } from "lucide-react";
 import Button from "../../components/Button";
+import { toast } from "sonner";
 import { getUnits, createUnit, updateUnit, deleteUnit, type Unit } from "../actions/unitActions";
 import { getSubjects, type Subject } from "../actions/subjectActions";
 
@@ -39,6 +40,7 @@ export default function UnitManager() {
     const [formData, setFormData] = useState({
         subject_id: "",
         title: "",
+        bgImage: "",
     });
 
     const fetchData = useCallback(async (searchTerm: string = "") => {
@@ -70,26 +72,37 @@ export default function UnitManager() {
 
     const handleSave = async () => {
         if (!formData.title || !formData.subject_id) {
-            alert("Please fill in all fields.");
+            toast.error("Please fill in all fields.");
             return;
         }
 
         setSubmitting(true);
-        if (editingId) {
-            const res = await updateUnit(editingId, formData);
-            if (res.success) {
-                setEditingId(null);
-                setFormData(prev => ({ ...prev, title: "" }));
-                fetchData(search);
+        try {
+            if (editingId) {
+                const res = await updateUnit(editingId, formData);
+                if (res.success) {
+                    toast.success("Unit updated successfully!");
+                    setEditingId(null);
+                    setFormData(prev => ({ ...prev, title: "", bgImage: "" }));
+                    fetchData(search);
+                } else {
+                    toast.error(res.error || "Failed to update unit.");
+                }
+            } else {
+                const res = await createUnit(formData);
+                if (res.success) {
+                    toast.success("Unit created successfully!");
+                    setFormData(prev => ({ ...prev, title: "", bgImage: "" }));
+                    fetchData(search);
+                } else {
+                    toast.error(res.error || "Failed to create unit.");
+                }
             }
-        } else {
-            const res = await createUnit(formData);
-            if (res.success) {
-                setFormData(prev => ({ ...prev, title: "" }));
-                fetchData(search);
-            }
+        } catch (error) {
+            toast.error("An unexpected error occurred.");
+        } finally {
+            setSubmitting(false);
         }
-        setSubmitting(false);
     };
 
     const handleEdit = (unit: Unit) => {
@@ -97,15 +110,23 @@ export default function UnitManager() {
         setFormData({
             subject_id: unit.subject_id,
             title: unit.title,
+            bgImage: unit.bgImage || "",
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleDelete = async (id: string) => {
         if (confirm("Are you sure you want to delete this unit?")) {
-            const res = await deleteUnit(id);
-            if (res.success) {
-                fetchData(search);
+            try {
+                const res = await deleteUnit(id);
+                if (res.success) {
+                    toast.success("Unit deleted successfully!");
+                    fetchData(search);
+                } else {
+                    toast.error(res.error || "Failed to delete unit.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
             }
         }
     };
@@ -115,6 +136,7 @@ export default function UnitManager() {
         setFormData({
             subject_id: subjects[0]?.id || "",
             title: "",
+            bgImage: "",
         });
     };
 
@@ -129,7 +151,7 @@ export default function UnitManager() {
     if (orphanedUnits.length > 0) {
         groupedUnits.push({
             subject: "Others",
-            color: "#64748B",
+            color: "var(--text-gray)",
             units: orphanedUnits
         });
     }
@@ -143,11 +165,11 @@ export default function UnitManager() {
 
             <div className="UnitManager__create-card">
                 <div className="SubjectManager__form-title">
-                    <PlusCircle size={24} color="#508DF7" />
+                    <PlusCircle size={24} color="var(--doodle-blue)" />
                     <span>{editingId ? "Edit Unit" : "Add New Unit"}</span>
                 </div>
 
-                <div className="UnitManager__form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr auto', gap: '24px', alignItems: 'flex-end' }}>
+                <div className="UnitManager__form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '24px', alignItems: 'flex-end' }}>
                     <div className="UnitManager__field">
                         <label className="UnitManager__field-label">Select Subject</label>
                         <div className="FlashcardForm__select-group" style={{ width: '100%' }}>
@@ -168,9 +190,20 @@ export default function UnitManager() {
                         <input
                             type="text"
                             className="SubjectManager__input"
-                            placeholder="e.g. Intro to Quantum Mechanics"
+                            placeholder="e.g. Intro to Mechanics"
                             value={formData.title}
                             onChange={(e) => setFormData(p => ({ ...p, title: e.target.value }))}
+                        />
+                    </div>
+
+                    <div className="UnitManager__field">
+                        <label className="UnitManager__field-label">Background Image URL</label>
+                        <input
+                            type="text"
+                            className="SubjectManager__input"
+                            placeholder="e.g. https://images.unsplash..."
+                            value={formData.bgImage}
+                            onChange={(e) => setFormData(p => ({ ...p, bgImage: e.target.value }))}
                         />
                     </div>
 
@@ -203,7 +236,7 @@ export default function UnitManager() {
                 <h2>Available Units</h2>
                 <div className="AdminHeader__right">
                     <div className="AdminHeader__search">
-                        <Search size={18} color="#64748B" />
+                        <Search size={18} color="var(--text-gray)" />
                         <input
                             type="text"
                             placeholder="Search units..."
@@ -217,10 +250,10 @@ export default function UnitManager() {
             <div className="UnitManager__content" style={{ minHeight: '300px', position: 'relative' }}>
                 {loading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
-                        <Loader2 size={32} className="animate-spin" color="#508DF7" />
+                        <Loader2 size={32} className="animate-spin" color="var(--doodle-blue)" />
                     </div>
                 ) : units.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '60px', color: '#64748B' }}>
+                    <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-gray)' }}>
                         No units found.
                     </div>
                 ) : (
@@ -251,7 +284,7 @@ export default function UnitManager() {
                                             <button className="UnitListItem__action-btn" onClick={() => handleEdit(unit)}>
                                                 <Edit2 size={18} />
                                             </button>
-                                            <button className="UnitListItem__action-btn" style={{ color: '#EF4444' }} onClick={() => handleDelete(unit.id)}>
+                                            <button className="UnitListItem__action-btn" style={{ color: 'var(--doodle-red)' }} onClick={() => handleDelete(unit.id)}>
                                                 <Trash2 size={18} />
                                             </button>
                                         </div>
