@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Footer from "./components/Footer";
@@ -22,11 +23,26 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersList = await headers();
-  const currentPath = headersList.get("x-pathname") || "";
-  const isAuthPage = currentPath === "/login" || currentPath.startsWith("/sign-up");
+  // headers() throws during static pre-rendering (e.g. /_not-found at build time).
+  // Wrap in try/catch so the build doesn't fail — fall back to safe defaults.
+  let currentPath = "";
+  let authenticated = false;
+  let status: string | undefined;
+  let role: string | undefined;
 
-  const { authenticated, status, role } = await checkUserStatus();
+  try {
+    const headersList = await headers();
+    currentPath = headersList.get("x-pathname") || "";
+
+    const userStatus = await checkUserStatus();
+    authenticated = userStatus.authenticated ?? false;
+    status = (userStatus as any).status;
+    role = (userStatus as any).role;
+  } catch {
+    // Static pre-render context — skip auth checks
+  }
+
+  const isAuthPage = currentPath === "/login" || currentPath.startsWith("/sign-up");
 
   // 1. Basic Auth & Status Check
   if (authenticated && status !== "Active" && status !== "Approved" && !isAuthPage) {
@@ -44,7 +60,7 @@ export default async function RootLayout({
         <body className="antialiased">
           <StoreProvider>
             <Toaster richColors position="top-center" />
-            {!isAuthPage && <Navbar />}
+            {!isAuthPage && <Suspense fallback={null}><Navbar /></Suspense>}
             <div className={isAuthPage ? "" : "container"} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
               <main style={{ flex: 1 }}>
                 {children}
