@@ -742,7 +742,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(102, 157, 142, 0.7);
+  background: rgba(102, 157, 142, 0.064);
   /* Teal overlay */
   z-index: 1;
 }

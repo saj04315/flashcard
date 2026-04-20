@@ -74,7 +74,7 @@
 }
 
 .FarmPage__grid-cell {
-  border: 2px solid rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(105, 74, 12, 0.016);
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s;

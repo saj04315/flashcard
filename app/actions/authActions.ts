@@ -27,6 +27,15 @@ export async function checkUserStatus() {
                 status: "pending",
                 createdAt: new Date(),
                 initials: (user.firstName?.[0] || "") + (user.lastName?.[0] || ""),
+                gameData: {
+                    coins: 0,
+                    completedUnits: [],
+                    unitLastCompleted: {},
+                    cardsViewedPerUnit: {},
+                    unitToItemIndex: {},
+                    inventory: [],
+                    placedItems: [],
+                },
             };
             await usersCollection.insertOne(newUser);
             return { authenticated: true, status: "pending", user: newUser };
