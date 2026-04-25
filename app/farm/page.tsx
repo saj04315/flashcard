@@ -309,7 +309,7 @@ export default function FarmPage() {
                         </div>
 
                         <div className="FarmPage__farm-image">
-                            <Image src="/farm/farm.png" alt="Farm" fill />
+                            <Image src="/ground.png" alt="Farm" fill />
                         </div>
                     </div>
 
