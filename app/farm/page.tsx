@@ -404,18 +404,7 @@ export default function FarmPage() {
                                                     <div className="FarmPage__slot-info">
                                                         <h4>{item.name}</h4>
                                                         <p>{item.description}</p>
-                                                        <div className="FarmPage__slot-actions">
-                                                            <button
-                                                                className="FarmPage__delete-btn"
-                                                                aria-label="Delete"
-                                                                onClick={() => handleDeleteInventoryItem(entry.instanceId)}
-                                                            >
-                                                                🗑️
-                                                            </button>
-                                                            <button className="FarmPage__place-btn" disabled>
-                                                                Drag
-                                                            </button>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </>
                                             ) : (
