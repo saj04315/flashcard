@@ -119,8 +119,10 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.9;
+  opacity: 1;
 }
+
+
 
 .FarmPage__remove-controls {
   margin-top: 16px;
