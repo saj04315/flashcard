@@ -1,6 +1,6 @@
 [
-  { "id": "dirt_path", "name": "Dirt Path", "description": "A simple walkable path.", "price": 20, "image": "/farm/items/dirt_path.png", "size": { "width": 1, "height": 1 } },
-  
+  { "id": "dirt_path", "name": "Dirt Path", "description": "A simple walkable path.", "price": 0, "image": "/farm/items/dirt_path.png", "size": { "width": 1, "height": 1 } },
+  { "id": "wooden_fence", "name": "Wooden Fence", "description": "A fence to enclose areas.", "price": 0, "image": "/farm/items/wooden_fence.png", "size": { "width": 1, "height": 1 } },
   { "id": "flowers", "name": "Flowers", "description": "Colorful decorative flowers.", "price": 20, "image": "/farm/items/flowers.png", "size": { "width": 1, "height": 1 } },
   { "id": "rock", "name": "Rock", "description": "A natural decorative rock.", "price": 20, "image": "/farm/items/rock.png", "size": { "width": 1, "height": 1 } },
   { "id": "carrot", "name": "Carrot", "description": "A small crop plant.", "price": 20, "image": "/farm/items/carrot.png", "size": { "width": 1, "height": 1 } },
@@ -10,7 +10,7 @@
   { "id": "tomato", "name": "Tomato", "description": "Fruit-bearing crop.", "price": 20, "image": "/farm/items/tomato.png", "size": { "width": 1, "height": 1 } },
   { "id": "sunflower", "name": "Sunflower", "description": "Bright tall flower.", "price": 20, "image": "/farm/items/sunflower.png", "size": { "width": 1, "height": 1 } },
 
-  { "id": "wooden_fence", "name": "Wooden Fence", "description": "A fence to enclose areas.", "price": 50, "image": "/farm/items/wooden_fence.png", "size": { "width": 1, "height": 1 } },
+  
   { "id": "gate", "name": "Gate", "description": "Entry point to fenced area.", "price": 50, "image": "/farm/items/gate.png", "size": { "width": 1, "height": 1 } },
   { "id": "pen", "name": "Animal Pen", "description": "Enclosure for animals.", "price": 50, "image": "/farm/items/pen.png", "size": { "width": 2, "height": 2 } },
   

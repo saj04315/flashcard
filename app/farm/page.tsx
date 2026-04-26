@@ -369,8 +369,14 @@ export default function FarmPage() {
                                             <p>{item.description}</p>
                                             <div className="FarmPage__card-footer">
                                                 <span className="FarmPage__price">
-                                                    <Image src="/farm/coin.png" alt="Coin" width={18} height={18} />
-                                                    {item.price}
+                                                    {item.price === 0 ? (
+                                                        "Free"
+                                                    ) : (
+                                                        <>
+                                                            <Image src="/farm/coin.png" alt="Coin" width={18} height={18} />
+                                                            {item.price}
+                                                        </>
+                                                    )}
                                                 </span>
                                                 <button
                                                     className="FarmPage__action-btn"
