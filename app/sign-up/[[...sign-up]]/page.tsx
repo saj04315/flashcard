@@ -47,7 +47,7 @@ export default function SignUpPage() {
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
                 <div className="LoginCard__body" style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "40px" }}>
-                    <SignUp routing="hash" signInUrl="/login" />
+                    <SignUp routing="hash" signInUrl="/login" fallbackRedirectUrl="/onboarding" forceRedirectUrl="/onboarding" />
                    
                 </div>
             </motion.div>

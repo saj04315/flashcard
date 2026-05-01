@@ -1,4 +1,5 @@
-[
+[{ "id": "h_dirt_path", "name": "Horizontal Dirt Path", "description": "A simple walkable path.", "price": 0, "image": "/farm/items/h_dirt_path.png", "size": { "width": 1, "height": 1 } },
+  { "id": "v_wooden_fence", "name": "Vertical Wooden Fence", "description": "A fence to enclose areas.", "price": 0, "image": "/farm/items/v_wooden_fence.png", "size": { "width": 1, "height": 3 } },
   { "id": "dirt_path", "name": "Dirt Path", "description": "A simple walkable path.", "price": 0, "image": "/farm/items/dirt_path.png", "size": { "width": 1, "height": 1 } },
   { "id": "wooden_fence", "name": "Wooden Fence", "description": "A fence to enclose areas.", "price": 0, "image": "/farm/items/wooden_fence.png", "size": { "width": 1, "height": 1 } },
   { "id": "flowers", "name": "Flowers", "description": "Colorful decorative flowers.", "price": 20, "image": "/farm/items/flowers.png", "size": { "width": 1, "height": 1 } },

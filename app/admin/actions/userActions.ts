@@ -17,6 +17,8 @@ export interface Student {
     status: string;
     initials: string;
     grade?: string;
+    teacher?: string;
+    teacherName?: string;
     createdAt: Date;
 }
 
@@ -44,6 +46,7 @@ export async function syncUsers() {
                     email: email,
                     role: "student", // Default role
                     status: "pending", // Default status as requested
+                    teacher: "admin", // Default teacher
                     createdAt: new Date(),
                     initials: (user.firstName?.[0] || "") + (user.lastName?.[0] || ""),
                 });
@@ -61,7 +64,7 @@ export async function syncUsers() {
     }
 }
 
-export async function getStudents(search: string = ""): Promise<Student[]> {
+export async function getStudents(search: string = "", teacherIdFilter?: string): Promise<Student[]> {
     try {
         const mongoClient = await clientPromise;
         const db = mongoClient.db();
@@ -75,13 +78,29 @@ export async function getStudents(search: string = ""): Promise<Student[]> {
             ];
         }
 
-        const students = await usersCollection.find(query).sort({ createdAt: -1 }).toArray();
+        if (teacherIdFilter) {
+            query.teacher = teacherIdFilter;
+        }
 
-        return students.map(s => ({
-            ...s,
-            id: s._id.toString(),
-            _id: s._id.toString(),
-        })) as unknown as Student[];
+        const students = await usersCollection.find(query).sort({ createdAt: -1 }).toArray();
+        const teachers = await usersCollection.find({ role: "teacher" }).toArray();
+        
+        const teacherMap = new Map();
+        teachers.forEach(t => teacherMap.set(t._id.toString(), t.name));
+
+        return students.map(s => {
+            let teacherName = "Admin";
+            if (s.teacher && s.teacher !== "admin") {
+                teacherName = teacherMap.get(s.teacher) || "Unknown Teacher";
+            }
+            
+            return {
+                ...s,
+                id: s._id.toString(),
+                _id: s._id.toString(),
+                teacherName
+            };
+        }) as unknown as Student[];
     } catch (error) {
         console.error("Fetch error:", error);
         return [];
@@ -130,3 +149,27 @@ export async function deleteStudent(studentId: string) {
         return { success: false, error: (error as Error).message };
     }
 }
+
+export async function changeRoleToTeacher(userId: string) {
+    try {
+        const mongoClient = await clientPromise;
+        const db = mongoClient.db();
+        const usersCollection = db.collection("users");
+
+        let filter: any = { _id: userId };
+        if (ObjectId.isValid(userId)) {
+            filter = { $or: [{ _id: new ObjectId(userId) }, { _id: userId }] };
+        }
+
+        await usersCollection.updateOne(
+            filter,
+            { $set: { role: "teacher", students: [] } }
+        );
+
+        return { success: true };
+    } catch (error) {
+        console.error("Role change error:", error);
+        return { success: false, error: (error as Error).message };
+    }
+}
+

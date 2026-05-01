@@ -14,6 +14,7 @@ interface AdminSidebarProps {
     currentTab: string;
     onTabChange: (tab: string) => void;
     isOpen?: boolean;
+    role?: string | null;
 }
 
 const SidebarItem: React.FC<SidebarItemProps & { onClick: () => void }> = ({ icon, label, isActive = false, onClick }) => (
@@ -27,7 +28,7 @@ const SidebarItem: React.FC<SidebarItemProps & { onClick: () => void }> = ({ ico
     </button>
 );
 
-export default function AdminSidebar({ currentTab, onTabChange, isOpen }: AdminSidebarProps) {
+export default function AdminSidebar({ currentTab, onTabChange, isOpen, role }: AdminSidebarProps) {
     return (
         <aside className={`AdminSidebar ${isOpen ? "AdminSidebar--open" : ""}`}>
             <div className="AdminSidebar__logo">
@@ -36,36 +37,50 @@ export default function AdminSidebar({ currentTab, onTabChange, isOpen }: AdminS
 
             <nav className="AdminSidebar__nav">
 
-                <SidebarItem
-                    icon={<SchoolIcon size={20} />}
-                    label="Grades"
-                    isActive={currentTab === 'grades'}
-                    onClick={() => onTabChange('grades')}
-                />
-                <SidebarItem
-                    icon={<Shapes size={20} />}
-                    label="Subjects"
-                    isActive={currentTab === 'subjects'}
-                    onClick={() => onTabChange('subjects')}
-                />
-                <SidebarItem
-                    icon={<Layers size={20} />}
-                    label="Units"
-                    isActive={currentTab === 'units'}
-                    onClick={() => onTabChange('units')}
-                />
-                <SidebarItem
-                    icon={<CreditCard size={20} />}
-                    label="Flashcards"
-                    isActive={currentTab === 'flashcards'}
-                    onClick={() => onTabChange('flashcards')}
-                />
+                {role !== 'teacher' && (
+                    <>
+                        <SidebarItem
+                            icon={<SchoolIcon size={20} />}
+                            label="Grades"
+                            isActive={currentTab === 'grades'}
+                            onClick={() => onTabChange('grades')}
+                        />
+                        <SidebarItem
+                            icon={<Shapes size={20} />}
+                            label="Subjects"
+                            isActive={currentTab === 'subjects'}
+                            onClick={() => onTabChange('subjects')}
+                        />
+                        <SidebarItem
+                            icon={<Layers size={20} />}
+                            label="Units"
+                            isActive={currentTab === 'units'}
+                            onClick={() => onTabChange('units')}
+                        />
+                        <SidebarItem
+                            icon={<CreditCard size={20} />}
+                            label="Flashcards"
+                            isActive={currentTab === 'flashcards'}
+                            onClick={() => onTabChange('flashcards')}
+                        />
+                    </>
+                )}
+
                 <SidebarItem
                     icon={<Users size={20} />}
                     label="Students"
                     isActive={currentTab === 'students'}
                     onClick={() => onTabChange('students')}
                 />
+                
+                {role !== 'teacher' && (
+                    <SidebarItem
+                        icon={<Users size={20} />}
+                        label="Teachers"
+                        isActive={currentTab === 'teachers'}
+                        onClick={() => onTabChange('teachers')}
+                    />
+                )}
             </nav>
         </aside>
     );

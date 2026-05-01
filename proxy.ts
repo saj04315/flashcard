@@ -1,16 +1,7 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(['/login(.*)', '/sign-up(.*)', '/api/clerk-webhook(.*)']);
-
 export default clerkMiddleware(async (auth, request) => {
-    if (!isPublicRoute(request)) {
-        const session = await auth();
-        if (!session.userId) {
-            return (await auth()).redirectToSignIn({ returnBackUrl: request.url });
-        }
-    }
-
     // Set the current pathname in a header so layout can see it
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-pathname', new URL(request.url).pathname);

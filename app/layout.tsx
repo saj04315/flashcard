@@ -29,6 +29,7 @@ export default async function RootLayout({
   let authenticated = false;
   let status: string | undefined;
   let role: string | undefined;
+  let teacher: string | undefined;
 
   try {
     const headersList = await headers();
@@ -38,15 +39,25 @@ export default async function RootLayout({
     authenticated = userStatus.authenticated ?? false;
     status = (userStatus as any).status;
     role = (userStatus as any).role;
+    teacher = (userStatus as any).user?.teacher || (userStatus as any).teacher;
   } catch {
     // Static pre-render context — skip auth checks
   }
 
   const isAuthPage = currentPath === "/login" || currentPath.startsWith("/sign-up");
+  const isOnboardingPage = currentPath === "/onboarding";
 
   // 1. Basic Auth & Status Check
-  if (authenticated && status !== "Active" && status !== "Approved" && !isAuthPage) {
-    redirect("/login");
+  if (authenticated) {
+    if (status !== "Active" && status !== "Approved") {
+      if ((!teacher || teacher === "admin") && !isOnboardingPage && !isAuthPage) {
+         redirect("/onboarding");
+      } else if (teacher && teacher !== "admin" && !isAuthPage) {
+         redirect("/login");
+      }
+    } else if (isAuthPage || isOnboardingPage) {
+      redirect("/");
+    }
   }
 
   // 2. Role-Based Access Control for Admin Routes
@@ -60,16 +71,18 @@ export default async function RootLayout({
         <body className="antialiased">
           <StoreProvider>
             <Toaster richColors position="top-center" />
-            {!isAuthPage && <Suspense fallback={null}><Navbar /></Suspense>}
-            <div className={isAuthPage ? "" : "container"} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+            {!isAuthPage && !isOnboardingPage && <Suspense fallback={null}><Navbar /></Suspense>}
+            <div className={isAuthPage || isOnboardingPage ? "" : "container"} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
               <main style={{ flex: 1 }}>
                 {children}
               </main>
-              {!isAuthPage && <Footer />}
+              {!isAuthPage && !isOnboardingPage && <Footer />}
             </div>
-            <Link href="/farm" className="FarmFloatButton">
-              <Image src="/farm/btn.png" alt="Farm button" width={72} height={72} />
-            </Link>
+            {authenticated && role === "student" && !isAuthPage && !isOnboardingPage && (
+              <Link href="/farm" className="FarmFloatButton">
+                <Image src="/farm/btn.png" alt="Farm button" width={72} height={72} />
+              </Link>
+            )}
           </StoreProvider>
         </body>
       </html>

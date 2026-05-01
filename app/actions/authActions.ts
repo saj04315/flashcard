@@ -25,6 +25,7 @@ export async function checkUserStatus() {
                 email: email,
                 role: "student",
                 status: "pending",
+                teacher: "admin",
                 createdAt: new Date(),
                 initials: (user.firstName?.[0] || "") + (user.lastName?.[0] || ""),
                 gameData: {
@@ -51,7 +52,8 @@ export async function checkUserStatus() {
                 email: mongoUser.email,
                 status: mongoUser.status,
                 role: mongoUser.role,
-                grade: mongoUser.grade
+                grade: mongoUser.grade,
+                teacher: mongoUser.teacher || "admin"
             }
         };
     } catch (error: any) {

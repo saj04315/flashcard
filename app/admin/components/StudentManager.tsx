@@ -17,9 +17,15 @@ import {
 } from "lucide-react";
 import Button from "../../components/Button";
 import { toast } from "sonner";
-import { syncUsers, getStudents, approveStudent, deleteStudent, type Student } from "../actions/userActions";
+import { syncUsers, getStudents, approveStudent, deleteStudent, changeRoleToTeacher, type Student } from "../actions/userActions";
+import { ArrowRightLeft } from "lucide-react";
 
-export default function StudentManager() {
+interface StudentManagerProps {
+    teacherId?: string;
+    role?: string | null;
+}
+
+export default function StudentManager({ teacherId, role }: StudentManagerProps) {
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
@@ -27,10 +33,10 @@ export default function StudentManager() {
 
     const fetchStudents = useCallback(async (searchTerm: string = "") => {
         setLoading(true);
-        const data = await getStudents(searchTerm);
+        const data = await getStudents(searchTerm, teacherId);
         setStudents(data);
         setLoading(false);
-    }, []);
+    }, [teacherId]);
 
     useEffect(() => {
         const init = async () => {
@@ -81,6 +87,22 @@ export default function StudentManager() {
         }
     };
 
+    const handleChangeToTeacher = async (id: string) => {
+        if (confirm("Are you sure you want to change this user's role to Teacher?")) {
+            try {
+                const res = await changeRoleToTeacher(id);
+                if (res.success) {
+                    toast.success("Role changed to Teacher successfully!");
+                    fetchStudents(search);
+                } else {
+                    toast.error(res.error || "Failed to change role.");
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
+            }
+        }
+    };
+
     return (
         <div className="StudentManager">
             <div className="UnitManager__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -122,6 +144,7 @@ export default function StudentManager() {
                                     <th>Student Name</th>
                                     <th>Email</th>
                                     <th>Grade</th>
+                                    <th>Teacher</th>
                                     <th>Status</th>
                                     <th style={{ textAlign: 'right' }}>Actions</th>
                                 </tr>
@@ -144,6 +167,7 @@ export default function StudentManager() {
                                             </td>
                                             <td><span className="StudentTable__email">{student.email}</span></td>
                                             <td><span style={{ fontWeight: 500 }}>{student.grade || "N/A"}</span></td>
+                                            <td><span style={{ fontWeight: 500 }}>{student.teacherName || "Admin"}</span></td>
                                             <td>
                                                 <span className={`StatusBadge ${student.status === 'Active' ? 'StatusBadge--active' : 'StatusBadge--pending'}`}>
                                                     {student.status}
@@ -170,6 +194,16 @@ export default function StudentManager() {
                                                     >
                                                         <Trash2 size={16} />
                                                     </button>
+
+                                                    {role !== 'teacher' && (
+                                                        <button
+                                                            className="StudentTable__action-btn"
+                                                            title="Change to Teacher"
+                                                            onClick={() => handleChangeToTeacher(student.id)}
+                                                        >
+                                                            <ArrowRightLeft size={16} />
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>

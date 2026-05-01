@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./../Admin.css";
 import { Search, Bell, Menu, X } from "lucide-react";
 import AdminSidebar from "../components/AdminSidebar";
@@ -9,10 +9,28 @@ import SubjectManager from "../components/SubjectManager";
 import UnitManager from "../components/UnitManager";
 import StudentManager from "../components/StudentManager";
 import GradeManager from "../components/GradeManager";
+import TeacherManager from "../components/TeacherManager";
+import { checkUserStatus } from "../../actions/authActions";
 
 export default function AdminDashboardPage() {
     const [currentTab, setCurrentTab] = useState('grades');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [role, setRole] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
+    const [loadingAuth, setLoadingAuth] = useState(true);
+
+    useEffect(() => {
+        const getAuth = async () => {
+            const status = await checkUserStatus();
+            setRole((status as any).role || null);
+            setUserId((status as any).user?.id || null);
+            if ((status as any).role === 'teacher') {
+                setCurrentTab('students');
+            }
+            setLoadingAuth(false);
+        };
+        getAuth();
+    }, []);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -27,7 +45,9 @@ export default function AdminDashboardPage() {
             case 'units':
                 return <UnitManager />;
             case 'students':
-                return <StudentManager />;
+                return <StudentManager teacherId={role === 'teacher' && userId ? userId : undefined} role={role} />;
+            case 'teachers':
+                return <TeacherManager />;
             default:
                 return (
                     <div style={{ padding: '40px', textAlign: 'center' }}>
@@ -38,10 +58,15 @@ export default function AdminDashboardPage() {
         }
     };
 
+    if (loadingAuth) {
+        return <div style={{ padding: '40px', textAlign: 'center' }}>Loading dashboard...</div>;
+    }
+
     return (
         <div className="AdminLayout">
             <AdminSidebar
                 currentTab={currentTab}
+                role={role}
                 onTabChange={(tab) => {
                     setCurrentTab(tab);
                     setIsSidebarOpen(false); // Close sidebar on selection on mobile
