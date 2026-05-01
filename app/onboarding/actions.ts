@@ -9,12 +9,12 @@ export async function selectTeacherAction(formData: FormData) {
     const teacherId = formData.get("teacherId") as string;
     
     if (!teacherId) {
-        return { error: "Teacher is required" };
+        throw new Error("Teacher is required");
     }
 
     const user = await currentUser();
     if (!user) {
-        return { error: "Not logged in" };
+        throw new Error("Not logged in");
     }
     
     const mongoClient = await clientPromise;
