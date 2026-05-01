@@ -34,6 +34,23 @@
     margin-bottom: 64px;
 }
 
+/* Locked SubjectCard Styles */
+.SubjectCard--locked {
+    opacity: 0.8;
+}
+
+.btn-3d--locked {
+    background-color: #E2E8F0;
+    color: #94A3B8;
+    box-shadow: 0 4px 0 #CBD5E1;
+    cursor: not-allowed;
+}
+
+.btn-3d--locked:active {
+    transform: none;
+    box-shadow: 0 4px 0 #CBD5E1;
+}
+
 .DailyGoal {
     background-color: var(--text-black);
     border-radius: 12px;

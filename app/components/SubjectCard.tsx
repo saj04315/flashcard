@@ -3,7 +3,7 @@
 import React from 'react';
 import { 
   FlaskConical, Layers, Clock, BookOpen, Globe, Sigma, Trophy,
-  Cpu, Beaker, Atom, History, Map, Languages, Palette, LineChart, LucideIcon
+  Cpu, Beaker, Atom, History, Map, Languages, Palette, LineChart, LucideIcon, Lock
 } from 'lucide-react';
 import Button from './Button';
 import Link from 'next/link';
@@ -37,6 +37,7 @@ export default function SubjectCard({
     accentColor = '#6BA898', // Default to teal like UnitCard
     bgImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=320",
     href = '#',
+    isLocked = false,
 }: {
     subject?: string;
     subjectId?: string;
@@ -45,6 +46,7 @@ export default function SubjectCard({
     accentColor?: string;
     bgImage?: string;
     href?: string;
+    isLocked?: boolean;
 }) {
     const dispatch = useAppDispatch();
 
@@ -56,27 +58,32 @@ export default function SubjectCard({
     const ResolvedIcon = Icon || (iconName && iconMap[iconName]) || BookOpen || FlaskConical;
 
     return (
-        <div className="SubjectCard">
+        <div className={`SubjectCard ${isLocked ? "SubjectCard--locked" : ""}`}>
             <div
                 className="SubjectCard__header"
-                style={{ backgroundImage: `url(${bgImage})` }}
+                style={{ backgroundImage: isLocked ? "none" : `url(${bgImage})`, backgroundColor: isLocked ? "#F1F5F9" : "transparent" }}
             >
-                <div className="SubjectCard__overlay" style={{ backgroundColor: `${accentColor}B3` }}></div>
+                {!isLocked && <div className="SubjectCard__overlay" style={{ backgroundColor: `${accentColor}B3` }}></div>}
                 <div className="SubjectCard__badge">SUBJECT</div>
                 <div className="SubjectCard__icon-wrapper">
-                    <ResolvedIcon size={48} color="white" />
+                    {isLocked ? (
+                        <Lock size={48} color="#CBD5E1" />
+                    ) : (
+                        <ResolvedIcon size={48} color="white" />
+                    )}
                 </div>
             </div>
 
             <div className="SubjectCard__content">
                 <h3 className="SubjectCard__title">{subject}</h3>
 
-                <Link href={href} style={{ textDecoration: 'none', display: 'block' }} onClick={handleCardClick}>
+                <Link href={isLocked ? "#" : href} style={{ textDecoration: 'none', display: 'block' }} onClick={isLocked ? (e) => e.preventDefault() : handleCardClick}>
                     <Button
-                        className="btn-3d--teal"
+                        className={isLocked ? "btn-3d--locked" : "btn-3d--teal"}
                         style={{ width: "100%", gap: "8px" }}
+                        disabled={isLocked}
                     >
-                        CHOOSE UNIT
+                        {isLocked ? "LOCKED" : "CHOOSE UNIT"}
                     </Button>
                 </Link>
             </div>
