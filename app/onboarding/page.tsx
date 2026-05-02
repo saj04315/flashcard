@@ -36,8 +36,9 @@ export default async function OnboardingPage() {
                             className="input-field" 
                             style={{ padding: "12px", borderRadius: "8px", border: "1px solid var(--border-color)", width: "100%", fontSize: "16px" }}
                             required
+                            defaultValue="admin"
                         >
-                            <option value="">-- Choose a Teacher --</option>
+                            <option key="69b0fbb1ad7a9e6bc5d92bce" value="69b0fbb1ad7a9e6bc5d92bce" >Admin</option>
                             {teachers.map((t) => (
                                 <option key={t.id} value={t.id}>{t.name}</option>
                             ))}
