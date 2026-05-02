@@ -1,21 +1,25 @@
+
+
+
 // app/onboarding/page.tsx
-import { currentUser } from '@clerk/nextjs/server';
+
 import { redirect } from 'next/navigation';
 import { selectTeacherAction } from './actions';
 import { getTeachers } from '../admin/actions/teacherAction';
 import { ShieldCheck, Lock, Headphones } from "lucide-react";
 
+
 export default async function OnboardingPage() {
-  const user = await currentUser();
+
+    
   
-  if (!user) {
-    redirect('/login');
-  }
+
 
   const teachers = await getTeachers();
 
   return (
     <div className="LoginPage">
+    
         <div className="LoginHeader">
             <h1 className="LoginHeader__title">
                 Welcome to Your Learning Space
@@ -38,7 +42,7 @@ export default async function OnboardingPage() {
                             required
                             defaultValue="admin"
                         >
-                            <option key="69b0fbb1ad7a9e6bc5d92bce" value="69b0fbb1ad7a9e6bc5d92bce" >Admin</option>
+                            <option key="admin" value="admin" >Admin</option>
                             {teachers.map((t) => (
                                 <option key={t.id} value={t.id}>{t.name}</option>
                             ))}

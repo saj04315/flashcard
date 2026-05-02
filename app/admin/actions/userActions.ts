@@ -141,6 +141,29 @@ export async function deleteStudent(studentId: string) {
             filter = { $or: [{ _id: new ObjectId(studentId) }, { _id: studentId }] };
         }
 
+        // Find the user to get the clerkId
+        const user = await usersCollection.findOne(filter);
+
+        if (user?.clerkId) {
+            try {
+                await clerkClient.users.deleteUser(user.clerkId);
+            } catch (clerkError: any) {
+                console.error("Clerk delete error:", clerkError);
+                // Continue with MongoDB deletion even if Clerk deletion fails (e.g., user already deleted from Clerk)
+            }
+        }
+
+        if (user?.teacher && user.teacher !== "admin" && user.teacher !== "unknown") {
+            let teacherFilter: any = { _id: user.teacher };
+            if (ObjectId.isValid(user.teacher)) {
+                teacherFilter = { $or: [{ _id: new ObjectId(user.teacher) }, { _id: user.teacher }] };
+            }
+            await usersCollection.updateOne(
+                teacherFilter,
+                { $pull: { students: studentId } } as any
+            );
+        }
+
         await usersCollection.deleteOne(filter);
 
         return { success: true };

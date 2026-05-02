@@ -5,7 +5,7 @@ import { GraduationCap, ShieldCheck, Lock, Headphones, Loader2 } from "lucide-re
 import { SignIn, useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { checkUserStatus } from "../actions/authActions";
-import Link from "next/link";
+
 
 export default function LoginPage() {
     const { isLoaded, isSignedIn, user } = useUser();
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
                 <div className="LoginCard__body" style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "40px" }}>
-                    {loading ? (
+                    {!isLoaded || loading || (isSignedIn && status === null) ? (
                         <div style={{ padding: "40px" }}>
                             <Loader2 className="animate-spin" size={40} color="var(--doodle-blue)" />
                         </div>

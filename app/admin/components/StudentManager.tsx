@@ -18,7 +18,8 @@ import {
 import Button from "../../components/Button";
 import { toast } from "sonner";
 import { syncUsers, getStudents, approveStudent, deleteStudent, changeRoleToTeacher, type Student } from "../actions/userActions";
-import { ArrowRightLeft } from "lucide-react";
+import { getTeachers, type Teacher } from "../actions/teacherAction";
+import { ArrowRightLeft, Filter } from "lucide-react";
 
 interface StudentManagerProps {
     teacherId?: string;
@@ -27,13 +28,18 @@ interface StudentManagerProps {
 
 export default function StudentManager({ teacherId, role }: StudentManagerProps) {
     const [students, setStudents] = useState<Student[]>([]);
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
+    const [selectedTeacher, setSelectedTeacher] = useState<string>("all");
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [isSyncing, setIsSyncing] = useState(false);
 
-    const fetchStudents = useCallback(async (searchTerm: string = "") => {
+    const fetchStudents = useCallback(async (searchTerm: string = "", teacherFilter: string = "all") => {
         setLoading(true);
-        const data = await getStudents(searchTerm, teacherId);
+        // If teacherId prop is present, it takes precedence (likely a teacher viewing their own students)
+        // Otherwise use the selected filter
+        const effectiveTeacherId = teacherId || (teacherFilter === "all" ? undefined : teacherFilter);
+        const data = await getStudents(searchTerm, effectiveTeacherId);
         setStudents(data);
         setLoading(false);
     }, [teacherId]);
@@ -42,17 +48,28 @@ export default function StudentManager({ teacherId, role }: StudentManagerProps)
         const init = async () => {
             setIsSyncing(true);
             await syncUsers();
+            
+            if (!teacherId) {
+                const teachersData = await getTeachers();
+                setTeachers(teachersData);
+            }
+            
             setIsSyncing(false);
-            fetchStudents();
+            fetchStudents(search, selectedTeacher);
         };
         init();
-    }, [fetchStudents]);
+    }, [fetchStudents, teacherId]);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearch(value);
-        // Debounce search ideally, but for now direct fetch
-        fetchStudents(value);
+        fetchStudents(value, selectedTeacher);
+    };
+
+    const handleTeacherFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSelectedTeacher(value);
+        fetchStudents(search, value);
     };
 
     const handleApprove = async (id: string) => {
@@ -121,14 +138,43 @@ export default function StudentManager({ teacherId, role }: StudentManagerProps)
             <div className="StudentManager__roster-card">
                 <div className="StudentManager__table-header">
                     <h2>Student Roster</h2>
-                    <div className="AdminHeader__search">
-                        <Search size={18} color="var(--text-gray)" />
-                        <input
-                            type="text"
-                            placeholder="Search roster..."
-                            value={search}
-                            onChange={handleSearchChange}
-                        />
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        {!teacherId && teachers.length > 0 && (
+                            <div className="AdminHeader__search" style={{ padding: '0 8px', minWidth: '180px' }}>
+                                <Filter size={18} color="var(--text-gray)" />
+                                <select
+                                    value={selectedTeacher}
+                                    onChange={handleTeacherFilterChange}
+                                    style={{
+                                        border: 'none',
+                                        background: 'transparent',
+                                        fontSize: '14px',
+                                        color: 'var(--text-main)',
+                                        outline: 'none',
+                                        width: '100%',
+                                        padding: '8px 4px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <option value="all">All Teachers</option>
+                                    <option value="admin">Admin (No Teacher)</option>
+                                    {teachers.map(teacher => (
+                                        <option key={teacher.id} value={teacher.id}>
+                                            {teacher.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                        <div className="AdminHeader__search">
+                            <Search size={18} color="var(--text-gray)" />
+                            <input
+                                type="text"
+                                placeholder="Search roster..."
+                                value={search}
+                                onChange={handleSearchChange}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -195,7 +241,7 @@ export default function StudentManager({ teacherId, role }: StudentManagerProps)
                                                         <Trash2 size={16} />
                                                     </button>
 
-                                                    {role !== 'teacher' && (
+                                                    {role !== 'teacher' && student.status.toLowerCase() === 'active' && (
                                                         <button
                                                             className="StudentTable__action-btn"
                                                             title="Change to Teacher"

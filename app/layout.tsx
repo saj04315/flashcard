@@ -50,10 +50,17 @@ export default async function RootLayout({
   // 1. Basic Auth & Status Check
   if (authenticated) {
     if (status !== "Active" && status !== "Approved") {
-      if ((!teacher || teacher === "admin") && !isOnboardingPage && !isAuthPage) {
+      const needsOnboarding = !teacher || teacher === "unknown";
+      if (needsOnboarding && !isOnboardingPage && !isAuthPage) {
          redirect("/onboarding");
-      } else if (teacher && teacher !== "admin" && !isAuthPage) {
+      } else if (!needsOnboarding && !isAuthPage) {
          redirect("/login");
+      } else if (needsOnboarding && isAuthPage && currentPath !== "/sign-up") {
+         // If they need onboarding but are on login, redirect to onboarding. 
+         // Allow them to be on sign-up if they are still completing it.
+         if (currentPath === "/login") {
+            redirect("/onboarding");
+         }
       }
     } else if (isAuthPage || isOnboardingPage) {
       redirect("/");
@@ -61,7 +68,7 @@ export default async function RootLayout({
   }
 
   // 2. Role-Based Access Control for Admin Routes
-  if (currentPath.startsWith("/admin") && role !== "admin") {
+  if (currentPath.startsWith("/admin") && role !== "admin" && role !== "teacher") {
     redirect("/"); // Or to a "Not Authorized" page
   }
 

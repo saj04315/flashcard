@@ -1,7 +1,9 @@
-import React from "react";
+
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 import "./SubjectPage.css";
 import {
-  Trophy, BookOpen, GraduationCap, School, Book
+  Trophy, GraduationCap, School, Book
 } from "lucide-react";
 import GradeCard from "./components/GradeCard";
 import ProgressBar from "./components/ProgressBar";
@@ -20,6 +22,11 @@ export default async function GradesPage({
 }: {
   searchParams: Promise<{ search?: string }>;
 }) {
+    const { userId } = await auth();
+    if (!userId) {
+        redirect("/sign-up");
+    }
+
   const { search } = await searchParams;
   const client = await clientPromise;
   const db = client.db();

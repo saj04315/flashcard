@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher(['/login(.*)', '/sign-up(.*)', '/api/clerk-webhook(.*)']);
 
-export default clerkMiddleware(async (auth, request) => {
+export const proxy = clerkMiddleware(async (auth, request) => {
     if (!isPublicRoute(request)) {
         const session = await auth();
         if (!session.userId) {
