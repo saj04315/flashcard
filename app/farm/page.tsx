@@ -246,7 +246,7 @@ export default function FarmPage() {
         setToastMessage({ message: `✅ Successfully bought ${shopItem.name}!`, type: 'success' });
     };
 
-    const isItemUnlocked = (itemIndex: number) => unlockedIndices.has(itemIndex);
+    const isItemUnlocked = (itemIndex: number) => itemIndex < 4 || unlockedIndices.has(itemIndex);
 
     // ── Render ──────────────────────────────────────────────────────────────────
     return (

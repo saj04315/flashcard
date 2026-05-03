@@ -2,6 +2,7 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import clientPromise from "@/lib/mongodb";
+import itemsData from "../farm/item.json";
 
 // ──────────────────────────────────────────────
 // Types
@@ -103,11 +104,12 @@ export async function markCardViewed(
     // Unlock item at 5 cards viewed (if not already unlocked for this unit)
     if (currentCount === 5 && !Object.prototype.hasOwnProperty.call(gameData.unitToItemIndex, unitId)) {
         const usedIndices = new Set(Object.values(gameData.unitToItemIndex));
-        let nextIndex = 0;
-        for (let i = 0; i < 19; i++) {
+        let nextIndex = -1;
+        // Indices 0, 1, 2, 3 are default unlocked. Start unlocking from 4.
+        for (let i = 4; i < itemsData.length; i++) {
             if (!usedIndices.has(i)) { nextIndex = i; break; }
         }
-        if (usedIndices.size < 19) {
+        if (nextIndex !== -1) {
             update.$set[`gameData.unitToItemIndex.${unitId}`] = nextIndex;
             itemUnlocked = true;
         }

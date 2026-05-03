@@ -1,46 +1,442 @@
-[{ "id": "h_dirt_path", "name": "Horizontal Dirt Path", "description": "A simple walkable path.", "price": 0, "image": "/farm/items/h_dirt_path.png", "size": { "width": 1, "height": 1 } },
-  { "id": "v_wooden_fence", "name": "Vertical Wooden Fence", "description": "A fence to enclose areas.", "price": 0, "image": "/farm/items/v_wooden_fence.png", "size": { "width": 1, "height": 3 } },
-  { "id": "dirt_path", "name": "Dirt Path", "description": "A simple walkable path.", "price": 0, "image": "/farm/items/dirt_path.png", "size": { "width": 1, "height": 1 } },
-  { "id": "wooden_fence", "name": "Wooden Fence", "description": "A fence to enclose areas.", "price": 0, "image": "/farm/items/wooden_fence.png", "size": { "width": 1, "height": 1 } },
-  { "id": "flowers", "name": "Flowers", "description": "Colorful decorative flowers.", "price": 20, "image": "/farm/items/flowers.png", "size": { "width": 1, "height": 1 } },
-  { "id": "rock", "name": "Rock", "description": "A natural decorative rock.", "price": 20, "image": "/farm/items/rock.png", "size": { "width": 1, "height": 1 } },
-  { "id": "carrot", "name": "Carrot", "description": "A small crop plant.", "price": 20, "image": "/farm/items/carrot.png", "size": { "width": 1, "height": 1 } },
-  { "id": "cabbage", "name": "Cabbage", "description": "Leafy green crop.", "price": 20, "image": "/farm/items/cabbage.png", "size": { "width": 1, "height": 1 } },
-  { "id": "corn", "name": "Corn", "description": "Tall growing crop.", "price": 20, "image": "/farm/items/corn.png", "size": { "width": 1, "height": 1 } },
-  { "id": "wheat", "name": "Wheat", "description": "Golden grain crop.", "price": 20, "image": "/farm/items/wheat.png", "size": { "width": 1, "height": 1 } },
-  { "id": "tomato", "name": "Tomato", "description": "Fruit-bearing crop.", "price": 20, "image": "/farm/items/tomato.png", "size": { "width": 1, "height": 1 } },
-  { "id": "sunflower", "name": "Sunflower", "description": "Bright tall flower.", "price": 20, "image": "/farm/items/sunflower.png", "size": { "width": 1, "height": 1 } },
-
-  
-  { "id": "gate", "name": "Gate", "description": "Entry point to fenced area.", "price": 50, "image": "/farm/items/gate.png", "size": { "width": 1, "height": 1 } },
-  { "id": "pen", "name": "Animal Pen", "description": "Enclosure for animals.", "price": 50, "image": "/farm/items/pen.png", "size": { "width": 2, "height": 2 } },
-  
-  { "id": "pond", "name": "Pond", "description": "A small water body.", "price": 50, "image": "/farm/items/pond.png", "size": { "width": 2, "height": 2 } },
-  { "id": "duck_pond", "name": "Duck Pond", "description": "Pond with ducks.", "price": 50, "image": "/farm/items/duck_pond.png", "size": { "width": 2, "height": 2 } },
-  { "id": "hay_bale", "name": "Hay Bale", "description": "Stored hay bundle.", "price": 50, "image": "/farm/items/hay_bale.png", "size": { "width": 1, "height": 1 } },
-  { "id": "mailbox", "name": "Mailbox", "description": "Receive messages.", "price": 50, "image": "/farm/items/mailbox.png", "size": { "width": 1, "height": 1 } },
-  { "id": "sign", "name": "Farm Sign", "description": "Displays farm name.", "price": 50, "image": "/farm/items/sign.png", "size": { "width": 1, "height": 1 } },
-
-  { "id": "tree", "name": "Tree", "description": "Basic tree.", "price": 100, "image": "/farm/items/tree.png", "size": { "width": 2, "height": 2 } },
-  { "id": "apple_tree", "name": "Apple Tree", "description": "Tree with apples.", "price": 100, "image": "/farm/items/apple_tree.png", "size": { "width": 2, "height": 2 } },
-  { "id": "cow", "name": "Cow", "description": "Farm animal.", "price": 100, "image": "/farm/items/cow.png", "size": { "width": 2, "height": 2 } },
-  { "id": "pig", "name": "Pig", "description": "Farm animal.", "price": 100, "image": "/farm/items/pig.png", "size": { "width": 2, "height": 2 } },
-  { "id": "chicken", "name": "Chicken", "description": "Farm bird.", "price": 100, "image": "/farm/items/chicken.png", "size": { "width": 1, "height": 1 } },
-  { "id": "duck", "name": "Duck", "description": "Water bird.", "price": 100, "image": "/farm/items/duck.png", "size": { "width": 1, "height": 1 } },
-  { "id": "scarecrow", "name": "Scarecrow", "description": "Protects crops.", "price": 100, "image": "/farm/items/scarecrow.png", "size": { "width": 1, "height": 2 } },
-  { "id": "wheelbarrow", "name": "Wheelbarrow", "description": "Transport tool.", "price": 100, "image": "/farm/items/wheelbarrow.png", "size": { "width": 2, "height": 1 } },
-  { "id": "watering_can", "name": "Watering Can", "description": "Water crops.", "price": 100, "image": "/farm/items/watering_can.png", "size": { "width": 1, "height": 1 } },
-  { "id": "hoe", "name": "Hoe", "description": "Farming tool.", "price": 100, "image": "/farm/items/hoe.png", "size": { "width": 1, "height": 1 } },
-  { "id": "axe", "name": "Axe", "description": "Cut wood.", "price": 100, "image": "/farm/items/axe.png", "size": { "width": 1, "height": 1 } },
-  { "id": "shovel", "name": "Shovel", "description": "Dig soil.", "price": 100, "image": "/farm/items/shovel.png", "size": { "width": 1, "height": 1 } },
-  { "id": "rake", "name": "Rake", "description": "Level ground.", "price": 100, "image": "/farm/items/rake.png", "size": { "width": 1, "height": 1 } },
-  { "id": "milk_can", "name": "Milk Can", "description": "Store milk.", "price": 100, "image": "/farm/items/milk_can.png", "size": { "width": 1, "height": 1 } },
-
-  { "id": "barn", "name": "Barn", "description": "Main farm building.", "price": 250, "image": "/farm/items/barn.png", "size": { "width": 3, "height": 3 } },
-  { "id": "chicken_coop", "name": "Chicken Coop", "description": "House for chickens.", "price": 250, "image": "/farm/items/chicken_coop.png", "size": { "width": 2, "height": 2 } },
-  { "id": "silo", "name": "Silo", "description": "Stores grain.", "price": 250, "image": "/farm/items/silo.png", "size": { "width": 2, "height": 3 } },
-  { "id": "well", "name": "Well", "description": "Water source.", "price": 250, "image": "/farm/items/well.png", "size": { "width": 2, "height": 2 } },
-  { "id": "market_stand", "name": "Market Stand", "description": "Sell goods.", "price": 250, "image": "/farm/items/market_stand.png", "size": { "width": 2, "height": 2 } },
-  { "id": "windmill", "name": "Windmill", "description": "Produces energy.", "price": 250, "image": "/farm/items/windmill.png", "size": { "width": 3, "height": 3 } },
-  { "id": "tractor", "name": "Tractor", "description": "Heavy farming vehicle.", "price": 250, "image": "/farm/items/tractor.png", "size": { "width": 3, "height": 2 } }
+[
+  {
+    "id": "h_dirt_path",
+    "name": "Horizontal Dirt Path",
+    "description": "A simple walkable path.",
+    "price": 0,
+    "image": "/farm/items/h_dirt_path.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "v_wooden_fence",
+    "name": "Vertical Wooden Fence",
+    "description": "A fence to enclose areas.",
+    "price": 0,
+    "image": "/farm/items/v_wooden_fence.png",
+    "size": {
+      "width": 2,
+      "height": 6
+    }
+  },
+  {
+    "id": "dirt_path",
+    "name": "Dirt Path",
+    "description": "A simple walkable path.",
+    "price": 0,
+    "image": "/farm/items/dirt_path.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "wooden_fence",
+    "name": "Wooden Fence",
+    "description": "A fence to enclose areas.",
+    "price": 0,
+    "image": "/farm/items/wooden_fence.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "flowers",
+    "name": "Flowers",
+    "description": "Colorful decorative flowers.",
+    "price": 20,
+    "image": "/farm/items/flowers.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "rock",
+    "name": "Rock",
+    "description": "A natural decorative rock.",
+    "price": 20,
+    "image": "/farm/items/rock.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "carrot",
+    "name": "Carrot",
+    "description": "A small crop plant.",
+    "price": 20,
+    "image": "/farm/items/carrot.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "cabbage",
+    "name": "Cabbage",
+    "description": "Leafy green crop.",
+    "price": 20,
+    "image": "/farm/items/cabbage.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "corn",
+    "name": "Corn",
+    "description": "Tall growing crop.",
+    "price": 20,
+    "image": "/farm/items/corn.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "wheat",
+    "name": "Wheat",
+    "description": "Golden grain crop.",
+    "price": 20,
+    "image": "/farm/items/wheat.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "tomato",
+    "name": "Tomato",
+    "description": "Fruit-bearing crop.",
+    "price": 20,
+    "image": "/farm/items/tomato.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "sunflower",
+    "name": "Sunflower",
+    "description": "Bright tall flower.",
+    "price": 20,
+    "image": "/farm/items/sunflower.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "gate",
+    "name": "Gate",
+    "description": "Entry point to fenced area.",
+    "price": 50,
+    "image": "/farm/items/gate.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "pen",
+    "name": "Animal Pen",
+    "description": "Enclosure for animals.",
+    "price": 50,
+    "image": "/farm/items/pen.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "pond",
+    "name": "Pond",
+    "description": "A small water body.",
+    "price": 50,
+    "image": "/farm/items/pond.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "duck_pond",
+    "name": "Duck Pond",
+    "description": "Pond with ducks.",
+    "price": 50,
+    "image": "/farm/items/duck_pond.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "hay_bale",
+    "name": "Hay Bale",
+    "description": "Stored hay bundle.",
+    "price": 50,
+    "image": "/farm/items/hay_bale.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "mailbox",
+    "name": "Mailbox",
+    "description": "Receive messages.",
+    "price": 50,
+    "image": "/farm/items/mailbox.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "sign",
+    "name": "Farm Sign",
+    "description": "Displays farm name.",
+    "price": 50,
+    "image": "/farm/items/sign.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "tree",
+    "name": "Tree",
+    "description": "Basic tree.",
+    "price": 100,
+    "image": "/farm/items/tree.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "apple_tree",
+    "name": "Apple Tree",
+    "description": "Tree with apples.",
+    "price": 100,
+    "image": "/farm/items/apple_tree.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "cow",
+    "name": "Cow",
+    "description": "Farm animal.",
+    "price": 100,
+    "image": "/farm/items/cow.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "pig",
+    "name": "Pig",
+    "description": "Farm animal.",
+    "price": 100,
+    "image": "/farm/items/pig.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "chicken",
+    "name": "Chicken",
+    "description": "Farm bird.",
+    "price": 100,
+    "image": "/farm/items/chicken.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "duck",
+    "name": "Duck",
+    "description": "Water bird.",
+    "price": 100,
+    "image": "/farm/items/duck.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "scarecrow",
+    "name": "Scarecrow",
+    "description": "Protects crops.",
+    "price": 100,
+    "image": "/farm/items/scarecrow.png",
+    "size": {
+      "width": 2,
+      "height": 4
+    }
+  },
+  {
+    "id": "wheelbarrow",
+    "name": "Wheelbarrow",
+    "description": "Transport tool.",
+    "price": 100,
+    "image": "/farm/items/wheelbarrow.png",
+    "size": {
+      "width": 4,
+      "height": 2
+    }
+  },
+  {
+    "id": "watering_can",
+    "name": "Watering Can",
+    "description": "Water crops.",
+    "price": 100,
+    "image": "/farm/items/watering_can.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "hoe",
+    "name": "Hoe",
+    "description": "Farming tool.",
+    "price": 100,
+    "image": "/farm/items/hoe.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "axe",
+    "name": "Axe",
+    "description": "Cut wood.",
+    "price": 100,
+    "image": "/farm/items/axe.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "shovel",
+    "name": "Shovel",
+    "description": "Dig soil.",
+    "price": 100,
+    "image": "/farm/items/shovel.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "rake",
+    "name": "Rake",
+    "description": "Level ground.",
+    "price": 100,
+    "image": "/farm/items/rake.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "milk_can",
+    "name": "Milk Can",
+    "description": "Store milk.",
+    "price": 100,
+    "image": "/farm/items/milk_can.png",
+    "size": {
+      "width": 2,
+      "height": 2
+    }
+  },
+  {
+    "id": "barn",
+    "name": "Barn",
+    "description": "Main farm building.",
+    "price": 250,
+    "image": "/farm/items/barn.png",
+    "size": {
+      "width": 6,
+      "height": 6
+    }
+  },
+  {
+    "id": "chicken_coop",
+    "name": "Chicken Coop",
+    "description": "House for chickens.",
+    "price": 250,
+    "image": "/farm/items/chicken_coop.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "silo",
+    "name": "Silo",
+    "description": "Stores grain.",
+    "price": 250,
+    "image": "/farm/items/silo.png",
+    "size": {
+      "width": 4,
+      "height": 6
+    }
+  },
+  {
+    "id": "well",
+    "name": "Well",
+    "description": "Water source.",
+    "price": 250,
+    "image": "/farm/items/well.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "market_stand",
+    "name": "Market Stand",
+    "description": "Sell goods.",
+    "price": 250,
+    "image": "/farm/items/market_stand.png",
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  {
+    "id": "windmill",
+    "name": "Windmill",
+    "description": "Produces energy.",
+    "price": 250,
+    "image": "/farm/items/windmill.png",
+    "size": {
+      "width": 6,
+      "height": 6
+    }
+  },
+  {
+    "id": "tractor",
+    "name": "Tractor",
+    "description": "Heavy farming vehicle.",
+    "price": 250,
+    "image": "/farm/items/tractor.png",
+    "size": {
+      "width": 6,
+      "height": 4
+    }
+  }
 ]
