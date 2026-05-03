@@ -85,7 +85,7 @@ export default async function RootLayout({
               </main>
               {!isAuthPage && !isOnboardingPage && <Footer />}
             </div>
-            {authenticated && role === "student" && !isAuthPage && !isOnboardingPage && (
+            {authenticated  && !isAuthPage && !isOnboardingPage && (
               <Link href="/farm" className="FarmFloatButton">
                 <Image src="/farm/btn.png" alt="Farm button" width={72} height={72} />
               </Link>
