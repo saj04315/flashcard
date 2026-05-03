@@ -7,7 +7,7 @@ export const proxy = clerkMiddleware(async (auth, request) => {
     if (!isPublicRoute(request)) {
         const session = await auth();
         if (!session.userId) {
-            return (await auth()).redirectToSignIn({ returnBackUrl: request.url });
+            return (await auth()).redirectToSignUp({ returnBackUrl: request.url });
         }
     }
 
