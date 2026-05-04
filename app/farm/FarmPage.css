@@ -102,6 +102,7 @@
   justify-content: center;
   transition: filter 0.2s;
   pointer-events: auto;
+  touch-action: none;
 }
 
 .FarmPage__placed-item:hover {
@@ -357,6 +358,7 @@
   cursor: grab;
   transition: opacity 0.2s;
   user-select: none;
+  touch-action: none;
 }
 
 .FarmPage__slot-image:active {

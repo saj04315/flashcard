@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import itemsData from "./item.json";
 import Toast from "../components/Toast";
+import Script from "next/script";
 import "./FarmPage.css";
 
 import {
@@ -251,6 +252,7 @@ export default function FarmPage() {
     // ── Render ──────────────────────────────────────────────────────────────────
     return (
         <div className="FarmPage">
+            <Script src="/DragDropTouch.js" />
             <div className="FarmPage__header">
                 <div className="FarmPage__coin-display">
                     <Image src="/farm/coin.png" alt="Coins" width={32} height={32} />
