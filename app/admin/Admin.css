@@ -6,6 +6,7 @@
     display: flex;
     min-height: 100vh;
     background-color: var(--background);
+    padding-top: 60px; /* Offset for global Navbar */
 }
 
 /* SIDEBAR */
@@ -18,7 +19,7 @@
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 0;
+    top: 60px; /* Offset for global Navbar */
     bottom: 0;
     left: 0;
     z-index: 100;
@@ -82,6 +83,23 @@
     border-left-color: var(--doodle-green);
 }
 
+.AdminSidebar__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    backdrop-filter: blur(2px);
+}
+
+@media (min-width: 769px) {
+    .AdminSidebar__overlay {
+        display: none;
+    }
+}
+
 /* MAIN CONTENT AREA */
 .AdminMain {
     flex: 1;
@@ -102,7 +120,7 @@
     align-items: center;
     justify-content: space-between;
     position: sticky;
-    top: 0;
+    top: 60px; /* Offset for global Navbar */
     z-index: 90;
 }
 
@@ -143,12 +161,54 @@
     font-size: 14px;
 }
 
-.AdminHeader__mobile-toggle {
-    display: none;
-    color: var(--text-black);
-    cursor: pointer;
+/* MOBILE NAVBAR */
+.AdminMobileNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background-color: white;
+    border-bottom: 1px solid #E2E8F0;
+    position: sticky;
+    top: 60px; /* Offset for the main global Navbar */
+    z-index: 80;
 }
 
+.AdminMobileNav__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.AdminMobileNav__toggle {
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-black);
+}
+
+.AdminMobileNav__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-black);
+    margin: 0;
+}
+
+.AdminMobileNav__right {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+@media (min-width: 1025px) {
+    .AdminMobileNav {
+        display: none !important;
+    }
+}
 
 .AdminHeader__notification {
     color: var(--text-gray);
@@ -718,7 +778,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .AdminSidebar {
         transform: translateX(-100%);
         transition: transform 0.3s ease;
@@ -740,15 +800,11 @@
     }
 
     .AdminHeader {
-        padding: 0 20px;
+        display: none !important;
     }
 
-    .AdminHeader__mobile-toggle {
-        display: block;
-    }
-
-    .AdminHeader__search {
-        display: none;
+    .AdminHeader {
+        display: none !important;
     }
 
     .AdminContent {

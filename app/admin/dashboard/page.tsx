@@ -64,6 +64,14 @@ export default function AdminDashboardPage() {
 
     return (
         <div className="AdminLayout">
+            {/* Mobile Overlay */}
+            {isSidebarOpen && (
+                <div 
+                    className="AdminSidebar__overlay"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+
             <AdminSidebar
                 currentTab={currentTab}
                 role={role}
@@ -75,11 +83,23 @@ export default function AdminDashboardPage() {
             />
 
             <main className="AdminMain">
+                {/* Mobile Navbar */}
+                <nav className="AdminMobileNav">
+                    <div className="AdminMobileNav__left">
+                        <button className="AdminMobileNav__toggle" onClick={toggleSidebar}>
+                            {isSidebarOpen ? <X size={24} color="#000" /> : <Menu size={24} color="#000" />}
+                        </button>
+                        <h1 className="AdminMobileNav__title">Teacher Management</h1>
+                    </div>
+                    <div className="AdminMobileNav__right">
+                        <div className="AdminHeader__notification AdminHeader__notification--badge">
+                            <Bell size={20} />
+                        </div>
+                    </div>
+                </nav>
+
                 <header className="AdminHeader">
                     <div className="AdminHeader__left-flex">
-                        <button className="AdminHeader__mobile-toggle" onClick={toggleSidebar}>
-                            {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
                         <div className="AdminHeader__title">
                             <h1>Teacher Management</h1>
                         </div>
