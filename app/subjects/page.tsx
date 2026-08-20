@@ -43,7 +43,7 @@ export default async function SubjectsPage({
             accentColor={sub.color}
             bgImage={`https://images.unsplash.com/featured/?${encodeURIComponent(sub.name)}`}
             href={`/units?subjectId=${sub._id}`}
-            isLocked={sub._id.toString() === "69e9893964099d5f097b623f"}
+            isLocked={false}
           />
         ))}
       </div>
